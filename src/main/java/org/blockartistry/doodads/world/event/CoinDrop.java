@@ -101,21 +101,24 @@ public class CoinDrop {
 
 	@SubscribeEvent(receiveCanceled = false)
 	public static void onLivingDrops(@Nonnull final LivingDropsEvent event) {
-		final EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
-		if (player != null && !(player instanceof FakePlayer)) {
-			final Entity entity = event.getEntity();
-			final Quality q = assess(entity);
-			if (q != Quality.NONE) {
-				final World world = entity.getEntityWorld();
-				final LootPool pool = Loot.getPool(world, Loot.COIN_LOOT_TABLE, q.getPool());
-				if (pool != null) {
-					final LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(entity)
-							.build();
-					final List<ItemStack> drops = new ArrayList<>();
-					pool.generateLoot(drops, RAND, ctx);
-					for (final ItemStack stack : drops) {
-						final EntityItem item = new EntityItem(world, entity.posX, entity.posY, entity.posZ, stack);
-						event.getDrops().add(item);
+		if (event.getSource().getTrueSource() instanceof EntityPlayer) {
+			final EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+			if (!(player instanceof FakePlayer)) {
+				final Entity entity = event.getEntity();
+				final Quality q = assess(entity);
+				if (q != Quality.NONE) {
+					final World world = entity.getEntityWorld();
+					final LootPool pool = Loot.getPool(world, Loot.COIN_LOOT_TABLE, q.getPool());
+					if (pool != null) {
+						final LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(entity)
+								.withPlayer(player)
+								.build();
+						final List<ItemStack> drops = new ArrayList<>();
+						pool.generateLoot(drops, RAND, ctx);
+						for (final ItemStack stack : drops) {
+							final EntityItem item = new EntityItem(world, entity.posX, entity.posY, entity.posZ, stack);
+							event.getDrops().add(item);
+						}
 					}
 				}
 			}

@@ -11,14 +11,24 @@ doodads.metadata.Credits=§cNetHack, Rogue, etc.§r
 doodads.metadata.Authors=§aOreCruncher§r
 doodads.metadata.Description=Adds miscellaneous items and functions that can be used in an adventure centric modpack
 
-# Logging text
+# Configuration
 config.doodads.title=Doodads Configuration
+
 config.doodads.logging=Logging
 config.doodads.logging.tooltip=Logging options
 config.doodads.logging.enableLogging=Enable Debug Trace
 config.doodads.logging.enableLogging.tooltip=Enable/Disable debug trace output to the Forge log
 config.doodads.logging.enableVersionCheck=Enable Version Check
 config.doodads.logging.enableVersionCheck.tooltip=Enable/Disable message related to a newer version of the mod being available
+
+config.doodads.mobnet=Mob Net
+config.doodads.mobnet.tooltip=Mob Net options
+config.doodads.mobnet.enableVillagerCapture=Enable Villager Capture
+config.doodads.mobnet.enableVillagerCapture.tooltip=Enable/disable use of the Mob Net on Villagers
+config.doodads.mobnet.enableHostileCapture=Enable Hostile Mob Capture
+config.doodads.mobnet.enableHostileCapture.tooltip=Enable/diable use of the Mob Net on hostile entities
+config.doodads.mobnet.reusable=Mob Nets are reusable
+config.doodads.mobnet.reusable.tooltip=Enable/disable reuse of Mob Nets
 
 # Creative Tab
 itemGroup.creativetab.doodads.main=Doodads

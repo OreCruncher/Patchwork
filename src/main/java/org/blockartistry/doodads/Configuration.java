@@ -40,6 +40,9 @@ public class Configuration {
 	@LangKey("config.doodads.logging")
 	public static Logging logging = new Logging();
 
+	@LangKey("config.doodads.mobnet")
+	public static MobNet mobnet = new MobNet();
+	
 	public static class Logging {
 		@LangKey("config.doodads.logging.enableLogging")
 		@Comment({ "Enables debug logging output for diagnostics" })
@@ -48,6 +51,20 @@ public class Configuration {
 		@LangKey("config.doodads.logging.enableVersionCheck")
 		@Comment({ "Enables display of chat messages related to newer versions", "of the mod being available." })
 		public boolean enableVersionCheck = true;
+	}
+	
+	public static class MobNet {
+		@LangKey("config.doodads.mobnet.enableVillagerCapture")
+		@Comment({"Enable/disable use of the Mob Net on Villagers"})
+		public boolean enableVillagerCapture = false;
+
+		@LangKey("config.doodads.mobnet.enableHostileCapture")
+		@Comment({"Enable/diable use of the Mob Net on hostile entities"})
+		public boolean enableHostileCapture = false;
+		
+		@LangKey("config.doodads.mobnet.reusable")
+		@Comment({"Enable/disable reuse of Mob Nets"})
+		public boolean reusable = true;
 	}
 
 	@SubscribeEvent

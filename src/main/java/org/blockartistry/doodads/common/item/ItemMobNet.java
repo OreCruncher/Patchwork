@@ -25,7 +25,9 @@
 package org.blockartistry.doodads.common.item;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import org.blockartistry.doodads.Configuration;
 import org.blockartistry.doodads.client.DoodadsCreativeTab;
 
 import net.minecraft.block.BlockFence;
@@ -33,17 +35,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -53,6 +57,7 @@ public class ItemMobNet extends ItemBase {
 		public static final String ID = "id";
 		public static final String STORED_ENTITY = "entity";
 		public static final String ENTITY_NAME = "name";
+		public static final String MONIKER = "moniker";
 	}
 
 	public ItemMobNet() {
@@ -64,15 +69,20 @@ public class ItemMobNet extends ItemBase {
 	@Override
 	@Nonnull
 	public String getItemStackDisplayName(@Nonnull final ItemStack stack) {
-		final String baseName = super.getItemStackDisplayName(stack);
+		final StringBuilder baseName = new StringBuilder(super.getItemStackDisplayName(stack));
 
 		if (hasCapturedAnimal(stack)) {
-			final String entityName = getEntityDisplayName(stack);
-			if (!entityName.isEmpty()) {
-				return String.format("%s (%s)", baseName, entityName);
+			String name = getProperty(stack, NBT.ENTITY_NAME);
+			if (!name.isEmpty()) {
+				baseName.append(" (").append(name);
+				name = getProperty(stack, NBT.MONIKER);
+				if (!name.isEmpty()) {
+					baseName.append(" - ").append(name);
+				}
+				baseName.append(')');
 			}
 		}
-		return baseName;
+		return baseName.toString();
 	}
 
 	@Override
@@ -84,7 +94,8 @@ public class ItemMobNet extends ItemBase {
 
 			final EntityLiving entity = (EntityLiving) target;
 			final ItemStack newStack = addEntitytoNet(player, stack, entity);
-			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, newStack);
+			if (player.isCreative())
+				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, newStack);
 			entity.playLivingSound();
 			entity.world.removeEntity(target);
 			return true;
@@ -121,6 +132,9 @@ public class ItemMobNet extends ItemBase {
 
 				entity.setPositionAndRotation(pos2.getX() + 0.5D, pos2.getY() + d0, pos2.getZ() + 0.5D,
 						Math.abs(player.rotationYaw), 0);
+				entity.motionX = 0;
+				entity.motionY = 0;
+				entity.motionZ = 0;
 
 				world.spawnEntity(entity);
 
@@ -130,6 +144,9 @@ public class ItemMobNet extends ItemBase {
 				}
 
 				stack.setTagCompound(null);
+
+				if (!Configuration.mobnet.reusable)
+					stack.setCount(stack.getCount() - 1);
 
 				world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ,
 						SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.NEUTRAL, 0.5F,
@@ -142,56 +159,68 @@ public class ItemMobNet extends ItemBase {
 	}
 
 	@Nonnull
-	private String getEntityDisplayName(@Nonnull final ItemStack stack) {
+	private String getProperty(@Nonnull final ItemStack stack, @Nonnull final String prop) {
 		if (stack.getTagCompound() != null) {
-			return stack.getTagCompound().getString(NBT.ENTITY_NAME);
+			return stack.getTagCompound().getString(prop);
 		}
 		return "";
 	}
 
 	private static boolean isValidTarget(@Nonnull final EntityLivingBase entity) {
+		if (entity instanceof EntityVillager && Configuration.mobnet.enableVillagerCapture)
+			return true;
+		if (entity instanceof IMob && Configuration.mobnet.enableHostileCapture)
+			return true;
 		return entity instanceof EntityAnimal;
 	}
 
-	private static boolean hasCapturedAnimal(ItemStack stack) {
-		final NBTTagCompound nbt = stack.getTagCompound();
-		if (nbt != null) {
-			final NBTBase tag = nbt.getTag(NBT.STORED_ENTITY);
-			return tag != null && !tag.hasNoTags();
-		}
-		return false;
+	@Nullable
+	private static boolean hasCapturedAnimal(@Nonnull final ItemStack stack) {
+		return getEntityTag(stack) != null;
 	}
 
-	private static ItemStack addEntitytoNet(@Nonnull final EntityPlayer player, @Nonnull ItemStack stack,
+	@Nonnull
+	private static ItemStack addEntitytoNet(@Nonnull final EntityPlayer player, @Nonnull final ItemStack stack,
 			@Nonnull Entity entity) {
-		final ItemStack newStack = new ItemStack(ModItems.MOB_NET);
-		return addEntityNBT(newStack, entity);
-	}
-
-	private static ItemStack addEntityNBT(@Nonnull final ItemStack stack, @Nonnull final Entity entity) {
 		final NBTTagCompound eNBT = new NBTTagCompound();
 		entity.onGround = true;
 		eNBT.setString(NBT.ID, EntityList.getKey(entity).toString());
 		entity.writeToNBT(eNBT);
 
+		final String entityTypeName = resolveEntityProfession(entity);
 		final NBTTagCompound stacknbt = new NBTTagCompound();
 		stacknbt.setString(NBT.ID, EntityList.getKey(entity).toString());
-		stacknbt.setString(NBT.ENTITY_NAME, entity.getDisplayName().getUnformattedText());
+		stacknbt.setString(NBT.ENTITY_NAME, StringUtils.isNullOrEmpty(entityTypeName) ? "Generic" : entityTypeName);
+		if (entity.hasCustomName())
+			stacknbt.setString(NBT.MONIKER, entity.getCustomNameTag());
 		stacknbt.setTag(NBT.STORED_ENTITY, eNBT);
 
 		stack.setTagCompound(stacknbt);
 		return stack;
 	}
 
+	private static String resolveEntityProfession(@Nonnull final Entity entity) {
+		final StringBuilder entityType = new StringBuilder(EntityList.getEntityString(entity));
+		if (entity instanceof EntityVillager && !entity.hasCustomName()) {
+			final String displayName = ((EntityVillager) entity).getDisplayName().getFormattedText();
+			if (!StringUtils.isNullOrEmpty(displayName)) {
+				entityType.append(": ");
+				entityType.append(displayName);
+			}
+		}
+		return entityType.toString();
+	}
+
+	@Nullable
 	private static NBTTagCompound getEntityTag(@Nonnull final ItemStack stack) {
 		final NBTTagCompound nbt = stack.getTagCompound();
 		return nbt != null ? nbt.getCompoundTag(NBT.STORED_ENTITY) : null;
 	}
 
+	@Nullable
 	private static Entity buildEntity(@Nonnull final World worldIn, @Nonnull final NBTTagCompound entitynbt) {
 		try {
-			final Entity entity = EntityList.createEntityFromNBT(entitynbt, worldIn);
-			return entity;
+			return EntityList.createEntityFromNBT(entitynbt, worldIn);
 		} catch (final Throwable e) {
 			return null;
 		}
