@@ -94,7 +94,12 @@ public interface IProxy {
 		// This method intentionally left blank
 	}
 	
+	/**
+	 * Called to register an item colorizer.  The default implementation assumes
+	 * server and doesn't do anything.  Needs to be override in the client proxy.
+	 * @param item
+	 */
 	default void registerColorizer(@Nonnull final ItemBase item) {
-		
+		// This method intentionally left blank
 	}
 }

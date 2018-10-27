@@ -100,24 +100,26 @@ public final class RepairPasteRecipe extends ShapelessRecipes {
 		return null;
 	}
 
+	private static boolean isTypeAcceptable(@Nonnull final Item item) {
+		return item instanceof ItemArmor || item instanceof ItemTool || item instanceof ItemFishingRod
+				|| item instanceof ItemHoe || item instanceof ItemShield || item instanceof ItemSword
+				|| item instanceof ItemShears;
+	}
+
 	// Scans the item registry looking for items that repair paste can be applied
 	// to. Limited
 	// to tools, armor, etc. that can be damaged.
 	public static void register() {
 		for (final ResourceLocation r : Item.REGISTRY.getKeys()) {
 			final Item item = Item.REGISTRY.getObject(r);
-			if (item.isDamageable()) {
-				if (item instanceof ItemArmor || item instanceof ItemTool || item instanceof ItemFishingRod
-						|| item instanceof ItemHoe || item instanceof ItemShield || item instanceof ItemSword
-						|| item instanceof ItemShears) {
-					final ItemStack input = new ItemStack(item);
-					final ItemStack output = input.copy();
-					final ResourceLocation location = RecipeHelper.getNameForRecipe(output);
-					final RepairPasteRecipe recipe = new RepairPasteRecipe(location.getResourceDomain(), output,
-							RecipeHelper.buildInput(new Object[] { input, REPAIR_PASTE }));
-					recipe.setRegistryName(location);
-					GameData.register_impl(recipe);
-				}
+			if (item.isDamageable() && isTypeAcceptable(item)) {
+				final ItemStack input = new ItemStack(item);
+				final ItemStack output = input.copy();
+				final ResourceLocation location = RecipeHelper.getNameForRecipe(output);
+				final RepairPasteRecipe recipe = new RepairPasteRecipe(location.getResourceDomain(), output,
+						RecipeHelper.buildInput(new Object[] { input, REPAIR_PASTE }));
+				recipe.setRegistryName(location);
+				GameData.register_impl(recipe);
 			}
 		}
 

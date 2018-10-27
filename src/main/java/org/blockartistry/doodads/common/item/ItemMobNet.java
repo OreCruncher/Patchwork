@@ -93,7 +93,7 @@ public class ItemMobNet extends ItemBase {
 				return false;
 
 			final EntityLiving entity = (EntityLiving) target;
-			final ItemStack newStack = addEntitytoNet(player, stack, entity);
+			final ItemStack newStack = addEntitytoNet(stack, entity);
 			if (player.isCreative())
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, newStack);
 			entity.playLivingSound();
@@ -138,9 +138,8 @@ public class ItemMobNet extends ItemBase {
 
 				world.spawnEntity(entity);
 
-				if (entity instanceof EntityAnimal) {
-					if (((EntityAnimal) entity).isAIDisabled())
-						((EntityAnimal) entity).setNoAI(false);
+				if (entity instanceof EntityAnimal && ((EntityAnimal) entity).isAIDisabled()) {
+					((EntityAnimal) entity).setNoAI(false);
 				}
 
 				stack.setTagCompound(null);
@@ -180,8 +179,7 @@ public class ItemMobNet extends ItemBase {
 	}
 
 	@Nonnull
-	private static ItemStack addEntitytoNet(@Nonnull final EntityPlayer player, @Nonnull final ItemStack stack,
-			@Nonnull Entity entity) {
+	private static ItemStack addEntitytoNet(@Nonnull final ItemStack stack, @Nonnull Entity entity) {
 		final NBTTagCompound eNBT = new NBTTagCompound();
 		entity.onGround = true;
 		eNBT.setString(NBT.ID, EntityList.getKey(entity).toString());
