@@ -88,10 +88,8 @@ public class ItemMobNet extends ItemBase {
 	@Override
 	public boolean itemInteractionForEntity(@Nonnull final ItemStack stack, @Nonnull final EntityPlayer player,
 			@Nonnull final EntityLivingBase target, @Nonnull final EnumHand hand) {
-		if (!target.world.isRemote) {
-			if (hand == EnumHand.OFF_HAND || !isValidTarget(target) || hasCapturedAnimal(stack))
-				return false;
-
+		if (!target.world.isRemote && isWieldingCorrect(player, hand) && isValidTarget(target)
+				&& !hasCapturedAnimal(stack)) {
 			final EntityLiving entity = (EntityLiving) target;
 			final ItemStack newStack = addEntitytoNet(stack, entity);
 			if (player.isCreative())
@@ -110,9 +108,8 @@ public class ItemMobNet extends ItemBase {
 
 		if (!world.isRemote) {
 
-			if (hand == EnumHand.OFF_HAND && player.getHeldItemMainhand().getItem() == ModItems.MOB_NET) {
+			if (!isWieldingCorrect(player, hand))
 				return EnumActionResult.FAIL;
-			}
 
 			final ItemStack stack = player.getHeldItem(hand);
 			final NBTTagCompound entitynbt = getEntityTag(stack);
@@ -155,6 +152,11 @@ public class ItemMobNet extends ItemBase {
 			}
 		}
 		return EnumActionResult.FAIL;
+	}
+
+	private static boolean isWieldingCorrect(@Nonnull final EntityPlayer player, @Nonnull EnumHand hand) {
+		return hand == EnumHand.MAIN_HAND && player.getHeldItemMainhand().getItem() == ModItems.MOB_NET
+				&& player.getHeldItemOffhand().isEmpty();
 	}
 
 	@Nonnull
