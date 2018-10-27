@@ -1,6 +1,8 @@
 ### Doodads
 Forge mod that adds miscellaneous items and functions for my pack
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/47087290625b4582a9709bb5197a5413)](https://www.codacy.com/app/BlockArtistry/Doodads?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OreCruncher/Doodads&amp;utm_campaign=Badge_Grade)
+
 <a href="https://minecraft.curseforge.com/projects/doodads"><img src="http://cf.way2muchnoise.eu/versions/doodads.svg" alt="CurseForge Project"/></a>
 </br></br>
 <a href="https://minecraft.curseforge.com/projects/doodads"><img src="http://cf.way2muchnoise.eu/full_doodads_downloads.svg" alt="CurseForge Project"/></a>
