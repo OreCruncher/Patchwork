@@ -1,0 +1,19 @@
+{
+	"pools": [
+		{
+			"name": "paste",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "item",
+					"name": "doodads:repairpaste",
+					"weight": 30
+				},
+				{
+					"type": "empty",
+					"weight": 70
+				}
+			]
+		}
+	]
+}
