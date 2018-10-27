@@ -30,6 +30,13 @@ config.doodads.mobnet.enableHostileCapture.tooltip=Enable/diable use of the Mob 
 config.doodads.mobnet.reusable=Mob Nets are reusable
 config.doodads.mobnet.reusable.tooltip=Enable/disable reuse of Mob Nets
 
+config.doodads.features=Features
+config.doodads.features.tooltip=Options to control various features
+config.doodads.features.mobsdropcoins=Mobs Drop Coins
+config.doodads.features.mobsdropcoins.tooltip=Enable/disable dropping of coins from mobs
+config.doodads.features.nodropsfromspawnermobs=No Mob Drops from Spawner Mobs
+config.doodads.features.nodropsfromspawnermobs.tooltip=Enable/disable scrubbing drops from mobs that come from spawners
+
 # Creative Tab
 itemGroup.creativetab.doodads.main=Doodads
 

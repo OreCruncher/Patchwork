@@ -43,6 +43,9 @@ public class Configuration {
 	@LangKey("config.doodads.mobnet")
 	public static MobNet mobnet = new MobNet();
 	
+	@LangKey("config.doodads.features")
+	public static Features features = new Features();
+	
 	public static class Logging {
 		@LangKey("config.doodads.logging.enableLogging")
 		@Comment({ "Enables debug logging output for diagnostics" })
@@ -65,6 +68,16 @@ public class Configuration {
 		@LangKey("config.doodads.mobnet.reusable")
 		@Comment({"Enable/disable reuse of Mob Nets"})
 		public boolean reusable = true;
+	}
+	
+	public static class Features {
+		@LangKey("config.doodads.features.mobsdropcoins")
+		@Comment({"Enable/disable dropping of coins from mobs"})
+		public boolean mobsDropCoins = true;
+		
+		@LangKey("config.doodads.features.nodropsfromspawnermobs")
+		@Comment({"Enable/disable scrubbing drops from mobs that come from spawners"})
+		public boolean noDropsFromSpawnerMobs = true;
 	}
 
 	@SubscribeEvent

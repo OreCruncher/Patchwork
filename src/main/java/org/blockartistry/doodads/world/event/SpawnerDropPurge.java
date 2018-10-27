@@ -26,6 +26,7 @@ package org.blockartistry.doodads.world.event;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.Configuration;
 import org.blockartistry.doodads.Doodads;
 
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +48,9 @@ public class SpawnerDropPurge {
 	 */
 	@SubscribeEvent(receiveCanceled = false)
 	public static void onSpecialSpawn(@Nonnull final LivingSpawnEvent.SpecialSpawn event) {
+		if (!Configuration.features.noDropsFromSpawnerMobs)
+			return;
+
 		if (event.getSpawner() != null)
 			event.getEntity().getTags().add(spawnTag);
 	}

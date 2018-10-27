@@ -30,6 +30,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.Configuration;
 import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.common.loot.Loot;
 
@@ -101,6 +102,9 @@ public class CoinDrop {
 
 	@SubscribeEvent(receiveCanceled = false)
 	public static void onLivingDrops(@Nonnull final LivingDropsEvent event) {
+		if (!Configuration.features.mobsDropCoins)
+			return;
+
 		if (event.getSource().getTrueSource() instanceof EntityPlayer) {
 			final EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 			if (!(player instanceof FakePlayer)) {
@@ -111,8 +115,7 @@ public class CoinDrop {
 					final LootPool pool = Loot.getPool(world, Loot.COIN_LOOT_TABLE, q.getPool());
 					if (pool != null) {
 						final LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(entity)
-								.withPlayer(player)
-								.build();
+								.withPlayer(player).build();
 						final List<ItemStack> drops = new ArrayList<>();
 						pool.generateLoot(drops, RAND, ctx);
 						for (final ItemStack stack : drops) {
