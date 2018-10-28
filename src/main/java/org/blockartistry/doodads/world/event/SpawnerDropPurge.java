@@ -27,7 +27,7 @@ package org.blockartistry.doodads.world.event;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.Configuration;
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -38,10 +38,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /*
  * Any mobs spawned in a spawner will have it's drops removed
  */
-@EventBusSubscriber(modid = Doodads.MOD_ID)
+@EventBusSubscriber(modid = ModInfo.MOD_ID)
 public class SpawnerDropPurge {
 
-	private static final String spawnTag = new ResourceLocation(Doodads.MOD_ID, "tag/spawner").toString();
+	private static final String spawnTag = new ResourceLocation(ModInfo.MOD_ID, "tag/spawner").toString();
 
 	/*
 	 * Tag a mob when it is spawned by a spawner

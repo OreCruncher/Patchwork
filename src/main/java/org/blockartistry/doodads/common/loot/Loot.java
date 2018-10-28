@@ -27,7 +27,7 @@ package org.blockartistry.doodads.common.loot;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -35,9 +35,9 @@ import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 
 public class Loot {
-	
-	public static final ResourceLocation COIN_LOOT_TABLE = new ResourceLocation(Doodads.MOD_ID, "coins");
-	public static final ResourceLocation REPAIRPASTE_LOOT_TABLE = new ResourceLocation(Doodads.MOD_ID, "repairpaste");
+
+	public static final ResourceLocation COIN_LOOT_TABLE = new ResourceLocation(ModInfo.MOD_ID, "coins");
+	public static final ResourceLocation REPAIRPASTE_LOOT_TABLE = new ResourceLocation(ModInfo.MOD_ID, "repairpaste");
 
 	@Nullable
 	public static LootTable getTable(@Nonnull final World world, @Nonnull final ResourceLocation resource) {
@@ -45,7 +45,8 @@ public class Loot {
 	}
 
 	@Nullable
-	public static LootPool getPool(@Nonnull final World world, @Nonnull final ResourceLocation resource, @Nonnull final String pool) {
+	public static LootPool getPool(@Nonnull final World world, @Nonnull final ResourceLocation resource,
+			@Nonnull final String pool) {
 		final LootTable table = getTable(world, resource);
 		return table != null ? table.getPool(pool) : null;
 	}

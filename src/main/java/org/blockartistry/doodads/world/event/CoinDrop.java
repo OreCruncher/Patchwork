@@ -31,7 +31,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.Configuration;
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.loot.Loot;
 
 import net.minecraft.entity.Entity;
@@ -53,7 +53,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = Doodads.MOD_ID)
+@EventBusSubscriber(modid = ModInfo.MOD_ID)
 public class CoinDrop {
 
 	private static enum Quality {

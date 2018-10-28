@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.item.ItemStack;
@@ -44,7 +44,7 @@ public final class MagicDeviceHelper {
 
 	private static final String LOC_DEVICEABILITY_FMT = "doodads.deviceability.format";
 	private static final String FORMAT_STRING = Localization.loadString(LOC_DEVICEABILITY_FMT);
-	private static final String NAMESPACE = Doodads.MOD_ID + ":namespace";
+	private static final String NAMESPACE = ModInfo.MOD_ID + ":namespace";
 	private static final String ABILITIES = "abilities";
 
 	private MagicDeviceHelper() {

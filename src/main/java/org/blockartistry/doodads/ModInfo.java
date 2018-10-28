@@ -22,35 +22,20 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.proxy;
+package org.blockartistry.doodads;
 
-import javax.annotation.Nonnull;
+public final class ModInfo {
 
-import org.blockartistry.doodads.Doodads;
-import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
-import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
-import org.blockartistry.doodads.util.Localization;
+	private ModInfo() {
 
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-
-public class ServerProxy implements IProxy {
-
-	@Override
-	public boolean isDedicatedServer() {
-		return true;
 	}
 
-	@Override
-	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		Localization.initialize(Side.SERVER, Doodads.MOD_ID);
-	}
-	
-	@Override
-	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
-		RepairPasteRecipe.register();
-		LootRegistrationHandler.initialize();
-	}
+	public static final String MOD_ID = "doodads";
+	public static final String MOD_NAME = "Doodads";
+	public static final String VERSION = "@VERSION@";
+	public static final String MINECRAFT_VERSIONS = "[1.12.2,)";
+	public static final String DEPENDENCIES = "required-after:forge@[14.23.1.2555,);required-after:baubles@[1.5.2,)";
+	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/Doodads/master/version.json";
+	public static final String FINGERPRINT = "7a2128d395ad96ceb9d9030fbd41d035b435753a";
 
 }

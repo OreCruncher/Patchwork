@@ -27,7 +27,8 @@ package org.blockartistry.doodads.common.item.magic;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -38,14 +39,14 @@ import net.minecraftforge.registries.RegistryBuilder;
 public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbility> {
 
 	public static final IForgeRegistry<DeviceAbility> REGISTRY = new RegistryBuilder<DeviceAbility>()
-			.setName(new ResourceLocation(Doodads.MOD_ID, "deviceabilities")).allowModification()
+			.setName(new ResourceLocation(ModInfo.MOD_ID, "deviceabilities")).allowModification()
 			.setType(DeviceAbility.class).create();
 
 	private String unlocalizedName;
 
 	public DeviceAbility(@Nonnull final String name) {
 		this.setRegistryName(name);
-		setUnlocalizedName(Doodads.MOD_ID + ".deviceability." + name + ".name");
+		setUnlocalizedName(ModInfo.MOD_ID + ".deviceability." + name + ".name");
 	}
 
 	@Nullable

@@ -33,8 +33,8 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = Doodads.MOD_ID)
-@Config(modid = Doodads.MOD_ID, type = Type.INSTANCE, name = Doodads.MOD_ID)
+@EventBusSubscriber(modid = ModInfo.MOD_ID)
+@Config(modid = ModInfo.MOD_ID, type = Type.INSTANCE, name = ModInfo.MOD_ID)
 public class Configuration {
 
 	@LangKey("config.doodads.logging")
@@ -42,10 +42,10 @@ public class Configuration {
 
 	@LangKey("config.doodads.mobnet")
 	public static MobNet mobnet = new MobNet();
-	
+
 	@LangKey("config.doodads.features")
 	public static Features features = new Features();
-	
+
 	public static class Logging {
 		@LangKey("config.doodads.logging.enableLogging")
 		@Comment({ "Enables debug logging output for diagnostics" })
@@ -55,35 +55,35 @@ public class Configuration {
 		@Comment({ "Enables display of chat messages related to newer versions", "of the mod being available." })
 		public boolean enableVersionCheck = true;
 	}
-	
+
 	public static class MobNet {
 		@LangKey("config.doodads.mobnet.enableVillagerCapture")
-		@Comment({"Enable/disable use of the Mob Net on Villagers"})
+		@Comment({ "Enable/disable use of the Mob Net on Villagers" })
 		public boolean enableVillagerCapture = false;
 
 		@LangKey("config.doodads.mobnet.enableHostileCapture")
-		@Comment({"Enable/diable use of the Mob Net on hostile entities"})
+		@Comment({ "Enable/diable use of the Mob Net on hostile entities" })
 		public boolean enableHostileCapture = false;
-		
+
 		@LangKey("config.doodads.mobnet.reusable")
-		@Comment({"Enable/disable reuse of Mob Nets"})
+		@Comment({ "Enable/disable reuse of Mob Nets" })
 		public boolean reusable = true;
 	}
-	
+
 	public static class Features {
 		@LangKey("config.doodads.features.mobsdropcoins")
-		@Comment({"Enable/disable dropping of coins from mobs"})
+		@Comment({ "Enable/disable dropping of coins from mobs" })
 		public boolean mobsDropCoins = true;
-		
+
 		@LangKey("config.doodads.features.nodropsfromspawnermobs")
-		@Comment({"Enable/disable scrubbing drops from mobs that come from spawners"})
+		@Comment({ "Enable/disable scrubbing drops from mobs that come from spawners" })
 		public boolean noDropsFromSpawnerMobs = true;
 	}
 
 	@SubscribeEvent
 	public static void onConfigChangedEvent(final OnConfigChangedEvent event) {
-		if (event.getModID().equals(Doodads.MOD_ID)) {
-			ConfigManager.sync(Doodads.MOD_ID, Type.INSTANCE);
+		if (event.getModID().equals(ModInfo.MOD_ID)) {
+			ConfigManager.sync(ModInfo.MOD_ID, Type.INSTANCE);
 			Doodads.log().setDebug(Configuration.logging.enableLogging);
 		}
 	}

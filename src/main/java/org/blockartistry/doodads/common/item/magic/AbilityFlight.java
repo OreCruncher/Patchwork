@@ -38,10 +38,11 @@ public class AbilityFlight extends DeviceAbility {
 
 	/**
 	 * Called when a player equips the item into a slot.
-	 * 
+	 *
 	 * @param player
 	 * @param device
 	 */
+	@Override
 	public void equip(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		ensureFlightSet(player);
@@ -49,10 +50,11 @@ public class AbilityFlight extends DeviceAbility {
 
 	/**
 	 * Called when a player unequips an item from a slot
-	 * 
+	 *
 	 * @param player
 	 * @param device
 	 */
+	@Override
 	public void unequip(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
@@ -64,10 +66,11 @@ public class AbilityFlight extends DeviceAbility {
 
 	/**
 	 * Called every tick that the item is worn
-	 * 
+	 *
 	 * @param player
 	 * @param device
 	 */
+	@Override
 	public void doTick(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {

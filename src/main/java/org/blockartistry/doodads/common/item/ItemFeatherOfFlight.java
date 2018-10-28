@@ -38,9 +38,10 @@ public class ItemFeatherOfFlight extends ItemMagicDevice {
 
 	public ItemFeatherOfFlight() {
 		super(NAME, BaubleType.CHARM);
-		this.setPowerMinutes(120);
+		setPowerMinutes(120);
 	}
 
+	@Override
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
 		final ItemStack stack = new ItemStack(this);
 		addAbility(stack, new ResourceLocation("doodads:flight"));

@@ -29,7 +29,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
@@ -41,7 +41,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@EventBusSubscriber(modid = Doodads.MOD_ID)
+@EventBusSubscriber(modid = ModInfo.MOD_ID)
 public class ItemRegistrationHandler {
 
 	// Items are added whenever ItemBase gets constructed

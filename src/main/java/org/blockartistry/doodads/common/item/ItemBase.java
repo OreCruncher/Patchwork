@@ -27,6 +27,7 @@ package org.blockartistry.doodads.common.item;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -38,7 +39,7 @@ public class ItemBase extends Item {
 	public ItemBase(@Nonnull final String name) {
 		this.name = name;
 		setRegistryName(this.name);
-		setUnlocalizedName(Doodads.MOD_ID + "." + this.name);
+		setUnlocalizedName(ModInfo.MOD_ID + "." + this.name);
 
 		// Let the registration handler know about this
 		// new item.

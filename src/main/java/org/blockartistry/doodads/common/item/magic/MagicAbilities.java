@@ -24,9 +24,9 @@
 package org.blockartistry.doodads.common.item.magic;
 
 public class MagicAbilities {
-	
+
 	public static final DeviceAbility FLIGHT = new AbilityFlight().register();
-	
+
 	public static void initialize() {
 		// Nothing here
 	}

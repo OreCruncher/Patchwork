@@ -71,7 +71,7 @@ public final class VersionChecker {
 				try {
 					final ITextComponent component = ITextComponent.Serializer.jsonToComponent(updateMessage);
 					event.player.sendMessage(component);
-				} catch(@Nonnull final Throwable t) {
+				} catch (@Nonnull final Throwable t) {
 					t.printStackTrace();
 				}
 			}

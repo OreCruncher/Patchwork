@@ -22,25 +22,27 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.proxy;
+package org.blockartistry.doodads.sided;
+
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.Doodads;
+import org.apache.commons.lang3.StringUtils;
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemBase;
-import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
-import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
+import org.blockartistry.doodads.util.ForgeUtils;
 import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ClientProxy implements IProxy {
+public class ClientSupport extends SideSupport {
 
 	@Override
 	public boolean isDedicatedServer() {
@@ -48,19 +50,23 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		Localization.initialize(Side.CLIENT, Doodads.MOD_ID);
-	}
-	
-	@Override
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
-		RepairPasteRecipe.register();
-		LootRegistrationHandler.initialize();
+		super.postInit(event);
+
+		// Fancify our mod config info page
+		final ModMetadata data = ForgeUtils.getModMetadata(ModInfo.MOD_ID);
+		if (data != null) {
+			data.name = Localization.format(ModInfo.MOD_ID + ".metadata.Name");
+			data.credits = Localization.format(ModInfo.MOD_ID + ".metadata.Credits");
+			data.description = Localization.format(ModInfo.MOD_ID + ".metadata.Description");
+			data.authorList = Arrays
+					.asList(StringUtils.split(Localization.format(ModInfo.MOD_ID + ".metadata.Authors"), ','));
+		}
 	}
 
 	@Override
 	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final String id) {
 		ModelLoader.setCustomModelResourceLocation(item, meta,
-				new ModelResourceLocation(Doodads.MOD_ID + ":" + id, "inventory"));
+				new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
 	}
 }

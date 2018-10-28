@@ -37,11 +37,11 @@ public class ModItems {
 	public static final Item COIN_SILVER = new ItemCoin(Type.SILVER);
 	public static final Item COIN_GOLD = new ItemCoin(Type.GOLD);
 	public static final Item COIN_PLATINUM = new ItemCoin(Type.PLATINUM);
-	
+
 	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(DoodadsCreativeTab.tab);
-	
+
 	public static final Item MOB_NET = new ItemMobNet();
-	
+
 	public static final Item FEATHER_OF_FLIGHT = new ItemFeatherOfFlight();
 
 	// Currently a do nothing function. By calling this it triggers the

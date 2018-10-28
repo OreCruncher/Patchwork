@@ -22,27 +22,13 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.client;
+package org.blockartistry.doodads.sided;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+public class ServerSupport extends SideSupport {
 
-public class DoodadsCreativeTab extends CreativeTabs {
-
-	public static final DoodadsCreativeTab tab = new DoodadsCreativeTab();
-
-	public DoodadsCreativeTab() {
-		super("creativetab.doodads.main");
-
-	}
-
-	@SideOnly(Side.CLIENT)
 	@Override
-	public ItemStack getTabIconItem() {
-		return new ItemStack(Items.GOLD_INGOT);
+	public boolean isDedicatedServer() {
+		return true;
 	}
 
 }

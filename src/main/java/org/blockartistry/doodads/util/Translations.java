@@ -35,6 +35,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blockartistry.doodads.Doodads;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 

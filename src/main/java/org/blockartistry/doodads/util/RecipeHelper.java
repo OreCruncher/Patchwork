@@ -60,9 +60,9 @@ public class RecipeHelper {
 	 * oredict entry, can also be used for recipes without ore dict ingredients
 	 *
 	 * @param output
-	 *            The stack that should be produced
+	 *                   The stack that should be produced
 	 * @param params
-	 *            Input ingredients
+	 *                   Input ingredients
 	 */
 	public static void addShapedOreRecipe(ItemStack output, Object... params) {
 		final ResourceLocation location = getNameForRecipe(output);
@@ -75,9 +75,9 @@ public class RecipeHelper {
 	 * Adds a basic shaped recipe
 	 *
 	 * @param output
-	 *            The stack that should be produced
+	 *                   The stack that should be produced
 	 * @param params
-	 *            Input ingredients
+	 *                   Input ingredients
 	 */
 	public static void addShapedRecipe(ItemStack output, Object... params) {
 		final ResourceLocation location = getNameForRecipe(output);
@@ -92,9 +92,9 @@ public class RecipeHelper {
 	 * Adds a shapeless ore recipe
 	 *
 	 * @param output
-	 *            The stack that should be produced
+	 *                   The stack that should be produced
 	 * @param input
-	 *            Input ingredients
+	 *                   Input ingredients
 	 */
 	public static void addShapelessOreRecipe(ItemStack output, Object... input) {
 		final ResourceLocation location = getNameForRecipe(output);
@@ -107,9 +107,9 @@ public class RecipeHelper {
 	 * Adds a basic shapeless recipe
 	 *
 	 * @param output
-	 *            The stack that should be produced
+	 *                   The stack that should be produced
 	 * @param input
-	 *            Input ingredients
+	 *                   Input ingredients
 	 */
 	public static void addShapelessRecipe(ItemStack output, Object... input) {
 		final ResourceLocation location = getNameForRecipe(output);
@@ -123,7 +123,7 @@ public class RecipeHelper {
 	 * recipe outputs
 	 *
 	 * @param output
-	 *            an ItemStack, usually the one the the recipe produces
+	 *                   an ItemStack, usually the one the the recipe produces
 	 * @return a unique ResourceLocation based off the item item
 	 */
 	public static ResourceLocation getNameForRecipe(ItemStack output) {

@@ -27,7 +27,7 @@ package org.blockartistry.doodads.common.loot;
 import net.minecraft.world.storage.loot.LootTableList;
 
 public class LootRegistrationHandler {
-	
+
 	public static void initialize() {
 		LootTableList.register(Loot.COIN_LOOT_TABLE);
 		LootTableList.register(Loot.REPAIRPASTE_LOOT_TABLE);

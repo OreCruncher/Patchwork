@@ -22,84 +22,98 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.proxy;
+package org.blockartistry.doodads.sided;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemBase;
+import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
+import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
+import org.blockartistry.doodads.util.Localization;
 
+import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-public interface IProxy {
+public abstract class SideSupport {
 
 	/**
 	 * Indicates if the mod is running on a dedicated server. Should be overridden
 	 * and the correct information provided.
-	 * 
+	 *
 	 * @return true if running on dedicated server; false otherwise
 	 */
-	boolean isDedicatedServer();
+	public abstract boolean isDedicatedServer();
 
 	/**
-	 * Called during the mod's pre initialization phase. Override to provide logic.
-	 * 
+	 * Override to provide logic. Deriving classes should invoke the super class
+	 * method.
+	 *
 	 * @param event
-	 *            The fired event
+	 *                  The fired event
 	 */
-	default void preInit(@Nonnull final FMLPreInitializationEvent event) {
+	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
+		final Side targetSide = isDedicatedServer() ? Side.SERVER : Side.CLIENT;
+		Localization.initialize(targetSide, ModInfo.MOD_ID);
+	}
+
+	/**
+	 * Called during the mod's initialization phase.
+	 *
+	 * @param event
+	 *                  The fired event
+	 */
+	public void init(@Nonnull final FMLInitializationEvent event) {
 		// This method intentionally left blank
 	}
 
 	/**
-	 * Called during the mod's initialization phase. Override to provide logic.
-	 * 
+	 * Called during the mod's post initialization phase. Deriving classes should
+	 * invoke the super class method.
+	 *
 	 * @param event
-	 *            The fired event
+	 *                  The fired event
 	 */
-	default void init(@Nonnull final FMLInitializationEvent event) {
+	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
+		RepairPasteRecipe.register();
+		LootRegistrationHandler.initialize();
+	}
+
+	/**
+	 * Called when Forge has finished loading.
+	 *
+	 * @param event
+	 *                  The fired event.
+	 */
+	public void loadCompleted(@Nonnull final FMLLoadCompleteEvent event) {
 		// This method intentionally left blank
 	}
 
 	/**
-	 * Called during the mod's post initialization phase. Override to provide logic.
-	 * 
+	 * Called if Forge detects a fingerprint violation with the mod.
+	 *
 	 * @param event
-	 *            The fired event
+	 *                  The fired event.
 	 */
-	default void postInit(@Nonnull final FMLPostInitializationEvent event) {
-		// This method intentionally left blank
+	public void fingerprintViolation(@Nonnull final FMLFingerprintViolationEvent event) {
+		Doodads.log().warn("Invalid fingerprint detected!");
 	}
 
 	/**
-	 * Called when Forge has finished loading. Override to provide logic.
-	 * 
-	 * @param event
-	 *            The fired event.
-	 */
-	default void loadCompleted(@Nonnull final FMLLoadCompleteEvent event) {
-		// This method intentionally left blank
-	}
-
-	/**
-	 * Called to register an item renderer.  The default implementation assumes server
-	 * and doesn't do anything.  Needs to be overridden in the client proxy.
+	 * Called to register an item renderer. The default implementation assumes
+	 * server and doesn't do anything. Needs to be overridden in the client proxy.
+	 *
 	 * @param item
 	 * @param meta
 	 * @param id
 	 */
-	default void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final String id) {
+	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final String id) {
 		// This method intentionally left blank
 	}
-	
-	/**
-	 * Called to register an item colorizer.  The default implementation assumes
-	 * server and doesn't do anything.  Needs to be override in the client proxy.
-	 * @param item
-	 */
-	default void registerColorizer(@Nonnull final ItemBase item) {
-		// This method intentionally left blank
-	}
+
 }

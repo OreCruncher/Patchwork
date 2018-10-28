@@ -29,7 +29,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.magic.MagicDeviceHelper;
 import org.blockartistry.doodads.util.Localization;
 
@@ -57,7 +57,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 		private Quality(final int maxAbilities) {
 			this.maxAbilities = maxAbilities;
-			this.unlocalizedName = String.format("%s.%s.name", Doodads.MOD_ID, name().toLowerCase());
+			this.unlocalizedName = String.format("%s.%s.name", ModInfo.MOD_ID, name().toLowerCase());
 		}
 
 		public int getMaxAbilities() {
