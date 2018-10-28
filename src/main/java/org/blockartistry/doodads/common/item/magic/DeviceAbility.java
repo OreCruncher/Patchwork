@@ -24,22 +24,12 @@
 
 package org.blockartistry.doodads.common.item.magic;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Doodads;
-import org.blockartistry.doodads.util.Localization;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -51,19 +41,11 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 			.setName(new ResourceLocation(Doodads.MOD_ID, "deviceabilities")).allowModification()
 			.setType(DeviceAbility.class).create();
 
-	public static class NBT {
-		public static final String ABILITIES = "abilities";
-	}
-
-	public static interface IProcessor {
-		void doProcess(@Nonnull DeviceAbility da);
-	}
-
 	private String unlocalizedName;
 
 	public DeviceAbility(@Nonnull final String name) {
 		this.setRegistryName(name);
-		this.setUnlocalizedName(Doodads.MOD_ID + ".deviceability." + name + ".name");
+		setUnlocalizedName(Doodads.MOD_ID + ".deviceability." + name + ".name");
 	}
 
 	@Nullable
@@ -85,7 +67,7 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 
 	/**
 	 * Called when a player equips the item into a slot.
-	 * 
+	 *
 	 * @param player
 	 * @param device
 	 */
@@ -95,7 +77,7 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 
 	/**
 	 * Called when a player unequips an item from a slot
-	 * 
+	 *
 	 * @param player
 	 * @param device
 	 */
@@ -105,61 +87,11 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 
 	/**
 	 * Called every tick that the item is worn
-	 * 
+	 *
 	 * @param player
 	 * @param device
 	 */
 	public void doTick(@Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
 		// Override in a sub-class to provide functionality
 	}
-
-	// =====================
-	//
-	// Helper methods
-	//
-	// =====================
-
-	@Nonnull
-	public static ItemStack addDeviceAbility(@Nonnull final ItemStack stack, @Nonnull final ResourceLocation ability) {
-		if (REGISTRY.containsKey(ability)) {
-			// Ensure the stack has a tag compound
-			NBTTagCompound nbt = stack.getTagCompound();
-			if (nbt == null)
-				stack.setTagCompound(nbt = new NBTTagCompound());
-			NBTTagList theList = null;
-			if (nbt.hasKey(NBT.ABILITIES))
-				theList = nbt.getTagList(NBT.ABILITIES, 8);
-			else
-				nbt.setTag(NBT.ABILITIES, theList = new NBTTagList());
-			theList.appendTag(new NBTTagString(ability.toString()));
-		}
-		return stack;
-	}
-
-	public static List<String> gatherToolTips(@Nonnull final ItemStack stack) {
-		final List<String> result = new ArrayList<>();
-		process(stack, da -> {
-			final String name = Localization.loadString(da.getUnlocalizedName());
-			final String msg = Localization.format("doodads.deviceability.format", name);
-			result.add(msg);
-		});
-		return result;
-	}
-
-	public static void process(@Nonnull final ItemStack stack, @Nonnull final IProcessor pred) {
-		if (stack.hasTagCompound()) {
-			final NBTTagList nbt = stack.getTagCompound().getTagList(NBT.ABILITIES, 8); // String
-			if (!nbt.hasNoTags()) {
-				final Iterator<NBTBase> itr = nbt.iterator();
-				while (itr.hasNext()) {
-					final NBTBase e = itr.next();
-					final String id = ((NBTTagString) e).getString();
-					final DeviceAbility da = DeviceAbility.REGISTRY.getValue(new ResourceLocation(id));
-					if (da != null)
-						pred.doProcess(da);
-				}
-			}
-		}
-	}
-
 }

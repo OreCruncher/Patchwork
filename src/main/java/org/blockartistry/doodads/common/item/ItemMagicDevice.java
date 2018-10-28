@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Doodads;
-import org.blockartistry.doodads.common.item.magic.DeviceAbility;
+import org.blockartistry.doodads.common.item.magic.MagicDeviceHelper;
 import org.blockartistry.doodads.util.Localization;
 
 import baubles.api.BaubleType;
@@ -50,14 +50,14 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	protected static final int TICKS_IN_MINUTES = 20 * 60;
 
 	public static enum Quality {
-		LOW(1), REGULAR(1), HIGH(2), LEGENDARY(3);
+		REGULAR(1), HIGH(2), LEGENDARY(3);
 
 		private final int maxAbilities;
 		private final String unlocalizedName;
 
 		private Quality(final int maxAbilities) {
 			this.maxAbilities = maxAbilities;
-			this.unlocalizedName = String.format("%s.%s.name", Doodads.MOD_ID, this.name().toLowerCase());
+			this.unlocalizedName = String.format("%s.%s.name", Doodads.MOD_ID, name().toLowerCase());
 		}
 
 		public int getMaxAbilities() {
@@ -76,9 +76,9 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	public ItemMagicDevice(@Nonnull final String name, @Nonnull final BaubleType type) {
 		super(name);
 		this.deviceType = type;
-		this.quality = Quality.LOW;
-		this.setMaxStackSize(1);
-		this.setPowerMinutes(120);
+		this.quality = Quality.REGULAR;
+		setMaxStackSize(1);
+		setPowerMinutes(120);
 	}
 
 	public ItemMagicDevice setQuality(@Nonnull final Quality q) {
@@ -91,24 +91,29 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	}
 
 	public void setPowerMinutes(final int minutes) {
-		this.setMaxDamage(minutes * TICKS_IN_MINUTES);
+		setMaxDamage(minutes * TICKS_IN_MINUTES);
 	}
 
 	@SuppressWarnings("deprecation")
 	public float getPowerRemaining(@Nonnull final ItemStack stack) {
-		return (float) (this.getMaxDamage() - this.getDamage(stack)) / (float) this.getMaxDamage();
+		return (float) (this.getMaxDamage() - getDamage(stack)) / (float) this.getMaxDamage();
 	}
 
 	public void addAbility(@Nonnull final ItemStack stack, @Nonnull final ResourceLocation ability) {
-		DeviceAbility.addDeviceAbility(stack, ability);
+		MagicDeviceHelper.addDeviceAbility(stack, ability);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World worldIn,
 			@Nonnull final List<String> tooltip, @Nonnull final ITooltipFlag flagIn) {
 		tooltip.add(Localization.format("doodads.magicaldevice.powerremaining", getPowerRemaining(stack) * 100F));
-		final List<String> tips = DeviceAbility.gatherToolTips(stack);
-		tooltip.addAll(tips);
+		MagicDeviceHelper.gatherToolTips(stack, tooltip);
+	}
+
+	@Override
+	public boolean isBookEnchantable(@Nonnull final ItemStack stack, @Nonnull final ItemStack book) {
+		return false;
 	}
 
 	@Override
@@ -123,7 +128,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			DeviceAbility.process(itemstack, da -> da.doTick(player, itemstack));
+			MagicDeviceHelper.process(itemstack, da -> da.doTick(player, itemstack));
 	}
 
 	/**
@@ -132,7 +137,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			DeviceAbility.process(itemstack, da -> da.equip(player, itemstack));
+			MagicDeviceHelper.process(itemstack, da -> da.equip(player, itemstack));
 	}
 
 	/**
@@ -141,7 +146,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			DeviceAbility.process(itemstack, da -> da.unequip(player, itemstack));
+			MagicDeviceHelper.process(itemstack, da -> da.unequip(player, itemstack));
 	}
 
 }

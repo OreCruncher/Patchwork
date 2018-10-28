@@ -168,6 +168,8 @@ public class ItemMobNet extends ItemBase {
 	}
 
 	private static boolean isValidTarget(@Nonnull final EntityLivingBase entity) {
+		if (entity.isBeingRidden() || entity.isRiding())
+			return false;
 		if (entity instanceof EntityVillager && Configuration.mobnet.enableVillagerCapture)
 			return true;
 		if (entity instanceof IMob && Configuration.mobnet.enableHostileCapture)

@@ -25,6 +25,7 @@
 package org.blockartistry.doodads.common.recipe;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.util.RecipeHelper;
@@ -86,6 +87,7 @@ public final class RepairPasteRecipe extends ShapelessRecipes {
 	// and the ingredients are present in the grid. Theoretically
 	// we do not have to validate it.
 	@Override
+	@Nullable
 	public ItemStack getCraftingResult(@Nonnull final InventoryCrafting inv) {
 		// Just need to locate the broken item
 		final int invSize = inv.getSizeInventory();
