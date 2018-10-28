@@ -24,30 +24,27 @@
 
 package org.blockartistry.doodads.common.item;
 
-import org.blockartistry.doodads.client.DoodadsCreativeTab;
-import org.blockartistry.doodads.common.item.ItemCoin.Type;
-import org.blockartistry.doodads.common.item.magic.MagicAbilities;
+import javax.annotation.Nonnull;
 
-import net.minecraft.item.Item;
+import baubles.api.BaubleType;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 
-public class ModItems {
+public class ItemFeatherOfFlight extends ItemMagicDevice {
 
-	public static final Item COIN_COPPER = new ItemCoin(Type.COPPER);
-	public static final Item COIN_BRONZE = new ItemCoin(Type.BRONZE);
-	public static final Item COIN_SILVER = new ItemCoin(Type.SILVER);
-	public static final Item COIN_GOLD = new ItemCoin(Type.GOLD);
-	public static final Item COIN_PLATINUM = new ItemCoin(Type.PLATINUM);
-	
-	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(DoodadsCreativeTab.tab);
-	
-	public static final Item MOB_NET = new ItemMobNet();
-	
-	public static final Item FEATHER_OF_FLIGHT = new ItemFeatherOfFlight();
+	private static final String NAME = "feather_of_flight";
 
-	// Currently a do nothing function. By calling this it triggers the
-	// classes static initializers to run.
-	public static void initialize() {
-		MagicAbilities.initialize();
+	public ItemFeatherOfFlight() {
+		super(NAME, BaubleType.CHARM);
+		this.setPowerMinutes(120);
+	}
+
+	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
+		final ItemStack stack = new ItemStack(this);
+		addAbility(stack, new ResourceLocation("doodads:flight"));
+		items.add(stack);
 	}
 
 }

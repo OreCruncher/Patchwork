@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:gold_ingot"
+		},
+		{
+			"item": "minecraft:feather"
+		}
+	],
+	"result": {
+		"type": "minecraft:item_nbt",
+		"item": "doodads:feather_of_flight",
+		"nbt": "{abilities: [\"doodads:flight\"]}",
+		"count": 1
+	}
+}

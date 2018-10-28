@@ -50,3 +50,11 @@ item.doodads.coin_platinum.name=Platinum Coin
 # Miscellaneous
 item.doodads.repairpaste.name=Repair Paste
 item.doodads.mobnet.name=Mob Net
+
+# Magical stuff
+doodads.magicaldevice.powerremaining=Power Remaining: %1$.1f%%
+
+doodads.deviceability.format=§aAbility:§r §e%1$s§r
+doodads.deviceability.flight.name=Flight
+
+item.doodads.feather_of_flight.name=Feather of Flight

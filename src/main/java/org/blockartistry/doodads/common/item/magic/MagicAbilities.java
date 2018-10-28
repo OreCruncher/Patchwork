@@ -21,33 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.blockartistry.doodads.common.item.magic;
 
-package org.blockartistry.doodads.common.item;
-
-import org.blockartistry.doodads.client.DoodadsCreativeTab;
-import org.blockartistry.doodads.common.item.ItemCoin.Type;
-import org.blockartistry.doodads.common.item.magic.MagicAbilities;
-
-import net.minecraft.item.Item;
-
-public class ModItems {
-
-	public static final Item COIN_COPPER = new ItemCoin(Type.COPPER);
-	public static final Item COIN_BRONZE = new ItemCoin(Type.BRONZE);
-	public static final Item COIN_SILVER = new ItemCoin(Type.SILVER);
-	public static final Item COIN_GOLD = new ItemCoin(Type.GOLD);
-	public static final Item COIN_PLATINUM = new ItemCoin(Type.PLATINUM);
+public class MagicAbilities {
 	
-	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(DoodadsCreativeTab.tab);
+	public static final DeviceAbility FLIGHT = new AbilityFlight().register();
 	
-	public static final Item MOB_NET = new ItemMobNet();
-	
-	public static final Item FEATHER_OF_FLIGHT = new ItemFeatherOfFlight();
-
-	// Currently a do nothing function. By calling this it triggers the
-	// classes static initializers to run.
 	public static void initialize() {
-		MagicAbilities.initialize();
+		// Nothing here
 	}
 
 }
