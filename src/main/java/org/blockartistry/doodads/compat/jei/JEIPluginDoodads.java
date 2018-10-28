@@ -22,30 +22,22 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.common.item;
+package org.blockartistry.doodads.compat.jei;
 
 import javax.annotation.Nonnull;
 
-import baubles.api.BaubleType;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import org.blockartistry.doodads.common.item.ModItems;
 
-public class ItemFeatherOfFlight extends ItemMagicDevice {
+import mezz.jei.api.IModPlugin;
+import mezz.jei.api.ISubtypeRegistry;
+import mezz.jei.api.JEIPlugin;
 
-	private static final String NAME = "feather_of_flight";
-
-	public ItemFeatherOfFlight() {
-		super(NAME, BaubleType.CHARM);
-		setPowerMinutes(120);
-	}
+@JEIPlugin
+public class JEIPluginDoodads implements IModPlugin {
 
 	@Override
-	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
-		final ItemStack stack = new ItemStack(this);
-		addAbility(stack, new ResourceLocation("doodads:flight"));
-		items.add(stack);
+	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
+		subtypeRegistry.useNbtForSubtypes(ModItems.MAGIC_DEVICE);
 	}
 
 }

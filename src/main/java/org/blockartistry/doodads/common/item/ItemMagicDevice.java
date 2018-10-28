@@ -24,20 +24,31 @@
 
 package org.blockartistry.doodads.common.item;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
-import org.blockartistry.doodads.common.item.magic.MagicDeviceHelper;
+import org.blockartistry.doodads.common.item.magic.DeviceAbility;
+import org.blockartistry.doodads.common.item.magic.MagicDevice;
 import org.blockartistry.doodads.util.Localization;
+import org.codehaus.plexus.util.StringUtils;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,45 +60,33 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	// computed based on time.
 	protected static final int TICKS_IN_MINUTES = 20 * 60;
 
-	public static enum Quality {
-		REGULAR(1), HIGH(2), LEGENDARY(3);
+	private static final String LOC_DEVICEABILITY_FMT = "doodads.deviceability.format";
+	private static final String FORMAT_STRING = Localization.loadString(LOC_DEVICEABILITY_FMT);
+	private static final String NAMESPACE = ModInfo.MOD_ID + ":namespace";
+	private static final String ABILITIES = "abilities";
+	private static final String DEVICE_TYPE = "type";
 
-		private final int maxAbilities;
-		private final String unlocalizedName;
-
-		private Quality(final int maxAbilities) {
-			this.maxAbilities = maxAbilities;
-			this.unlocalizedName = String.format("%s.%s.name", ModInfo.MOD_ID, name().toLowerCase());
-		}
-
-		public int getMaxAbilities() {
-			return this.maxAbilities;
-		}
-
-		@Nonnull
-		public String getUnlocalizedName() {
-			return this.unlocalizedName;
-		}
-	}
-
-	private final BaubleType deviceType;
-	private Quality quality;
-
-	public ItemMagicDevice(@Nonnull final String name, @Nonnull final BaubleType type) {
+	public ItemMagicDevice(@Nonnull final String name) {
 		super(name);
-		this.deviceType = type;
-		this.quality = Quality.REGULAR;
 		setMaxStackSize(1);
 		setPowerMinutes(120);
 	}
 
-	public ItemMagicDevice setQuality(@Nonnull final Quality q) {
-		this.quality = q;
-		return this;
+	@Override
+	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
+		for (final MagicDevice device : MagicDevice.DEVICES.values()) {
+			final ItemStack stack = new ItemStack(this);
+			for (final ResourceLocation r : device.getAbilities())
+				this.addAbility(stack, r);
+			this.setBaubleType(stack, device.getType());
+			items.add(stack);
+		}
 	}
 
-	public Quality getQuality() {
-		return this.quality;
+	public void registerItemModel() {
+		for(final BaubleType bt: BaubleType.values()) {
+			Doodads.proxy().registerItemRenderer(this, 0, new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device", "type=" + bt.name()));
+		}
 	}
 
 	public void setPowerMinutes(final int minutes) {
@@ -99,8 +98,13 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		return (float) (this.getMaxDamage() - getDamage(stack)) / (float) this.getMaxDamage();
 	}
 
-	public void addAbility(@Nonnull final ItemStack stack, @Nonnull final ResourceLocation ability) {
-		MagicDeviceHelper.addDeviceAbility(stack, ability);
+	protected void addAbility(@Nonnull final ItemStack stack, @Nonnull final ResourceLocation ability) {
+		addDeviceAbility(stack, ability);
+	}
+
+	protected void setBaubleType(@Nonnull final ItemStack stack, @Nonnull final BaubleType type) {
+		final NBTTagCompound nbt = stack.getOrCreateSubCompound(NAMESPACE);
+		nbt.setString(DEVICE_TYPE, type.name());
 	}
 
 	@Override
@@ -108,7 +112,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World worldIn,
 			@Nonnull final List<String> tooltip, @Nonnull final ITooltipFlag flagIn) {
 		tooltip.add(Localization.format("doodads.magicaldevice.powerremaining", getPowerRemaining(stack) * 100F));
-		MagicDeviceHelper.gatherToolTips(stack, tooltip);
+		gatherToolTips(stack, tooltip);
 	}
 
 	@Override
@@ -118,8 +122,9 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	@Override
 	@Nonnull
-	public BaubleType getBaubleType(@Nonnull final ItemStack itemstack) {
-		return this.deviceType;
+	public BaubleType getBaubleType(@Nonnull final ItemStack stack) {
+		final String t = stack.getOrCreateSubCompound(NAMESPACE).getString(DEVICE_TYPE);
+		return StringUtils.isEmpty(t) ? BaubleType.TRINKET : BaubleType.valueOf(t);
 	}
 
 	/**
@@ -128,7 +133,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			MagicDeviceHelper.process(itemstack, da -> da.doTick(player, itemstack));
+			process(itemstack, da -> da.doTick(player, itemstack));
 	}
 
 	/**
@@ -137,7 +142,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			MagicDeviceHelper.process(itemstack, da -> da.equip(player, itemstack));
+			process(itemstack, da -> da.equip(player, itemstack));
 	}
 
 	/**
@@ -146,7 +151,42 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			MagicDeviceHelper.process(itemstack, da -> da.unequip(player, itemstack));
+			process(itemstack, da -> da.unequip(player, itemstack));
+	}
+
+	@Nonnull
+	public static ItemStack addDeviceAbility(@Nonnull final ItemStack stack, @Nonnull final ResourceLocation ability) {
+		if (DeviceAbility.REGISTRY.containsKey(ability)) {
+			final NBTTagCompound nbt = stack.getOrCreateSubCompound(NAMESPACE);
+			NBTTagList theList = null;
+			if (nbt.hasKey(ABILITIES))
+				theList = nbt.getTagList(ABILITIES, 8);
+			else
+				nbt.setTag(ABILITIES, theList = new NBTTagList());
+			theList.appendTag(new NBTTagString(ability.toString()));
+		}
+		return stack;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Nonnull
+	public static void gatherToolTips(@Nonnull final ItemStack stack, @Nonnull final List<String> tips) {
+		process(stack, da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
+	}
+
+	public static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<DeviceAbility> op) {
+		getAbilities(stack).stream().map(s -> DeviceAbility.REGISTRY.getValue(new ResourceLocation(s)))
+				.filter(e -> e != null).forEach(op);
+	}
+
+	@Nonnull
+	public static List<String> getAbilities(@Nonnull final ItemStack stack) {
+		final List<String> result = new ArrayList<>();
+		final NBTTagList nbt = stack.getOrCreateSubCompound(NAMESPACE).getTagList(ABILITIES, 8); // String
+		final int count = nbt.tagCount();
+		for (int i = 0; i < count; i++)
+			result.add(nbt.getStringTagAt(i));
+		return result;
 	}
 
 }

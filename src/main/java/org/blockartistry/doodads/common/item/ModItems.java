@@ -42,7 +42,7 @@ public class ModItems {
 
 	public static final Item MOB_NET = new ItemMobNet();
 
-	public static final Item FEATHER_OF_FLIGHT = new ItemFeatherOfFlight();
+	public static final Item MAGIC_DEVICE = new ItemMagicDevice("magic_device");
 
 	// Currently a do nothing function. By calling this it triggers the
 	// classes static initializers to run.

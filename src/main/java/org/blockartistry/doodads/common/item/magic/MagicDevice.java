@@ -22,41 +22,67 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.common.item;
+package org.blockartistry.doodads.common.item.magic;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import baubles.api.BaubleType;
+import net.minecraft.util.ResourceLocation;
 
-public class ItemBase extends Item {
+public class MagicDevice {
 
-	protected final String name;
+	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
+	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
 
-	public ItemBase(@Nonnull final String name) {
+	
+	
+	private final String name;
+	private final List<ResourceLocation> abilities = new ArrayList<>();
+
+	private BaubleType type = BaubleType.TRINKET;
+
+	public MagicDevice(@Nonnull final String name) {
 		this.name = name;
-		setRegistryName(this.name);
-		setUnlocalizedName(ModInfo.MOD_ID + "." + this.name);
-
-		// Let the registration handler know about this
-		// new item.
-		ItemRegistrationHandler.add(this);
 	}
 
-	public void registerItemModel() {
-		Doodads.proxy().registerItemRenderer(this, 0,
-				new ModelResourceLocation(ModInfo.MOD_ID + ":" + this.name, "inventory"));
-	}
-
-	@Override
 	@Nonnull
-	public ItemBase setCreativeTab(@Nonnull final CreativeTabs tab) {
-		super.setCreativeTab(tab);
+	public String getName() {
+		return this.name;
+	}
+
+	@Nonnull
+	public MagicDevice addAbility(@Nonnull final ResourceLocation... ability) {
+		for (final ResourceLocation r : ability)
+			this.abilities.add(r);
 		return this;
+	}
+
+	@Nonnull
+	public List<ResourceLocation> getAbilities() {
+		return this.abilities;
+	}
+
+	@Nonnull
+	public BaubleType getType() {
+		return this.type;
+	}
+
+	@Nonnull
+	public MagicDevice setType(@Nonnull final BaubleType type) {
+		this.type = type;
+		return this;
+	}
+	
+	static {
+		MagicDevice device = new MagicDevice("feather_of_flight").setType(BaubleType.CHARM).addAbility(ABILITY_FLIGHT);
+		DEVICES.put(device.getName(), device);
 	}
 
 }

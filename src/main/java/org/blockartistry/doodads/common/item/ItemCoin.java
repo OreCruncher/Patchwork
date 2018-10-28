@@ -27,7 +27,10 @@ package org.blockartistry.doodads.common.item;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.Doodads;
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.client.DoodadsCreativeTab;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 public class ItemCoin extends ItemBase implements IColorizer {
 
@@ -71,7 +74,7 @@ public class ItemCoin extends ItemBase implements IColorizer {
 
 	@Override
 	public void registerItemModel() {
-		Doodads.proxy().registerItemRenderer(this, 0, "coin");
+		Doodads.proxy().registerItemRenderer(this, 0, new ModelResourceLocation(ModInfo.MOD_ID + ":coin", "inventory"));
 	}
 
 	@Override

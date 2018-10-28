@@ -10,8 +10,9 @@
 	],
 	"result": {
 		"type": "minecraft:item_nbt",
-		"item": "doodads:feather_of_flight",
+		"item": "doodads:magic_device",
 		"nbt": "{\"doodads:namespace\":{abilities:[\"doodads:flight\"]}}",
+		"data": 6,
 		"count": 1
 	}
 }

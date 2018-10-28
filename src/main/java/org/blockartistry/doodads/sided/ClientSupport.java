@@ -65,8 +65,8 @@ public class ClientSupport extends SideSupport {
 	}
 
 	@Override
-	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final String id) {
-		ModelLoader.setCustomModelResourceLocation(item, meta,
-				new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
+	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final ModelResourceLocation loc) {
+		ModelLoader.setCustomModelResourceLocation(item, meta, loc);
+				//new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
 	}
 }

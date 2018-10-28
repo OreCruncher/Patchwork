@@ -29,6 +29,8 @@ import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Configuration;
 import org.blockartistry.doodads.client.DoodadsCreativeTab;
+import org.blockartistry.doodads.util.Localization;
+import org.blockartistry.doodads.util.compat.EntityVillagerUtil;
 
 import net.minecraft.block.BlockFence;
 import net.minecraft.entity.Entity;
@@ -47,7 +49,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -55,9 +56,10 @@ public class ItemMobNet extends ItemBase {
 
 	private static class NBT {
 		public static final String ID = "id";
-		public static final String STORED_ENTITY = "entity";
-		public static final String ENTITY_NAME = "name";
-		public static final String MONIKER = "moniker";
+		public static final String STORED_ENTITY = "ent";
+		public static final String ENTITY_TYPE_NAME = "typ";
+		public static final String ENTITY_PROFESSION = "pro";
+		public static final String MONIKER = "mon";
 	}
 
 	public ItemMobNet() {
@@ -72,9 +74,13 @@ public class ItemMobNet extends ItemBase {
 		final StringBuilder baseName = new StringBuilder(super.getItemStackDisplayName(stack));
 
 		if (hasCapturedAnimal(stack)) {
-			String name = getProperty(stack, NBT.ENTITY_NAME);
+			String name = getProperty(stack, NBT.ENTITY_TYPE_NAME);
 			if (!name.isEmpty()) {
-				baseName.append(" (").append(name);
+				baseName.append(" (").append(Localization.loadString(name));
+				name = getProperty(stack, NBT.ENTITY_PROFESSION);
+				if (!name.isEmpty()) {
+					baseName.append(": ").append(Localization.loadString(name));
+				}
 				name = getProperty(stack, NBT.MONIKER);
 				if (!name.isEmpty()) {
 					baseName.append(" - ").append(name);
@@ -184,33 +190,48 @@ public class ItemMobNet extends ItemBase {
 
 	@Nonnull
 	private static ItemStack addEntitytoNet(@Nonnull final ItemStack stack, @Nonnull Entity entity) {
-		final NBTTagCompound eNBT = new NBTTagCompound();
-		entity.onGround = true;
-		eNBT.setString(NBT.ID, EntityList.getKey(entity).toString());
-		entity.writeToNBT(eNBT);
-
-		final String entityTypeName = resolveEntityProfession(entity);
+		// Build out the stack
 		final NBTTagCompound stacknbt = new NBTTagCompound();
-		stacknbt.setString(NBT.ID, EntityList.getKey(entity).toString());
-		stacknbt.setString(NBT.ENTITY_NAME, StringUtils.isNullOrEmpty(entityTypeName) ? "Generic" : entityTypeName);
-		if (entity.hasCustomName())
-			stacknbt.setString(NBT.MONIKER, entity.getCustomNameTag());
+		stack.setTagCompound(stacknbt);
+
+		// Gather up the entity
+		final NBTTagCompound eNBT = new NBTTagCompound();
+		eNBT.setString(NBT.ID, EntityList.getKey(entity).toString());
+		entity.onGround = true;
+		entity.writeToNBT(eNBT);
 		stacknbt.setTag(NBT.STORED_ENTITY, eNBT);
 
-		stack.setTagCompound(stacknbt);
+		// Fill out the details
+		stacknbt.setString(NBT.ID, EntityList.getKey(entity).toString());
+		gatherEntityNames(entity, stacknbt);
+
 		return stack;
 	}
 
-	private static String resolveEntityProfession(@Nonnull final Entity entity) {
-		final StringBuilder entityType = new StringBuilder(EntityList.getEntityString(entity));
-		if (entity instanceof EntityVillager && !entity.hasCustomName()) {
-			final String displayName = ((EntityVillager) entity).getDisplayName().getFormattedText();
-			if (!StringUtils.isNullOrEmpty(displayName)) {
-				entityType.append(": ");
-				entityType.append(displayName);
-			}
+	private static void gatherEntityNames(@Nonnull final Entity entity, @Nonnull final NBTTagCompound nbt) {
+
+		String temp = null;
+
+		// Gather up the entity type name. This will be the resource string to be used
+		// to translate the name on the client. Should resovlve to something like
+		// "Creeper".
+		temp = EntityList.getEntityString(entity);
+		if (temp == null)
+			temp = "generic";
+		nbt.setString(NBT.ENTITY_TYPE_NAME, "entity." + temp + ".name");
+
+		// Get the profession. Applicable for Villagers now a days.
+		if (entity instanceof EntityVillager) {
+			final EntityVillager villager = (EntityVillager) entity;
+			final int careerId = EntityVillagerUtil.getCareerId(villager);
+			temp = villager.getProfessionForge().getCareer(careerId - 1).getName();
+			nbt.setString(NBT.ENTITY_PROFESSION, "entity.Villager." + temp);
 		}
-		return entityType.toString();
+
+		// Get the custom name, or moniker, if present
+		if (entity.hasCustomName()) {
+			nbt.setString(NBT.MONIKER, entity.getCustomNameTag());
+		}
 	}
 
 	@Nullable

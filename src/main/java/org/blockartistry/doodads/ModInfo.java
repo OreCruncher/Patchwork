@@ -26,10 +26,6 @@ package org.blockartistry.doodads;
 
 public final class ModInfo {
 
-	private ModInfo() {
-
-	}
-
 	public static final String MOD_ID = "doodads";
 	public static final String MOD_NAME = "Doodads";
 	public static final String VERSION = "@VERSION@";
@@ -38,4 +34,7 @@ public final class ModInfo {
 	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/Doodads/master/version.json";
 	public static final String FINGERPRINT = "7a2128d395ad96ceb9d9030fbd41d035b435753a";
 
+	private ModInfo() {
+
+	}
 }

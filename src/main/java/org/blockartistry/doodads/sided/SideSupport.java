@@ -33,6 +33,7 @@ import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
 import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
 import org.blockartistry.doodads.util.Localization;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
@@ -112,7 +113,7 @@ public abstract class SideSupport {
 	 * @param meta
 	 * @param id
 	 */
-	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final String id) {
+	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final ModelResourceLocation loc) {
 		// This method intentionally left blank
 	}
 

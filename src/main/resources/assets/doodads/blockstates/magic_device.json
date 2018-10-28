@@ -1,0 +1,45 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "doodads:item/generated"
+	},
+	"variants": {
+		"type": {
+			"amulet": {
+				"textures": {
+					"layer0": "minecraft:items/blaze_rod"
+				}
+			},
+			"ring": {
+				"textures": {
+					"layer0": "minecraft:items/bone"
+				}
+			},
+			"belt": {
+				"textures": {
+					"layer0": "minecraft:items/rotten_flesh"
+				}
+			},
+			"trinket": {
+				"textures": {
+					"layer0": "minecraft:items/paper"
+				}
+			},
+			"head": {
+				"textures": {
+					"layer0": "minecraft:items/clay_ball"
+				}
+			},
+			"body": {
+				"textures": {
+					"layer0": "minecraft:items/brick"
+				}
+			},
+			"charm": {
+				"textures": {
+					"layer0": "minecraft:items/cake"
+				}
+			}
+		}
+	}
+}
