@@ -27,6 +27,7 @@ package org.blockartistry.doodads.common.recipe;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.blockartistry.doodads.common.item.ItemMaterial;
 import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.util.RecipeHelper;
 
@@ -49,7 +50,7 @@ import net.minecraftforge.registries.GameData;
 
 public final class RepairPasteRecipe extends ShapelessRecipes {
 
-	private static final ItemStack REPAIR_PASTE = new ItemStack(ModItems.REPAIR_PASTE);
+	private static final ItemStack REPAIR_PASTE = new ItemStack(ModItems.MATERIAL, 1, ItemMaterial.Type.REPAIR_PASTE.getMeta());
 	private static final int REPAIR_AMOUNT = 50;
 
 	public RepairPasteRecipe(@Nonnull final String group, @Nonnull final ItemStack output,

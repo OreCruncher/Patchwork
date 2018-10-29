@@ -48,8 +48,10 @@ item.doodads.coin_gold.name=Gold Coin
 item.doodads.coin_platinum.name=Platinum Coin
 
 # Miscellaneous
-item.doodads.repairpaste.name=Repair Paste
 item.doodads.mobnet.name=Mob Net
+
+# Materials
+item.doodads.material_repairpaste.name=Repair Paste
 
 # Magical stuff
 doodads.magicdevice.inert.name=Inert

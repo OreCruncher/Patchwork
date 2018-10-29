@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
+import org.blockartistry.doodads.client.DoodadsCreativeTab;
 import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.common.item.magic.DeviceQuality;
 import org.blockartistry.doodads.common.item.magic.MagicDevice;
@@ -79,6 +80,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	public ItemMagicDevice(@Nonnull final String name) {
 		super(name);
+		setCreativeTab(DoodadsCreativeTab.tab);
 		setMaxStackSize(1);
 		setHasSubtypes(true);
 	}

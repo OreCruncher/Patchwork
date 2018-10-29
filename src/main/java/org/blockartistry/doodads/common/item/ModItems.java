@@ -24,7 +24,6 @@
 
 package org.blockartistry.doodads.common.item;
 
-import org.blockartistry.doodads.client.DoodadsCreativeTab;
 import org.blockartistry.doodads.common.item.magic.MagicAbilities;
 
 import net.minecraft.item.Item;
@@ -32,7 +31,7 @@ import net.minecraft.item.Item;
 public class ModItems {
 
 	public static final Item COIN = new ItemCoin();
-	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(DoodadsCreativeTab.tab);
+	public static final Item MATERIAL = new ItemMaterial();
 	public static final Item MOB_NET = new ItemMobNet();
 	public static final Item MAGIC_DEVICE = new ItemMagicDevice("magic_device");
 
