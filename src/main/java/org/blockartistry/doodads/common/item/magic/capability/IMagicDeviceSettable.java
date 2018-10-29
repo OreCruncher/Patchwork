@@ -26,14 +26,13 @@ package org.blockartistry.doodads.common.item.magic.capability;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.magic.DeviceQuality;
-import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
-
 import net.minecraft.util.ResourceLocation;
 
 public interface IMagicDeviceSettable extends IMagicDevice {
 
-	void setDeviceType(@Nonnull final MagicDeviceType type);
+	void setDeviceType(@Nonnull final ItemMagicDevice.Type type);
 
 	void addAbilities(@Nonnull final ResourceLocation... ability);
 

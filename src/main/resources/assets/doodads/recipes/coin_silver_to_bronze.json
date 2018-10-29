@@ -2,11 +2,11 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		}
 	],
 	"result": {
-		"item": "doodads:coin_bronze",
+		"item": "#coin_bronze",
 		"count": 9
 	}
 }

@@ -77,8 +77,8 @@ public class ItemRegistrationHandler {
 	public static void registerColorizers(@Nonnull final ColorHandlerEvent.Item event) {
 		for (final ItemBase item : items) {
 			if (item instanceof IColorizer) {
-				final int itemColor = ((IColorizer) item).getColor();
-				final IItemColor c = (@Nonnull final ItemStack stack, final int tintIndex) -> itemColor;
+				final IItemColor c = (@Nonnull final ItemStack stack,
+						final int tintIndex) -> ((IColorizer) (stack.getItem())).getColor(stack);
 				event.getItemColors().registerItemColorHandler(c, item);
 			}
 		}

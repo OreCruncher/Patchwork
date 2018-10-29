@@ -36,16 +36,16 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbility> {
+public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHandler> {
 
-	public static final IForgeRegistry<DeviceAbility> REGISTRY = new RegistryBuilder<DeviceAbility>()
+	public static final IForgeRegistry<AbilityHandler> REGISTRY = new RegistryBuilder<AbilityHandler>()
 			.setName(new ResourceLocation(ModInfo.MOD_ID, "deviceabilities")).allowModification()
-			.setType(DeviceAbility.class).create();
+			.setType(AbilityHandler.class).create();
 
 	private String unlocalizedName;
 	private int priority = 10000;
 
-	public DeviceAbility(@Nonnull final String name) {
+	public AbilityHandler(@Nonnull final String name) {
 		this.setRegistryName(name);
 		setUnlocalizedName(ModInfo.MOD_ID + ".deviceability." + name + ".name");
 	}
@@ -56,13 +56,13 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 	}
 
 	@Nonnull
-	protected DeviceAbility setUnlocalizedName(@Nonnull final String name) {
+	protected AbilityHandler setUnlocalizedName(@Nonnull final String name) {
 		this.unlocalizedName = name;
 		return this;
 	}
 
 	@Nonnull
-	public DeviceAbility register() {
+	public AbilityHandler register() {
 		REGISTRY.register(this);
 		return this;
 	}
@@ -71,7 +71,7 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 		return this.priority;
 	}
 	
-	public DeviceAbility setPriority(final int p) {
+	public AbilityHandler setPriority(final int p) {
 		this.priority = p;
 		return this;
 	}

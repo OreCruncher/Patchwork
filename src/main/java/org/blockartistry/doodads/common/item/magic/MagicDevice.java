@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.ModInfo;
+import org.blockartistry.doodads.common.item.ItemMagicDevice;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -48,7 +49,7 @@ public class MagicDevice {
 
 	private final String unlocalizedName;
 	private DeviceQuality quality = DeviceQuality.NORMAL;
-	private MagicDeviceType type = MagicDeviceType.INERT;
+	private ItemMagicDevice.Type type = ItemMagicDevice.Type.INERT;
 	
 	public MagicDevice(@Nonnull final String name) {
 		this.name = name;
@@ -78,12 +79,12 @@ public class MagicDevice {
 	}
 
 	@Nonnull
-	public MagicDeviceType getType() {
+	public ItemMagicDevice.Type getType() {
 		return this.type;
 	}
 
 	@Nonnull
-	public MagicDevice setType(@Nonnull final MagicDeviceType type) {
+	public MagicDevice setType(@Nonnull final ItemMagicDevice.Type type) {
 		this.type = type;
 		return this;
 	}
@@ -100,7 +101,7 @@ public class MagicDevice {
 	}
 
 	static {
-		MagicDevice device = new MagicDevice("flight").setType(MagicDeviceType.CHARM)
+		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.CHARM)
 				.setQuality(DeviceQuality.NORMAL).addAbility(ABILITY_FLIGHT);
 		DEVICES.put(device.getName(), device);
 	}

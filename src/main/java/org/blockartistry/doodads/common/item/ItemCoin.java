@@ -24,62 +24,112 @@
 
 package org.blockartistry.doodads.common.item;
 
+import java.util.Comparator;
+import java.util.stream.Stream;
+
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.client.DoodadsCreativeTab;
+import org.blockartistry.doodads.util.IVariant;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class ItemCoin extends ItemBase implements IColorizer {
 
-	public static enum Type {
+	public ItemCoin() {
+		super("coin");
+		setCreativeTab(DoodadsCreativeTab.tab);
+		setHasSubtypes(true);
+	}
+
+	@Override
+	public void registerItemModel() {
+		for (final Type bt : Type.values()) {
+			Doodads.proxy().registerItemRenderer(this, bt.getMeta(),
+					new ModelResourceLocation(ModInfo.MOD_ID + ":coin", "inventory"));
+		}
+	}
+
+	@Override
+	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
+		if (isInCreativeTab(tab)) {
+			for (final Type t : Type.values())
+				items.add(new ItemStack(this, 1, t.getMeta()));
+		}
+	}
+
+	@Override
+	@Nonnull
+	public String getUnlocalizedName(@Nonnull final ItemStack stack) {
+		return Type.byMetadata(stack.getMetadata()).getUnlocalizedName();
+	}
+
+	@Override
+	public int getColor(@Nonnull final ItemStack stack) {
+		return Type.byMetadata(stack.getMetadata()).getColor();
+	}
+
+	public static enum Type implements IVariant {
+
 		// #b87333
-		COPPER(12088115),
+		COPPER(0, "copper", 12088115),
 		// #cd7f32
-		BRONZE(13467442),
+		BRONZE(1, "bronze", 13467442),
 		// #c0c0c0
-		SILVER(12632256),
+		SILVER(2, "silver", 12632256),
 		// #ffd700
-		GOLD(16766720),
+		GOLD(3, "gold", 16766720),
 		// #e5e4e2
-		PLATINUM(5066338);
+		PLATINUM(4, "platinum", 5066338);
+
+		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
+				.toArray(Type[]::new);
 
 		private final int color;
+		private final String name;
+		private final String unlocalizedName;
+		private final int meta;
 
-		private Type(@Nonnull final int color) {
+		private Type(final int meta, @Nonnull final String name, final int color) {
+			this.meta = meta;
+			this.name = name;
 			this.color = color;
+			this.unlocalizedName = "item." + ModInfo.MOD_ID + ".coin_" + this.name;
+		}
+
+		@Override
+		@Nonnull
+		public String getName() {
+			return this.name;
+		}
+
+		@Nonnull
+		public String getUnlocalizedName() {
+			return this.unlocalizedName;
+		}
+
+		@Override
+		public int getMeta() {
+			return this.meta;
 		}
 
 		public int getColor() {
 			return this.color;
 		}
 
-		public static int getColor(final String id) {
-			final Type t = Type.valueOf(id.toUpperCase());
-			return t == null ? 0 : t.getColor();
+		@Nonnull
+		public static Type byMetadata(int meta) {
+			if (meta < 0 || meta >= META_LOOKUP.length) {
+				meta = 0;
+			}
+
+			return META_LOOKUP[meta];
 		}
 
-	};
-
-	private final int color;
-
-	public ItemCoin(@Nonnull final Type type) {
-		super("coin_" + type.name().toLowerCase());
-		setCreativeTab(DoodadsCreativeTab.tab);
-
-		this.color = type.getColor();
 	}
-
-	@Override
-	public void registerItemModel() {
-		Doodads.proxy().registerItemRenderer(this, 0, new ModelResourceLocation(ModInfo.MOD_ID + ":coin", "inventory"));
-	}
-
-	@Override
-	public int getColor() {
-		return this.color;
-	}
-
 }

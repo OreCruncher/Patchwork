@@ -26,13 +26,12 @@ package org.blockartistry.doodads.common.item;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IColorizer {
-
+	
 	@SideOnly(Side.CLIENT)
-	@Nonnull
-	int getColor();
-
+	public int getColor(@Nonnull final ItemStack stack);
 }

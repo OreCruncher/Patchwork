@@ -25,23 +25,25 @@
 package org.blockartistry.doodads.common.item;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
-import org.blockartistry.doodads.common.item.magic.DeviceAbility;
+import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.common.item.magic.DeviceQuality;
 import org.blockartistry.doodads.common.item.magic.MagicDevice;
-import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
 import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
+import org.blockartistry.doodads.util.IVariant;
 import org.blockartistry.doodads.util.Localization;
 
 import baubles.api.BaubleType;
@@ -64,11 +66,11 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("doodads.magicdevice.basicname");
 	private static final String DEVICE_NAME_FANCY_FMT = Localization.loadString("doodads.magicdevice.fancyname");
 
-	private static final Map<MagicDeviceType, String> DEVICE_TYPE_NAMES = new EnumMap<>(MagicDeviceType.class);
+	private static final Map<Type, String> DEVICE_TYPE_NAMES = new EnumMap<>(Type.class);
 	private static final Map<DeviceQuality, String> DEVICE_QUALITY_NAMES = new EnumMap<>(DeviceQuality.class);
 
 	static {
-		for (final MagicDeviceType b : MagicDeviceType.values())
+		for (final Type b : Type.values())
 			DEVICE_TYPE_NAMES.put(b,
 					Localization.loadString(ModInfo.MOD_ID + ".magicdevice." + b.name().toLowerCase() + ".name"));
 		for (final DeviceQuality d : DeviceQuality.values())
@@ -78,6 +80,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	public ItemMagicDevice(@Nonnull final String name) {
 		super(name);
 		setMaxStackSize(1);
+		setHasSubtypes(true);
 	}
 
 	@Override
@@ -100,11 +103,9 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void registerItemModel() {
 		// Register for each of the bauble slots
-		for (final MagicDeviceType bt : MagicDeviceType.values()) {
-			if (bt.getBaubleType() == null) {
-				Doodads.proxy().registerItemRenderer(this, 0,
-						new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device", "type=" + bt.name()));
-			}
+		for (final Type bt : Type.values()) {
+			Doodads.proxy().registerItemRenderer(this, bt.getMeta(),
+					new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device", "type=" + bt.name()));
 		}
 	}
 
@@ -113,6 +114,18 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		return caps != null ? caps.getPowerRatio() : 0F;
 	}
 
+	@Override
+	public boolean showDurabilityBar(@Nonnull final ItemStack stack) {
+		final IMagicDevice caps = getCapability(stack);
+		return caps != null && caps.getDeviceType() != Type.INERT;
+	}
+	
+	@Override
+	public double getDurabilityForDisplay(@Nonnull final ItemStack stack) {
+		final IMagicDeviceSettable caps = (IMagicDeviceSettable)getCapability(stack);
+		return caps != null ? (100F - caps.getPowerRatio()) / 100F : 0F;
+	}
+	
 	@Override
 	@Nonnull
 	public String getItemStackDisplayName(@Nonnull final ItemStack stack) {
@@ -159,9 +172,9 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	}
 
 	@Nonnull
-	public MagicDeviceType getDeviceType(@Nonnull final ItemStack stack) {
+	public Type getDeviceType(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null ? caps.getDeviceType() : MagicDeviceType.INERT;
+		return caps != null ? caps.getDeviceType() : ItemMagicDevice.Type.INERT;
 	}
 
 	@Nonnull
@@ -189,10 +202,11 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	public static IMagicDevice getCapability(@Nonnull final ItemStack stack) {
 		return stack.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 	}
-	
+
 	/**
 	 * This method is called once per tick if the bauble is being worn by a player
 	 */
+	@Override
 	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
 			process(itemstack, da -> da.doTick(player, itemstack));
@@ -201,6 +215,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	/**
 	 * This method is called when the bauble is equipped by a player
 	 */
+	@Override
 	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
 			process(itemstack, da -> da.equip(player, itemstack));
@@ -209,6 +224,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	/**
 	 * This method is called when the bauble is unequipped by a player
 	 */
+	@Override
 	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
 			process(itemstack, da -> da.unequip(player, itemstack));
@@ -218,6 +234,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	 * This method return the type of bauble this is. Type is used to determine the
 	 * slots it can go into.
 	 */
+	@Override
 	@Nonnull
 	public BaubleType getBaubleType(@Nonnull final ItemStack itemstack) {
 		return getDeviceType(itemstack).getBaubleType();
@@ -249,10 +266,88 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		return false;
 	}
 
-	private static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<DeviceAbility> op) {
-		getAbilities(stack).stream().map(s -> DeviceAbility.REGISTRY.getValue(new ResourceLocation(s)))
-				.filter(e -> e != null).sorted((a,b) -> a.getPriority() - b.getPriority()).forEach(op);
+	private static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<AbilityHandler> op) {
+		getAbilities(stack).stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
+				.filter(e -> e != null).sorted((a, b) -> a.getPriority() - b.getPriority()).forEach(op);
 	}
 
+	public static enum Type implements IVariant {
+		//
+		INERT(0, null, "inert"),
+		//
+		AMULET(1, BaubleType.AMULET, "amulet"),
+		//
+		RING(2, BaubleType.RING, "ring"),
+		//
+		BELT(3, BaubleType.BELT, "belt"),
+		//
+		TRINKET(4, BaubleType.TRINKET, "trinket"),
+		//
+		HEAD(5, BaubleType.HEAD, "head"),
+		//
+		BODY(6, BaubleType.BODY, "body"),
+		//
+		CHARM(7, BaubleType.CHARM, "charm"),
+		//
+		ROD(8, null, "rod"),
+		//
+		WAND(9, null, "wand");
 
+		private static final Map<BaubleType, Type> fromBauble = new EnumMap<>(BaubleType.class);
+		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
+				.toArray(Type[]::new);
+
+		static {
+			for (final Type t : Type.values())
+				if (t.getBaubleType() != null)
+					fromBauble.put(t.getBaubleType(), t);
+		}
+
+		private final BaubleType bauble;
+		private final String unlocalizedName;
+		private final String name;
+		private final int meta;
+
+		private Type(final int meta, @Nullable final BaubleType type, @Nonnull final String name) {
+			this.meta = meta;
+			this.bauble = type;
+			this.name = name;
+			this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".name";
+		}
+
+		@Nonnull
+		public String getUnlocalizedName() {
+			return this.unlocalizedName;
+		}
+
+		@Nullable
+		public BaubleType getBaubleType() {
+			return this.bauble;
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		@Override
+		public int getMeta() {
+			return this.meta;
+		}
+
+		@Nullable
+		public static Type fromBauble(@Nonnull final BaubleType t) {
+			return fromBauble.get(t);
+		}
+
+		@Nonnull
+		public static Type byMetadata(int meta) {
+			if (meta < 0 || meta >= META_LOOKUP.length) {
+				meta = 0;
+			}
+
+			return META_LOOKUP[meta];
+		}
+
+	}
 }

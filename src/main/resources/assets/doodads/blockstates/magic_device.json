@@ -45,37 +45,7 @@
 					"layer0": "minecraft:items/cake"
 				}
 			},
-			"helmet": {
-				"textures": {
-					"layer0": "minecraft:items/iron_helmet"
-				}
-			},
-			"chestplate": {
-				"textures": {
-					"layer0": "minecraft:items/iron_chestplate"
-				}
-			},
-			"leggings": {
-				"textures": {
-					"layer0": "minecraft:items/iron_leggings"
-				}
-			},
-			"boots": {
-				"textures": {
-					"layer0": "minecraft:items/iron_boots"
-				}
-			},
-			"weapon": {
-				"textures": {
-					"layer0": "minecraft:items/iron_sword"
-				}
-			},
-			"shield": {
-				"textures": {
-					"layer0": "minecraft:items/shield"
-				}
-			},
-			"staff": {
+			"rod": {
 				"textures": {
 					"layer0": "minecraft:items/gold_ingot"
 				}

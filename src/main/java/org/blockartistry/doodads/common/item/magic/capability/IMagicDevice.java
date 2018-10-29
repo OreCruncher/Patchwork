@@ -28,8 +28,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.magic.DeviceQuality;
-import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
 import org.blockartistry.doodads.util.INBTSerialization;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +42,7 @@ public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 	 * @return The type of device this guy represents
 	 */
 	@Nonnull
-	MagicDeviceType getDeviceType();
+	ItemMagicDevice.Type getDeviceType();
 
 	/**
 	 * Returns a list of the devices abilities

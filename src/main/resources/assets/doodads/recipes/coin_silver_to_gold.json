@@ -2,34 +2,34 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		},
 		{
-			"item": "doodads:coin_silver"
+			"item": "#coin_silver"
 		}
 	],
 	"result": {
-		"item": "doodads:coin_gold"
+		"item": "#coin_gold"
 	}
 }

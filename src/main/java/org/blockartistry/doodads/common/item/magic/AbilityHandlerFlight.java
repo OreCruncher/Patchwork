@@ -33,11 +33,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
-public class AbilityFlight extends DeviceAbility {
+public class AbilityHandlerFlight extends AbilityHandler {
 
 	private static final int POWER_COST = 10;
 	
-	public AbilityFlight() {
+	public AbilityHandlerFlight() {
 		super("flight");
 	}
 

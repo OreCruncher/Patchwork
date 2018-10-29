@@ -2,34 +2,34 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		},
 		{
-			"item": "doodads:coin_copper"
+			"item": "#coin_copper"
 		}
 	],
 	"result": {
-		"item": "doodads:coin_bronze"
+		"item": "#coin_bronze"
 	}
 }

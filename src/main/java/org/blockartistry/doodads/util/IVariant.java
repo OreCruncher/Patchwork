@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.blockartistry.doodads.common.item.magic;
 
-public class MagicAbilities {
+package org.blockartistry.doodads.util;
 
-	public static final AbilityHandler FLIGHT = new AbilityHandlerFlight().register();
+import net.minecraft.util.IStringSerializable;
 
-	public static void initialize() {
-		// Nothing here
-	}
+public interface IVariant extends IStringSerializable {
 
+	int getMeta();
 }
