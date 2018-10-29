@@ -48,7 +48,7 @@ public class MagicDevice {
 	private final List<ResourceLocation> abilities = new ArrayList<>();
 
 	private final String unlocalizedName;
-	private DeviceQuality quality = DeviceQuality.NORMAL;
+	private ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.NORMAL;
 	private ItemMagicDevice.Type type = ItemMagicDevice.Type.INERT;
 	
 	public MagicDevice(@Nonnull final String name) {
@@ -90,19 +90,19 @@ public class MagicDevice {
 	}
 
 	@Nonnull
-	public DeviceQuality getQuality() {
+	public ItemMagicDevice.Quality getQuality() {
 		return this.quality;
 	}
 
 	@Nonnull
-	public MagicDevice setQuality(@Nonnull final DeviceQuality quality) {
+	public MagicDevice setQuality(@Nonnull final ItemMagicDevice.Quality quality) {
 		this.quality = quality;
 		return this;
 	}
 
 	static {
 		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.CHARM)
-				.setQuality(DeviceQuality.NORMAL).addAbility(ABILITY_FLIGHT);
+				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(ABILITY_FLIGHT);
 		DEVICES.put(device.getName(), device);
 	}
 }

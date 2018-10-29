@@ -39,7 +39,6 @@ import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.client.DoodadsCreativeTab;
 import org.blockartistry.doodads.common.item.magic.AbilityHandler;
-import org.blockartistry.doodads.common.item.magic.DeviceQuality;
 import org.blockartistry.doodads.common.item.magic.MagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
@@ -63,18 +62,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMagicDevice extends ItemBase implements IBauble {
 
-	protected static final String FORMAT_STRING = Localization.loadString("doodads.deviceability.format");
+	public static final int BASE_CONSUMPTION_UNIT = 10;
+	public static final int TICKS_PER_MINUTE = 20 * 60;
+	
+	private static final String FORMAT_STRING = Localization.loadString("doodads.deviceability.format");
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("doodads.magicdevice.basicname");
 	private static final String DEVICE_NAME_FANCY_FMT = Localization.loadString("doodads.magicdevice.fancyname");
-
 	private static final Map<Type, String> DEVICE_TYPE_NAMES = new EnumMap<>(Type.class);
-	private static final Map<DeviceQuality, String> DEVICE_QUALITY_NAMES = new EnumMap<>(DeviceQuality.class);
+	private static final Map<Quality, String> DEVICE_QUALITY_NAMES = new EnumMap<>(Quality.class);
 
 	static {
 		for (final Type b : Type.values())
 			DEVICE_TYPE_NAMES.put(b,
 					Localization.loadString(ModInfo.MOD_ID + ".magicdevice." + b.name().toLowerCase() + ".name"));
-		for (final DeviceQuality d : DeviceQuality.values())
+		for (final Quality d : Quality.values())
 			DEVICE_QUALITY_NAMES.put(d, Localization.loadString(d.getUnlocalizedName()));
 	}
 
@@ -88,11 +89,10 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
 		for (final MagicDevice device : MagicDevice.DEVICES.values()) {
-			final ItemStack stack = new ItemStack(this);
+			final ItemStack stack = new ItemStack(this, 1, device.getType().getMeta());
 			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
 					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 			xface.setMoniker(device.getUnlocalizedName());
-			xface.setDeviceType(device.getType());
 			xface.setQuality(device.getQuality());
 			xface.setMaxEnergy(device.getQuality().getMaxPower());
 			xface.setCurrentEnergy(xface.getMaxEnergy());
@@ -119,22 +119,22 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public boolean showDurabilityBar(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null && caps.getDeviceType() != Type.INERT;
+		return caps != null && Type.byMetadata(stack.getMetadata()) != Type.INERT;
 	}
-	
+
 	@Override
 	public double getDurabilityForDisplay(@Nonnull final ItemStack stack) {
-		final IMagicDeviceSettable caps = (IMagicDeviceSettable)getCapability(stack);
+		final IMagicDeviceSettable caps = (IMagicDeviceSettable) getCapability(stack);
 		return caps != null ? (100F - caps.getPowerRatio()) / 100F : 0F;
 	}
-	
+
 	@Override
 	@Nonnull
 	public String getItemStackDisplayName(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
 		if (caps != null) {
 			final String quality = DEVICE_QUALITY_NAMES.get(caps.getQuality());
-			final String device = DEVICE_TYPE_NAMES.get(caps.getDeviceType());
+			final String device = DEVICE_TYPE_NAMES.get(Type.byMetadata(stack.getMetadata()));
 			final String moniker = caps.getMoniker();
 			if (moniker.isEmpty())
 				return String.format(DEVICE_NAME_SIMPLE_FMT, quality, device);
@@ -154,7 +154,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(@Nonnull final ItemStack stack) {
-		return getQuality(stack) == DeviceQuality.LEGENDARY;
+		return getQuality(stack) == Quality.LEGENDARY;
 	}
 
 	@Override
@@ -168,15 +168,9 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		return false;
 	}
 
-	public DeviceQuality getQuality(@Nonnull final ItemStack stack) {
+	public Quality getQuality(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null ? caps.getQuality() : DeviceQuality.MUNDANE;
-	}
-
-	@Nonnull
-	public Type getDeviceType(@Nonnull final ItemStack stack) {
-		final IMagicDevice caps = getCapability(stack);
-		return caps != null ? caps.getDeviceType() : ItemMagicDevice.Type.INERT;
+		return caps != null ? caps.getQuality() : Quality.MUNDANE;
 	}
 
 	@Nonnull
@@ -238,8 +232,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	 */
 	@Override
 	@Nonnull
-	public BaubleType getBaubleType(@Nonnull final ItemStack itemstack) {
-		return getDeviceType(itemstack).getBaubleType();
+	public BaubleType getBaubleType(@Nonnull final ItemStack stack) {
+		return Type.byMetadata(stack.getMetadata()).getBaubleType();
 	}
 
 	/**
@@ -271,6 +265,48 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	private static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<AbilityHandler> op) {
 		getAbilities(stack).stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
 				.filter(e -> e != null).sorted((a, b) -> a.getPriority() - b.getPriority()).forEach(op);
+	}
+
+	public static enum Quality {
+		//
+		MUNDANE("mundane", 0, TICKS_PER_MINUTE * 60 * BASE_CONSUMPTION_UNIT, EnumRarity.COMMON),
+		//
+		NORMAL("normal", 1, TICKS_PER_MINUTE * 60 * 2 * BASE_CONSUMPTION_UNIT, EnumRarity.UNCOMMON),
+		//
+		PRIZED("prized", 2, TICKS_PER_MINUTE * 60 * 4 * BASE_CONSUMPTION_UNIT, EnumRarity.RARE),
+		//
+		LEGENDARY("legendary", 3, TICKS_PER_MINUTE * 60 * 8 * BASE_CONSUMPTION_UNIT, EnumRarity.EPIC);
+
+		private final String name;
+		private final int maxAbilities;
+		private final EnumRarity rarity;
+		private final int maxPower;
+
+		private Quality(@Nonnull final String name, final int maxAbilities, final int maxPower,
+				@Nonnull final EnumRarity rarity) {
+			this.name = ModInfo.MOD_ID + ".devicequality." + name + ".name";
+			this.maxAbilities = maxAbilities;
+			this.maxPower = maxPower;
+			this.rarity = rarity;
+		}
+
+		@Nonnull
+		public String getUnlocalizedName() {
+			return this.name;
+		}
+
+		public int getMaxAbilities() {
+			return this.maxAbilities;
+		}
+
+		@Nonnull
+		public EnumRarity getRarity() {
+			return this.rarity;
+		}
+
+		public int getMaxPower() {
+			return this.maxPower;
+		}
 	}
 
 	public static enum Type implements IVariant {

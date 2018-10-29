@@ -27,12 +27,10 @@ package org.blockartistry.doodads.common.item.magic.capability;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
-import org.blockartistry.doodads.common.item.magic.DeviceQuality;
+
 import net.minecraft.util.ResourceLocation;
 
 public interface IMagicDeviceSettable extends IMagicDevice {
-
-	void setDeviceType(@Nonnull final ItemMagicDevice.Type type);
 
 	void addAbilities(@Nonnull final ResourceLocation... ability);
 
@@ -40,7 +38,7 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 
 	void setCurrentEnergy(final int energy);
 
-	void setQuality(@Nonnull final DeviceQuality q);
+	void setQuality(@Nonnull final ItemMagicDevice.Quality q);
 
 	void setMoniker(@Nonnull final String moniker);
 
@@ -52,7 +50,7 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 	 * @return true if the operation completed; false if there isn't enough energy
 	 */
 	boolean consumeEnergy(final int amount);
-	
+
 	boolean isDirty();
 
 	void clearDirty();

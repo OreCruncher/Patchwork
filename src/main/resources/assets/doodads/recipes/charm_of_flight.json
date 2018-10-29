@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:gold_ingot"
+		},
+		{
+			"item": "minecraft:feather"
+		}
+	],
+	"result": {
+		"_comment": "Normal Charm of Flight",
+		"type": "minecraft:item_nbt",
+		"item": "doodads:magic_device",
+		"data": 7,
+		"nbt": "{ForgeCaps: {\"doodads:magicdevice_caps\":{q:1b,a:[\"doodads:flight\"],c:1440000,m:1440000,n:\"Flight\"}}, id: \"doodads:magic_device\", Count: 1b, Damage: 0s}"
+	}
+}

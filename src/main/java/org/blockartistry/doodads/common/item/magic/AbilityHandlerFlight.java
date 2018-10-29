@@ -36,7 +36,7 @@ import net.minecraft.item.ItemStack;
 public class AbilityHandlerFlight extends AbilityHandler {
 
 	private static final int POWER_COST = 10;
-	
+
 	public AbilityHandlerFlight() {
 		super("flight");
 	}
@@ -63,9 +63,8 @@ public class AbilityHandlerFlight extends AbilityHandler {
 	public void unequip(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
-			player.capabilities.allowFlying = false;
 			player.capabilities.isFlying = false;
-			player.sendPlayerAbilities();
+			ensureFlightNotSet(player);
 		}
 	}
 
@@ -79,18 +78,26 @@ public class AbilityHandlerFlight extends AbilityHandler {
 	public void doTick(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
-			ensureFlightSet(player);
-			if (player.capabilities.isFlying) {
-				final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
-				if (!caps.consumeEnergy(POWER_COST)) {
-					unequip(entity, device);
-				}
+			final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
+			if (caps.hasEnergyFor(POWER_COST)) {
+				ensureFlightSet(player);
+				if (player.capabilities.isFlying)
+					caps.consumeEnergy(POWER_COST);
+			} else {
+				unequip(player, device);
 			}
 		}
 	}
 
+	protected void ensureFlightNotSet(@Nonnull final EntityPlayerMP player) {
+		if (player.capabilities.allowFlying) {
+			player.capabilities.allowFlying = false;
+			player.sendPlayerAbilities();
+		}
+	}
+
 	protected void ensureFlightSet(@Nonnull final EntityPlayerMP player) {
-		if (!player.isCreative() && !player.capabilities.allowFlying) {
+		if (!player.capabilities.allowFlying) {
 			player.capabilities.allowFlying = true;
 			player.sendPlayerAbilities();
 		}

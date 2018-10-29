@@ -43,7 +43,7 @@ public class JEIPluginDoodads implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		subtypeRegistry.useNbtForSubtypes(ModItems.MAGIC_DEVICE);
+		//subtypeRegistry.useNbtForSubtypes(ModItems.MAGIC_DEVICE);
 	}
 
 }
