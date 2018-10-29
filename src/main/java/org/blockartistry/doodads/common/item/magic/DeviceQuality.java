@@ -22,28 +22,45 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.compat.jei;
+package org.blockartistry.doodads.common.item.magic;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.common.item.ModItems;
+import org.blockartistry.doodads.ModInfo;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import net.minecraft.item.EnumRarity;
 
-@JEIPlugin
-public class JEIPluginDoodads implements IModPlugin {
+public enum DeviceQuality {
+	//
+	MUNDANE("mundane", 0, EnumRarity.COMMON),
+	//
+	NORMAL("normal", 1, EnumRarity.UNCOMMON),
+	//
+	PRIZED("prized", 2, EnumRarity.RARE),
+	//
+	LEGENDARY("legendary", 3, EnumRarity.EPIC);
 
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		// May need this hook...
+	private final String name;
+	private final int maxAbilities;
+	private final EnumRarity rarity;
+
+	private DeviceQuality(@Nonnull final String name, final int maxAbilities, @Nonnull final EnumRarity rarity) {
+		this.name = ModInfo.MOD_ID + ".devicequality." + name + ".name";
+		this.maxAbilities = maxAbilities;
+		this.rarity = rarity;
 	}
 
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		subtypeRegistry.useNbtForSubtypes(ModItems.BAUBLE_DEVICE);
+	@Nonnull
+	public String getUnlocalizedName() {
+		return this.name;
 	}
 
+	public int getMaxAbilities() {
+		return this.maxAbilities;
+	}
+
+	@Nonnull
+	public EnumRarity getRarity() {
+		return this.rarity;
+	}
 }

@@ -22,28 +22,22 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.compat.jei;
+package org.blockartistry.doodads.common.item.magic.capability;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.common.item.ModItems;
+import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import net.minecraft.util.ResourceLocation;
 
-@JEIPlugin
-public class JEIPluginDoodads implements IModPlugin {
+public interface IMagicDeviceSettable extends IMagicDevice {
 
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		// May need this hook...
-	}
+	void setDeviceType(@Nonnull final MagicDeviceType type);
 
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		subtypeRegistry.useNbtForSubtypes(ModItems.BAUBLE_DEVICE);
-	}
+	void addAbilities(@Nonnull final ResourceLocation... ability);
+
+	void setMaxEnergy(final int energy);
+
+	void setCurrentEnergy(final int energy);
 
 }

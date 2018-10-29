@@ -22,28 +22,14 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.compat.jei;
+package org.blockartistry.doodads.util;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.common.item.ModItems;
+public interface INBTSerialization<T> {
+	
+	@Nonnull
+	T serialize();
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
-
-@JEIPlugin
-public class JEIPluginDoodads implements IModPlugin {
-
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		// May need this hook...
-	}
-
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		subtypeRegistry.useNbtForSubtypes(ModItems.BAUBLE_DEVICE);
-	}
-
+	void deserialize(@Nonnull final T nbt);
 }

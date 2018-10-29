@@ -5,6 +5,11 @@
 	},
 	"variants": {
 		"type": {
+			"inert": {
+				"textures": {
+					"layer0": "minecraft:items/gunpowder"
+				}
+			},
 			"amulet": {
 				"textures": {
 					"layer0": "minecraft:items/blaze_rod"
@@ -38,6 +43,46 @@
 			"charm": {
 				"textures": {
 					"layer0": "minecraft:items/cake"
+				}
+			},
+			"helmet": {
+				"textures": {
+					"layer0": "minecraft:items/iron_helmet"
+				}
+			},
+			"chestplate": {
+				"textures": {
+					"layer0": "minecraft:items/iron_chestplate"
+				}
+			},
+			"leggings": {
+				"textures": {
+					"layer0": "minecraft:items/iron_leggings"
+				}
+			},
+			"boots": {
+				"textures": {
+					"layer0": "minecraft:items/iron_boots"
+				}
+			},
+			"weapon": {
+				"textures": {
+					"layer0": "minecraft:items/iron_sword"
+				}
+			},
+			"shield": {
+				"textures": {
+					"layer0": "minecraft:items/shield"
+				}
+			},
+			"staff": {
+				"textures": {
+					"layer0": "minecraft:items/gold_ingot"
+				}
+			},
+			"wand": {
+				"textures": {
+					"layer0": "minecraft:items/stick"
 				}
 			}
 		}

@@ -33,7 +33,6 @@ import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.ModInfo;
 
-import baubles.api.BaubleType;
 import net.minecraft.util.ResourceLocation;
 
 public class MagicDevice {
@@ -41,20 +40,28 @@ public class MagicDevice {
 	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
 	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
 
-	
-	
 	private final String name;
 	private final List<ResourceLocation> abilities = new ArrayList<>();
 
-	private BaubleType type = BaubleType.TRINKET;
+	private DeviceQuality quality = DeviceQuality.NORMAL;
+	private MagicDeviceType type = MagicDeviceType.INERT;
 
+	
+	private final String unlocalizedName;
+	
 	public MagicDevice(@Nonnull final String name) {
 		this.name = name;
+		this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".moniker";
 	}
 
 	@Nonnull
 	public String getName() {
 		return this.name;
+	}
+	
+	@Nonnull
+	public String getUnlocalizedName() {
+		return this.unlocalizedName;
 	}
 
 	@Nonnull
@@ -70,19 +77,30 @@ public class MagicDevice {
 	}
 
 	@Nonnull
-	public BaubleType getType() {
+	public MagicDeviceType getType() {
 		return this.type;
 	}
 
 	@Nonnull
-	public MagicDevice setType(@Nonnull final BaubleType type) {
+	public MagicDevice setType(@Nonnull final MagicDeviceType type) {
 		this.type = type;
 		return this;
 	}
-	
-	static {
-		MagicDevice device = new MagicDevice("feather_of_flight").setType(BaubleType.CHARM).addAbility(ABILITY_FLIGHT);
-		DEVICES.put(device.getName(), device);
+
+	@Nonnull
+	public DeviceQuality getQuality() {
+		return this.quality;
 	}
 
+	@Nonnull
+	public MagicDevice setQuality(@Nonnull final DeviceQuality quality) {
+		this.quality = quality;
+		return this;
+	}
+
+	static {
+		MagicDevice device = new MagicDevice("flight").setType(MagicDeviceType.CHARM)
+				.setQuality(DeviceQuality.NORMAL).addAbility(ABILITY_FLIGHT);
+		DEVICES.put(device.getName(), device);
+	}
 }

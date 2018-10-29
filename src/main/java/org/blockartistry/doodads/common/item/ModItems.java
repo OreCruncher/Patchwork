@@ -43,6 +43,7 @@ public class ModItems {
 	public static final Item MOB_NET = new ItemMobNet();
 
 	public static final Item MAGIC_DEVICE = new ItemMagicDevice("magic_device");
+	public static final Item BAUBLE_DEVICE = new ItemMagicDeviceBauble();
 
 	// Currently a do nothing function. By calling this it triggers the
 	// classes static initializers to run.

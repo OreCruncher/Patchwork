@@ -25,15 +25,18 @@
 package org.blockartistry.doodads.sided;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemBase;
+import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
 import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
 import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
@@ -61,6 +64,7 @@ public abstract class SideSupport {
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
 		final Side targetSide = isDedicatedServer() ? Side.SERVER : Side.CLIENT;
 		Localization.initialize(targetSide, ModInfo.MOD_ID);
+		CapabilityMagicDevice.register();
 	}
 
 	/**
@@ -115,6 +119,11 @@ public abstract class SideSupport {
 	 */
 	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final ModelResourceLocation loc) {
 		// This method intentionally left blank
+	}
+	
+	@Nullable
+	public World getClientWorld() {
+		return null;
 	}
 
 }

@@ -22,28 +22,27 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.compat.jei;
+package org.blockartistry.doodads.common.item.magic.capability;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.common.item.ModItems;
+import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
+import org.blockartistry.doodads.util.INBTSerialization;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import net.minecraft.nbt.NBTTagCompound;
 
-@JEIPlugin
-public class JEIPluginDoodads implements IModPlugin {
+public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		// May need this hook...
-	}
+	@Nonnull
+	MagicDeviceType getDeviceType();
 
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		subtypeRegistry.useNbtForSubtypes(ModItems.BAUBLE_DEVICE);
-	}
+	@Nonnull
+	List<String> getAbilities();
+	
+	int getMaxEnergy();
+
+	int getCurrentEnergy();
 
 }

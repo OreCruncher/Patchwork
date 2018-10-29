@@ -27,6 +27,7 @@ package org.blockartistry.doodads.sided;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blockartistry.doodads.ModInfo;
@@ -34,7 +35,9 @@ import org.blockartistry.doodads.common.item.ItemBase;
 import org.blockartistry.doodads.util.ForgeUtils;
 import org.blockartistry.doodads.util.Localization;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -68,5 +71,10 @@ public class ClientSupport extends SideSupport {
 	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final ModelResourceLocation loc) {
 		ModelLoader.setCustomModelResourceLocation(item, meta, loc);
 				//new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
+	}
+	
+	@Nullable
+	public World getClientWorld() {
+		return Minecraft.getMinecraft().world;
 	}
 }

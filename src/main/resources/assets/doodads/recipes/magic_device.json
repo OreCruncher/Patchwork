@@ -11,8 +11,7 @@
 	"result": {
 		"type": "minecraft:item_nbt",
 		"item": "doodads:magic_device",
-		"nbt": "{\"doodads:namespace\":{abilities:[\"doodads:flight\"]}}",
-		"data": 6,
+		"nbt": "{\"doodads:namespace\":{abil:[\"doodads:flight\"],qual:\"NORMAL\",type:\"CHARM\",mon:\"doodads.magicdevice.flight.moniker\"}}",
 		"count": 1
 	}
 }
