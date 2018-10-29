@@ -53,5 +53,8 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 	 * @return true if the operation completed; false if there isn't enough energy
 	 */
 	boolean consumeEnergy(final int amount);
+	
+	boolean isDirty();
 
+	void clearDirty();
 }

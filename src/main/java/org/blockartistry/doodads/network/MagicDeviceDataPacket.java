@@ -1,18 +1,23 @@
 package org.blockartistry.doodads.network;
 
+import java.util.List;
+import java.util.Map.Entry;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
-import org.blockartistry.doodads.common.item.magic.capability.MagicDeviceData;
+import org.blockartistry.doodads.util.capability.CapabilityUtils;
 
+import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -24,49 +29,124 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class MagicDeviceDataPacket implements IMessage {
 
 	protected int playerId;
-	protected byte slot = 0;
-	protected NBTTagCompound data;
+	protected boolean baublesSync;
+	protected final Int2ObjectOpenHashMap<NBTTagCompound> data = new Int2ObjectOpenHashMap<>();
 
 	public MagicDeviceDataPacket() {
 	}
 
-	public MagicDeviceDataPacket(@Nonnull final EntityPlayer p, final int slot, @Nonnull final MagicDeviceData data) {
-		this.slot = (byte) slot;
+	public MagicDeviceDataPacket(@Nonnull final EntityPlayer p, final boolean isBaubles,
+			@Nonnull final List<IMagicDevice> items) {
 		this.playerId = p.getEntityId();
-		this.data = data.serialize();
+		this.baublesSync = isBaubles;
+
+		for (int index = 0; index < items.size(); index++) {
+			final IMagicDevice data = items.get(index);
+			if (data != null) {
+				final NBTTagCompound d = data.serialize();
+				this.data.put(index, d);
+			}
+		}
 	}
 
 	@Override
 	public void toBytes(@Nonnull final ByteBuf buffer) {
 		buffer.writeInt(this.playerId);
-		buffer.writeByte(this.slot);
-		ByteBufUtils.writeTag(buffer, this.data);
+		buffer.writeBoolean(this.baublesSync);
+		buffer.writeByte(this.data.size());
+		for (final Entry<Integer, NBTTagCompound> e : this.data.entrySet()) {
+			buffer.writeByte(e.getKey());
+			ByteBufUtils.writeTag(buffer, e.getValue());
+		}
 	}
 
 	@Override
 	public void fromBytes(@Nonnull final ByteBuf buffer) {
 		this.playerId = buffer.readInt();
-		this.slot = buffer.readByte();
-		this.data = ByteBufUtils.readTag(buffer);
+		this.baublesSync = buffer.readBoolean();
+		final int size = buffer.readByte();
+		for (int i = 0; i < size; i++) {
+			final int idx = buffer.readByte();
+			final NBTTagCompound d = ByteBufUtils.readTag(buffer);
+			this.data.put(idx, d);
+		}
 	}
 
 	public static class Handler implements IMessageHandler<MagicDeviceDataPacket, IMessage> {
+
+		private static interface SlotCracker {
+			ItemStack getStack(int slot);
+
+			void putStack(int slot, ItemStack stack);
+		}
+
 		@Override
 		@Nullable
 		public IMessage onMessage(@Nonnull final MagicDeviceDataPacket message, @Nullable final MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			Doodads.proxy().getThreadListener(ctx).addScheduledTask(() -> {
 				final World world = Doodads.proxy().getClientWorld();
 				if (world == null)
 					return;
 				final Entity p = world.getEntityByID(message.playerId);
 				if (p != null && p instanceof EntityPlayer) {
-					final InventoryPlayer inv = ((EntityPlayer) p).inventory;
-					final ItemStack targetStack = inv.getStackInSlot(message.slot);
-					if (!targetStack.isEmpty()) {
-						final IMagicDevice xface = targetStack.getCapability(CapabilityMagicDevice.MAGIC_DEVICE,
-								CapabilityMagicDevice.DEFAULT_FACING);
-						if (xface != null)
-							xface.deserialize(message.data);
+					final SlotCracker cracker;
+					if (message.baublesSync) {
+						final IBaublesItemHandler t = BaublesApi.getBaublesHandler((EntityPlayer) p);
+						if (t != null) {
+							cracker = new SlotCracker() {
+								@Override
+								public ItemStack getStack(int slot) {
+									return t.getStackInSlot(slot);
+								}
+
+								@Override
+								public void putStack(int slot, ItemStack stack) {
+									t.setStackInSlot(slot, stack);
+								}
+							};
+						} else {
+							cracker = null;
+						}
+
+					} else {
+						final Container inv = ((EntityPlayer) p).inventoryContainer;
+						cracker = new SlotCracker() {
+							@Override
+							public ItemStack getStack(int slot) {
+								return inv.getSlot(slot).getStack();
+							}
+
+							@Override
+							public void putStack(int slot, ItemStack stack) {
+								inv.putStackInSlot(slot, stack);
+							}
+						};
+					}
+
+					if (cracker == null)
+						return;
+
+					for (final Entry<Integer, NBTTagCompound> e : message.data.entrySet()) {
+						final int index = e.getKey();
+						final NBTTagCompound data = e.getValue();
+
+						final ItemStack originalStack = cracker.getStack(index);
+						final IMagicDevice originalHandler = CapabilityUtils.getCapability(originalStack,
+								CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
+
+						if (originalHandler != null) {
+							final ItemStack newStack = originalStack.copy();
+
+							final IMagicDevice newHandler = CapabilityUtils.getCapability(newStack,
+									CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
+							assert newHandler != null;
+
+							newHandler.deserialize(data);
+
+							if (!originalHandler.equals(newHandler)) {
+								cracker.putStack(index, newStack);
+							}
+						}
 					}
 				}
 			});

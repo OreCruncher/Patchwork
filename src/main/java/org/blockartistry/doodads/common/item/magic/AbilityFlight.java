@@ -77,12 +77,12 @@ public class AbilityFlight extends DeviceAbility {
 	public void doTick(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
-			final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
-			if (caps.hasEnergyFor(1)) {
-				ensureFlightSet(player);
-				caps.consumeEnergy(1);
-			} else if (caps.getCurrentEnergy() == 0) {
-				unequip(entity, device);
+			ensureFlightSet(player);
+			if (player.capabilities.isFlying) {
+				final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
+				if (!caps.consumeEnergy(1)) {
+					unequip(entity, device);
+				}
 			}
 		}
 	}

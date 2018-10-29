@@ -33,7 +33,7 @@ import org.blockartistry.doodads.common.item.ItemBase;
 import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
 import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
-import org.blockartistry.doodads.network.PacketHandler;
+import org.blockartistry.doodads.network.NetworkHandler;
 import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -78,7 +78,7 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void init(@Nonnull final FMLInitializationEvent event) {
-		PacketHandler.init();
+		NetworkHandler.init();
 	}
 
 	/**

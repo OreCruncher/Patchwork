@@ -49,8 +49,14 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 
 	protected boolean dirty;
 
+	@Override
 	public boolean isDirty() {
 		return this.dirty;
+	}
+	
+	@Override
+	public void clearDirty() {
+		this.dirty = false;
 	}
 
 	@Override
@@ -153,8 +159,6 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		for (final String s : this.abilities)
 			theList.appendTag(new NBTTagString(s));
 		nbt.setTag(NBT.ABILITIES, theList);
-
-		this.dirty = false;
 		return nbt;
 	}
 
@@ -171,8 +175,6 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		final int count = theList.tagCount();
 		for (int i = 0; i < count; i++)
 			this.abilities.add(theList.getStringTagAt(i));
-
-		this.dirty = false;
 	}
 
 	private static class NBT {
