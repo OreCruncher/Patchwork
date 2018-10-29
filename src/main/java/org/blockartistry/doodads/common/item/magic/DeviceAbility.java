@@ -43,6 +43,7 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 			.setType(DeviceAbility.class).create();
 
 	private String unlocalizedName;
+	private int priority = 10000;
 
 	public DeviceAbility(@Nonnull final String name) {
 		this.setRegistryName(name);
@@ -55,7 +56,7 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 	}
 
 	@Nonnull
-	public DeviceAbility setUnlocalizedName(@Nonnull final String name) {
+	protected DeviceAbility setUnlocalizedName(@Nonnull final String name) {
 		this.unlocalizedName = name;
 		return this;
 	}
@@ -63,6 +64,15 @@ public abstract class DeviceAbility extends IForgeRegistryEntry.Impl<DeviceAbili
 	@Nonnull
 	public DeviceAbility register() {
 		REGISTRY.register(this);
+		return this;
+	}
+	
+	public int getPriority() {
+		return this.priority;
+	}
+	
+	public DeviceAbility setPriority(final int p) {
+		this.priority = p;
 		return this;
 	}
 

@@ -82,6 +82,13 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	}
 
 	@Override
+	public float getPowerRatio() {
+		if (this.maxEnergy == 0)
+			return 0;
+		return ((float)this.currentEnergy / this.maxEnergy) * 100F;
+	}
+	
+	@Override
 	@Nonnull
 	public DeviceQuality getQuality() {
 		return this.quality;

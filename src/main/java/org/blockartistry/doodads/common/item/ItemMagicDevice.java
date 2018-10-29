@@ -60,10 +60,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMagicDevice extends ItemBase implements IBauble {
 
-	// Number of ticks in a minute so damage can be
-	// computed based on time.
-	protected static final int TICKS_IN_MINUTES = 20 * 60;
-
 	protected static final String FORMAT_STRING = Localization.loadString("doodads.deviceability.format");
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("doodads.magicdevice.basicname");
 	private static final String DEVICE_NAME_FANCY_FMT = Localization.loadString("doodads.magicdevice.fancyname");
@@ -93,7 +89,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 			xface.setMoniker(device.getUnlocalizedName());
 			xface.setDeviceType(device.getType());
 			xface.setQuality(device.getQuality());
-			xface.setMaxEnergy(TICKS_IN_MINUTES * 120);
+			xface.setMaxEnergy(device.getQuality().getMaxPower());
 			xface.setCurrentEnergy(xface.getMaxEnergy());
 			for (final ResourceLocation r : device.getAbilities())
 				xface.addAbilities(r);
@@ -112,19 +108,9 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		}
 	}
 
-	public void setPowerMinutes(final int minutes) {
-		setMaxDamage(minutes * TICKS_IN_MINUTES);
-	}
-
 	public float getPowerRemaining(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		if (caps != null) {
-			final int maxEnergy = caps.getMaxEnergy();
-			if (maxEnergy == 0)
-				return 0F;
-			return (float) caps.getCurrentEnergy() / maxEnergy;
-		}
-		return 0F;
+		return caps != null ? caps.getPowerRatio() : 0F;
 	}
 
 	@Override
@@ -146,7 +132,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World worldIn,
 			@Nonnull final List<String> tooltip, @Nonnull final ITooltipFlag flagIn) {
-		tooltip.add(Localization.format("doodads.magicdevice.powerremaining", getPowerRemaining(stack) * 100F));
+		tooltip.add(Localization.format("doodads.magicdevice.powerremaining", getPowerRemaining(stack)));
 		gatherToolTips(stack, tooltip);
 	}
 
@@ -191,11 +177,6 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Nonnull
 	public static void gatherToolTips(@Nonnull final ItemStack stack, @Nonnull final List<String> tips) {
 		process(stack, da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
-	}
-
-	public static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<DeviceAbility> op) {
-		getAbilities(stack).stream().map(s -> DeviceAbility.REGISTRY.getValue(new ResourceLocation(s)))
-				.filter(e -> e != null).forEach(op);
 	}
 
 	@Nonnull
@@ -266,6 +247,11 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public boolean willAutoSync(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return false;
+	}
+
+	private static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<DeviceAbility> op) {
+		getAbilities(stack).stream().map(s -> DeviceAbility.REGISTRY.getValue(new ResourceLocation(s)))
+				.filter(e -> e != null).sorted((a,b) -> a.getPriority() - b.getPriority()).forEach(op);
 	}
 
 

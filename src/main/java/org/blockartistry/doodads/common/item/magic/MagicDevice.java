@@ -37,17 +37,18 @@ import net.minecraft.util.ResourceLocation;
 
 public class MagicDevice {
 
+	// Collect IDs for capabilities here
 	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
+	
+	// Pre-built fancy devices
 	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
 
 	private final String name;
 	private final List<ResourceLocation> abilities = new ArrayList<>();
 
+	private final String unlocalizedName;
 	private DeviceQuality quality = DeviceQuality.NORMAL;
 	private MagicDeviceType type = MagicDeviceType.INERT;
-
-	
-	private final String unlocalizedName;
 	
 	public MagicDevice(@Nonnull final String name) {
 		this.name = name;

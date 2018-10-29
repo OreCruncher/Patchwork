@@ -67,6 +67,13 @@ public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 	int getCurrentEnergy();
 
 	/**
+	 * Returns the current amount of energy available as a ratio
+	 * 0 - 100.  Think of it as percentage of power remaining.
+	 * @return
+	 */
+	float getPowerRatio();
+
+	/**
 	 * Returns quality information about the device
 	 * 
 	 * @return Device quality information

@@ -35,6 +35,8 @@ import net.minecraft.item.ItemStack;
 
 public class AbilityFlight extends DeviceAbility {
 
+	private static final int POWER_COST = 10;
+	
 	public AbilityFlight() {
 		super("flight");
 	}
@@ -80,7 +82,7 @@ public class AbilityFlight extends DeviceAbility {
 			ensureFlightSet(player);
 			if (player.capabilities.isFlying) {
 				final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
-				if (!caps.consumeEnergy(1)) {
+				if (!caps.consumeEnergy(POWER_COST)) {
 					unequip(entity, device);
 				}
 			}

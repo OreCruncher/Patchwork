@@ -32,21 +32,24 @@ import net.minecraft.item.EnumRarity;
 
 public enum DeviceQuality {
 	//
-	MUNDANE("mundane", 0, EnumRarity.COMMON),
+	MUNDANE("mundane", 0, 20 * 60 * 60, EnumRarity.COMMON),
 	//
-	NORMAL("normal", 1, EnumRarity.UNCOMMON),
+	NORMAL("normal", 1, 20 * 60 * 60 * 2, EnumRarity.UNCOMMON),
 	//
-	PRIZED("prized", 2, EnumRarity.RARE),
+	PRIZED("prized", 2, 20 * 60 * 60 * 4, EnumRarity.RARE),
 	//
-	LEGENDARY("legendary", 3, EnumRarity.EPIC);
+	LEGENDARY("legendary", 3, 20 * 60 * 60 * 8, EnumRarity.EPIC);
 
 	private final String name;
 	private final int maxAbilities;
 	private final EnumRarity rarity;
+	private final int maxPower;
 
-	private DeviceQuality(@Nonnull final String name, final int maxAbilities, @Nonnull final EnumRarity rarity) {
+	private DeviceQuality(@Nonnull final String name, final int maxAbilities, final int maxPower,
+			@Nonnull final EnumRarity rarity) {
 		this.name = ModInfo.MOD_ID + ".devicequality." + name + ".name";
 		this.maxAbilities = maxAbilities;
+		this.maxPower = maxPower;
 		this.rarity = rarity;
 	}
 
@@ -62,5 +65,9 @@ public enum DeviceQuality {
 	@Nonnull
 	public EnumRarity getRarity() {
 		return this.rarity;
+	}
+
+	public int getMaxPower() {
+		return this.maxPower;
 	}
 }
