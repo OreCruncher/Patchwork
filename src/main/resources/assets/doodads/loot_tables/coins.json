@@ -10,9 +10,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 1,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -25,9 +28,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 2,
 					"weight": 10,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -49,8 +55,11 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 0,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 0
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -69,9 +78,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 0,
 					"weight": 30,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 0
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -84,9 +96,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 1,
 					"weight": 10,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -112,9 +127,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 0,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 0
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -127,9 +145,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data" :1,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -142,9 +163,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 2,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -170,9 +194,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 1,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -185,9 +212,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 2,
 					"weight": 30,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -200,9 +230,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 3,
 					"weight": 30,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 3
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -228,9 +261,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 2,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -243,9 +279,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 3,
 					"weight": 30,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -258,9 +297,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 4,
 					"weight": 30,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 3
+						},
 						{
 							"function": "set_count",
 							"count": {
@@ -273,9 +315,12 @@
 				{
 					"type": "item",
 					"name": "doodads:coin",
-					"data": 5,
 					"weight": 20,
 					"functions": [
+						{
+							"function": "set_data",
+							"data": 4
+						},
 						{
 							"function": "set_count",
 							"count": {
