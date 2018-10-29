@@ -33,15 +33,19 @@ import org.blockartistry.doodads.common.item.ItemBase;
 import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
 import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
+import org.blockartistry.doodads.network.PacketHandler;
 import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class SideSupport {
@@ -74,7 +78,7 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void init(@Nonnull final FMLInitializationEvent event) {
-		// This method intentionally left blank
+		PacketHandler.init();
 	}
 
 	/**
@@ -125,5 +129,19 @@ public abstract class SideSupport {
 	public World getClientWorld() {
 		return null;
 	}
+
+	/**
+	 * Force a proxy to pick a side in this fight
+	 * @param context
+	 * @return
+	 */
+	public abstract IThreadListener getThreadListener(@Nonnull final MessageContext context);
+
+	/**
+	 * Force a proxy to pick a side in this fight
+	 * @param context
+	 * @return
+	 */
+	public abstract EntityPlayer getPlayer(@Nonnull final MessageContext context);
 
 }

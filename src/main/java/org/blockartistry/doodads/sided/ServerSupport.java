@@ -24,6 +24,12 @@
 
 package org.blockartistry.doodads.sided;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.IThreadListener;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 public class ServerSupport extends SideSupport {
 
 	@Override
@@ -31,4 +37,22 @@ public class ServerSupport extends SideSupport {
 		return true;
 	}
 
+	@Override
+	public IThreadListener getThreadListener(@Nonnull final MessageContext context) {
+		if (context.side.isServer()) {
+			return context.getServerHandler().player.mcServer;
+		} else {
+			throw new IllegalStateException(
+					"Tried to get the IThreadListener from a client-side MessageContext on the dedicated server");
+		}
+	}
+
+	@Override
+	public EntityPlayer getPlayer(MessageContext context) {
+		if (context.side.isServer()) {
+			return context.getServerHandler().player;
+		} else {
+			throw new IllegalStateException("Tried to get the player from a client-side MessageContext on the dedicated server");
+		}
+	}
 }

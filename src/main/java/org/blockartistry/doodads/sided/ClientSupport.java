@@ -37,10 +37,13 @@ import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -68,13 +71,33 @@ public class ClientSupport extends SideSupport {
 	}
 
 	@Override
-	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final ModelResourceLocation loc) {
+	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta,
+			@Nonnull final ModelResourceLocation loc) {
 		ModelLoader.setCustomModelResourceLocation(item, meta, loc);
-				//new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
+		// new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
 	}
-	
+
 	@Nullable
 	public World getClientWorld() {
 		return Minecraft.getMinecraft().world;
+	}
+
+	@Override
+	public IThreadListener getThreadListener(@Nonnull final MessageContext context) {
+		if (context.side.isClient()) {
+			return Minecraft.getMinecraft();
+		} else {
+			return context.getServerHandler().player.mcServer;
+		}
+	}
+
+	@Override
+	@Nonnull
+	public EntityPlayer getPlayer(@Nonnull final MessageContext context) {
+		if (context.side.isClient()) {
+			return Minecraft.getMinecraft().player;
+		} else {
+			return context.getServerHandler().player;
+		}
 	}
 }
