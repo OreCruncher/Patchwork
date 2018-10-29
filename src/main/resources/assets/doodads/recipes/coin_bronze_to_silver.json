@@ -30,6 +30,8 @@
 		}
 	],
 	"result": {
-		"item": "#coin_silver"
+		"_comment": "Silver coin meta 2",
+		"item": "doodads:coin",
+		"data": 2
 	}
 }

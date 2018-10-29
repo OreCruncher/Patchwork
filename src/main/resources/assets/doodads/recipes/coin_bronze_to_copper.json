@@ -6,7 +6,9 @@
 		}
 	],
 	"result": {
-		"item": "#coin_copper",
+		"_comment": "Copper coin meta 0",
+		"item": "doodads:coin",
+		"data": 0,
 		"count": 9
 	}
 }

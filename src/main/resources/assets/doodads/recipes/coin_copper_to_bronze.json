@@ -30,6 +30,8 @@
 		}
 	],
 	"result": {
-		"item": "#coin_bronze"
+		"_comment": "Bronze coin meta 1",
+		"item": "doodads:coin",
+		"data": 1
 	}
 }

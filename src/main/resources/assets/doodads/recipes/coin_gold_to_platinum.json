@@ -30,6 +30,8 @@
 		}
 	],
 	"result": {
-		"item": "#coin_platinum"
+		"_comment": "Platinum coin meta 4",
+		"item": "doodads:coin",
+		"data": 4
 	}
 }

@@ -6,7 +6,9 @@
 		}
 	],
 	"result": {
-		"item": "#coin_gold",
+		"_comment": "Gold coin meta 3",
+		"item": "doodads:coin",
+		"data": 3,
 		"count": 9
 	}
 }

@@ -30,6 +30,8 @@
 		}
 	],
 	"result": {
-		"item": "#coin_gold"
+		"_comment": "Gold coing meta 3",
+		"item": "doodads:coin",
+		"data": 3
 	}
 }
