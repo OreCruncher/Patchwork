@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.common.item.magic.DeviceQuality;
 import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
 import org.blockartistry.doodads.util.MathStuff;
 
@@ -43,13 +44,15 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	protected List<String> abilities = new ArrayList<>();
 	protected int maxEnergy = 120 * 60 * 20;
 	protected int currentEnergy = this.maxEnergy;
-	
+	protected DeviceQuality quality = DeviceQuality.MUNDANE;
+	protected String moniker = "";
+
 	protected boolean dirty;
 
 	public boolean isDirty() {
 		return this.dirty;
 	}
-	
+
 	@Override
 	@Nonnull
 	public MagicDeviceType getDeviceType() {
@@ -70,6 +73,18 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	@Override
 	public int getCurrentEnergy() {
 		return this.currentEnergy;
+	}
+
+	@Override
+	@Nonnull
+	public DeviceQuality getQuality() {
+		return this.quality;
+	}
+
+	@Override
+	@Nonnull
+	public String getMoniker() {
+		return this.moniker;
 	}
 
 	@Override
@@ -99,18 +114,46 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	}
 
 	@Override
+	public void setQuality(@Nonnull final DeviceQuality q) {
+		this.quality = q;
+		this.dirty = true;
+	}
+
+	@Override
+	public void setMoniker(@Nonnull final String moniker) {
+		this.moniker = moniker;
+		this.dirty = true;
+	}
+
+	@Override
+	public boolean hasEnergyFor(final int amt) {
+		return amt <= this.currentEnergy;
+	}
+
+	@Override
+	public boolean consumeEnergy(final int amount) {
+		if (amount > this.currentEnergy)
+			return false;
+		this.currentEnergy -= amount;
+		this.dirty = true;
+		return true;
+	}
+
+	@Override
 	@Nonnull
 	public NBTTagCompound serialize() {
 		final NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setString(NBT.TYPE, this.type.name());
+		nbt.setString(NBT.QUALITY, this.quality.name());
 		nbt.setInteger(NBT.MAX_ENERGY, this.maxEnergy);
 		nbt.setInteger(NBT.CURRENT_ENERGY, this.currentEnergy);
+		nbt.setString(NBT.MONIKER, this.moniker);
 
 		final NBTTagList theList = new NBTTagList();
 		for (final String s : this.abilities)
 			theList.appendTag(new NBTTagString(s));
 		nbt.setTag(NBT.ABILITIES, theList);
-		
+
 		this.dirty = false;
 		return nbt;
 	}
@@ -118,13 +161,17 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	@Override
 	public void deserialize(@Nonnull final NBTTagCompound nbt) {
 		this.type = MagicDeviceType.valueOf(nbt.getString(NBT.TYPE));
+		this.quality = DeviceQuality.valueOf(nbt.getString(NBT.QUALITY));
 		this.maxEnergy = nbt.getInteger(NBT.MAX_ENERGY);
 		this.currentEnergy = nbt.getInteger(NBT.CURRENT_ENERGY);
+		this.moniker = nbt.getString(NBT.MONIKER);
+
 		this.abilities = new ArrayList<>();
 		final NBTTagList theList = nbt.getTagList(NBT.ABILITIES, 8);
 		final int count = theList.tagCount();
 		for (int i = 0; i < count; i++)
 			this.abilities.add(theList.getStringTagAt(i));
+
 		this.dirty = false;
 	}
 
@@ -133,5 +180,8 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		public static final String ABILITIES = "a";
 		public static final String MAX_ENERGY = "m";
 		public static final String CURRENT_ENERGY = "c";
+		public static final String QUALITY = "q";
+		public static final String MONIKER = "n";
 	}
+
 }

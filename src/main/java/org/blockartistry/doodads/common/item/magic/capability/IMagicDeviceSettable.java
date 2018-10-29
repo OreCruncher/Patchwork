@@ -26,6 +26,7 @@ package org.blockartistry.doodads.common.item.magic.capability;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.common.item.magic.DeviceQuality;
 import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
 
 import net.minecraft.util.ResourceLocation;
@@ -39,5 +40,18 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 	void setMaxEnergy(final int energy);
 
 	void setCurrentEnergy(final int energy);
+
+	void setQuality(@Nonnull final DeviceQuality q);
+
+	void setMoniker(@Nonnull final String moniker);
+
+	/**
+	 * Consumes the specified amount of energy from the device
+	 * 
+	 * @param amount
+	 *                   The amount of energy to be consumed
+	 * @return true if the operation completed; false if there isn't enough energy
+	 */
+	boolean consumeEnergy(final int amount);
 
 }

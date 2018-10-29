@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.common.item.magic.DeviceQuality;
 import org.blockartistry.doodads.common.item.magic.MagicDeviceType;
 import org.blockartistry.doodads.util.INBTSerialization;
 
@@ -35,14 +36,59 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
+	/**
+	 * Returns the type of device
+	 * 
+	 * @return The type of device this guy represents
+	 */
 	@Nonnull
 	MagicDeviceType getDeviceType();
 
+	/**
+	 * Returns a list of the devices abilities
+	 * 
+	 * @return A list of the devices abilities
+	 */
 	@Nonnull
 	List<String> getAbilities();
-	
+
+	/**
+	 * Returns the maximum possible energy for the device
+	 * 
+	 * @return Maximum possible energy that can be stored in the device
+	 */
 	int getMaxEnergy();
 
+	/**
+	 * Returns the current amount of energy available in the device
+	 * 
+	 * @return Current amount of energy available in the device
+	 */
 	int getCurrentEnergy();
+
+	/**
+	 * Returns quality information about the device
+	 * 
+	 * @return Device quality information
+	 */
+	@Nonnull
+	DeviceQuality getQuality();
+
+	/**
+	 * The fancy name of the device (i.e. "Ralph's Wonderous Ring")
+	 * 
+	 * @return
+	 */
+	@Nonnull
+	String getMoniker();
+
+	/**
+	 * Detemines if the device has enough energy to meet the request.
+	 * 
+	 * @param amt
+	 *                The amount to be requested
+	 * @return true if there is enough energy; false otherwise
+	 */
+	boolean hasEnergyFor(final int amt);
 
 }

@@ -26,6 +26,9 @@ package org.blockartistry.doodads.common.item.magic;
 
 import javax.annotation.Nonnull;
 
+import org.blockartistry.doodads.common.item.ItemMagicDevice;
+import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -74,11 +77,12 @@ public class AbilityFlight extends DeviceAbility {
 	public void doTick(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
-			ensureFlightSet(player);
-			if (player.capabilities.isFlying) {
-				device.damageItem(1, entity);
-				if (device.isEmpty())
-					unequip(entity, device);
+			final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
+			if (caps.hasEnergyFor(1)) {
+				ensureFlightSet(player);
+				caps.consumeEnergy(1);
+			} else if (caps.getCurrentEnergy() == 0) {
+				unequip(entity, device);
 			}
 		}
 	}
