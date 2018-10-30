@@ -104,7 +104,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 			final ItemStack stack = new ItemStack(this, 1, t.getMeta());
 			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
 					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
-			xface.setVariant(1);
+			xface.setVariant(0);
 			items.add(stack);
 		}
 
@@ -139,7 +139,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public boolean showDurabilityBar(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null && caps.getMaxEnergy() > 0 && Type.byMetadata(stack.getMetadata()) != Type.INERT;
+		return caps != null && caps.getMaxEnergy() > 0 && Type.byMetadata(stack.getMetadata()) != Type.AMULET;
 	}
 
 	@Override
@@ -339,29 +339,27 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	public static enum Type implements IVariant {
 		//
-		INERT(0, null, "inert", 1),
+		AMULET(0, BaubleType.AMULET, "amulet", 8),
 		//
-		AMULET(1, BaubleType.AMULET, "amulet", 8),
+		RING(1, BaubleType.RING, "ring", 5),
 		//
-		RING(2, BaubleType.RING, "ring", 5),
+		BELT(2, BaubleType.BELT, "belt", 1),
 		//
-		BELT(3, BaubleType.BELT, "belt", 1),
+		TRINKET(3, BaubleType.TRINKET, "trinket", 7),
 		//
-		TRINKET(4, BaubleType.TRINKET, "trinket", 7),
+		HEAD(4, BaubleType.HEAD, "head", 8),
 		//
-		HEAD(5, BaubleType.HEAD, "head", 1),
+		BODY(5, BaubleType.BODY, "body", 8),
 		//
-		BODY(6, BaubleType.BODY, "body", 1),
+		CHARM(6, BaubleType.CHARM, "charm", 8),
 		//
-		CHARM(7, BaubleType.CHARM, "charm", 1),
+		ROD(7, null, "rod", 4),
 		//
-		ROD(8, null, "rod", 4),
+		WAND(8, null, "wand", 7),
 		//
-		WAND(9, null, "wand", 7),
+		SCROLL(9, null, "scroll", 8),
 		//
-		SCROLL(10, null, "scroll", 8),
-		//
-		STAFF(11, null, "staff", 8);
+		STAFF(10, null, "staff", 8);
 
 		private static final Map<BaubleType, Type> fromBauble = new EnumMap<>(BaubleType.class);
 		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))

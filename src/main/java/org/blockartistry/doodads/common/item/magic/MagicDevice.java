@@ -49,7 +49,7 @@ public class MagicDevice {
 
 	private final String unlocalizedName;
 	private ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.NORMAL;
-	private ItemMagicDevice.Type type = ItemMagicDevice.Type.INERT;
+	private ItemMagicDevice.Type type = ItemMagicDevice.Type.AMULET;
 	
 	public MagicDevice(@Nonnull final String name) {
 		this.name = name;

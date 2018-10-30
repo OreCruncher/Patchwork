@@ -52,15 +52,15 @@ item.doodads.mobnet.name=Mob Net
 
 # Materials
 item.doodads.material_repairpaste.name=Repair Paste
+item.doodads.material_magicalamalgam.name=Magical Amalgam
 
 # Magical stuff
-doodads.magicdevice.inert.name=Inert
 doodads.magicdevice.amulet.name=Amulet
 doodads.magicdevice.ring.name=Ring
 doodads.magicdevice.belt.name=Belt
 doodads.magicdevice.trinket.name=Trinket
-doodads.magicdevice.head.name=Circlet
-doodads.magicdevice.body.name=Sash
+doodads.magicdevice.head.name=Head Covering
+doodads.magicdevice.body.name=Frock
 doodads.magicdevice.charm.name=Charm
 doodads.magicdevice.boots.name=Boots
 doodads.magicdevice.rod.name=Rod

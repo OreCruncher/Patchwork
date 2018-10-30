@@ -70,7 +70,8 @@ public class ItemMaterial extends ItemBase {
 
 	public static enum Type implements IVariant {
 
-		REPAIR_PASTE(0, "repairpaste");
+		REPAIR_PASTE(0, "repairpaste"),
+		MAGICAL_AMALGAM(1, "magicalamalgam");
 
 		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
 				.toArray(Type[]::new);

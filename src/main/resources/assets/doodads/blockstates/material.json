@@ -9,6 +9,11 @@
 				"textures": {
 					"layer0": "doodads:items/repairpaste"
 				}
+			},
+			"magicalamalgam": {
+				"textures": {
+					"layer0": "doodads:items/magical_amalgam"
+				}
 			}
 		}
 	}

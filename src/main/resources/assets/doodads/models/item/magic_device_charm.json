@@ -15,6 +15,42 @@
 				"doodads:variant": 1
 			},
 			"model": "doodads:item/charm/charm_1"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 2
+			},
+			"model": "doodads:item/charm/charm_2"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 3
+			},
+			"model": "doodads:item/charm/charm_3"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 4
+			},
+			"model": "doodads:item/charm/charm_4"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 5
+			},
+			"model": "doodads:item/charm/charm_5"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 6
+			},
+			"model": "doodads:item/charm/charm_6"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 7
+			},
+			"model": "doodads:item/charm/charm_7"
 		}
 	]
 }
