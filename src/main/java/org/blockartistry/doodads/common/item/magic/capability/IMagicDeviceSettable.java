@@ -32,6 +32,8 @@ import net.minecraft.util.ResourceLocation;
 
 public interface IMagicDeviceSettable extends IMagicDevice {
 
+	void setVariant(final int v);
+	
 	void addAbilities(@Nonnull final ResourceLocation... ability);
 
 	void setMaxEnergy(final int energy);

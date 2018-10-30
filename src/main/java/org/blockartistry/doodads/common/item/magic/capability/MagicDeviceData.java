@@ -40,9 +40,10 @@ import net.minecraft.util.ResourceLocation;
 public class MagicDeviceData implements IMagicDeviceSettable {
 
 	protected List<String> abilities = new ArrayList<>();
-	protected int maxEnergy = 120 * 60 * 20;
-	protected int currentEnergy = this.maxEnergy;
-	protected ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.MUNDANE;
+	protected int variant = 0;
+	protected int maxEnergy = 0;
+	protected int currentEnergy = 0;
+	protected ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.PLAIN;
 	protected String moniker = "";
 
 	protected boolean dirty;
@@ -51,10 +52,15 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	public boolean isDirty() {
 		return this.dirty;
 	}
-	
+
 	@Override
 	public void clearDirty() {
 		this.dirty = false;
+	}
+
+	@Override
+	public int getVariant() {
+		return this.variant;
 	}
 
 	@Override
@@ -77,9 +83,9 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	public float getPowerRatio() {
 		if (this.maxEnergy == 0)
 			return 0;
-		return ((float)this.currentEnergy / this.maxEnergy) * 100F;
+		return ((float) this.currentEnergy / this.maxEnergy) * 100F;
 	}
-	
+
 	@Override
 	@Nonnull
 	public ItemMagicDevice.Quality getQuality() {
@@ -90,6 +96,11 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	@Nonnull
 	public String getMoniker() {
 		return this.moniker;
+	}
+
+	@Override
+	public void setVariant(final int v) {
+		this.variant = v;
 	}
 
 	@Override
@@ -142,7 +153,8 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	@Nonnull
 	public NBTTagCompound serialize() {
 		final NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setByte(NBT.QUALITY, (byte)this.quality.ordinal());
+		nbt.setByte(NBT.VARIANT, (byte) this.variant);
+		nbt.setByte(NBT.QUALITY, (byte) this.quality.ordinal());
 		nbt.setInteger(NBT.MAX_ENERGY, this.maxEnergy);
 		nbt.setInteger(NBT.CURRENT_ENERGY, this.currentEnergy);
 		nbt.setString(NBT.MONIKER, this.moniker);
@@ -156,6 +168,7 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 
 	@Override
 	public void deserialize(@Nonnull final NBTTagCompound nbt) {
+		this.variant = nbt.getByte(NBT.VARIANT);
 		this.quality = ItemMagicDevice.Quality.values()[nbt.getByte(NBT.QUALITY)];
 		this.maxEnergy = nbt.getInteger(NBT.MAX_ENERGY);
 		this.currentEnergy = nbt.getInteger(NBT.CURRENT_ENERGY);
@@ -166,11 +179,12 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		final int count = theList.tagCount();
 		for (int i = 0; i < count; i++)
 			this.abilities.add(theList.getStringTagAt(i));
-		
+
 		this.dirty = true;
 	}
 
 	private static class NBT {
+		public static final String VARIANT = "v";
 		public static final String ABILITIES = "a";
 		public static final String MAX_ENERGY = "m";
 		public static final String CURRENT_ENERGY = "c";

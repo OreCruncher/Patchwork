@@ -13,6 +13,6 @@
 		"type": "minecraft:item_nbt",
 		"item": "doodads:magic_device",
 		"data": 7,
-		"nbt": "{ForgeCaps: {\"doodads:magicdevice_caps\":{q:1b,a:[\"doodads:flight\"],c:1440000,m:1440000,n:\"Flight\"}}, id: \"doodads:magic_device\", Count: 1b, Damage: 0s}"
+		"nbt": "{ForgeCaps: {\"doodads:magicdevice_caps\":{q:2b,a:[\"doodads:flight\"],c:1440000,m:1440000,n:\"Flight\"}}, id: \"doodads:magic_device\", Count: 1b, Damage: 0s}"
 	}
 }

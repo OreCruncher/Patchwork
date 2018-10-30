@@ -36,6 +36,12 @@ import net.minecraft.nbt.NBTTagCompound;
 public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
 	/**
+	 * Returns an ID corresponding to the visual variant to be displayed.
+	 * @return
+	 */
+	public int getVariant();
+	
+	/**
 	 * Returns a list of the devices abilities
 	 * 
 	 * @return A list of the devices abilities

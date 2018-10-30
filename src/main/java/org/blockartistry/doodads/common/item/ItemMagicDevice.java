@@ -53,6 +53,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -64,12 +65,22 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	public static final int BASE_CONSUMPTION_UNIT = 10;
 	public static final int TICKS_PER_MINUTE = 20 * 60;
-	
+
 	private static final String FORMAT_STRING = Localization.loadString("doodads.deviceability.format");
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("doodads.magicdevice.basicname");
 	private static final String DEVICE_NAME_FANCY_FMT = Localization.loadString("doodads.magicdevice.fancyname");
 	private static final Map<Type, String> DEVICE_TYPE_NAMES = new EnumMap<>(Type.class);
 	private static final Map<Quality, String> DEVICE_QUALITY_NAMES = new EnumMap<>(Quality.class);
+
+	private static final ResourceLocation VARIANT_GETTER_ID = new ResourceLocation(ModInfo.MOD_ID, "variant");
+	private static final IItemPropertyGetter VARIANT_GETTER = new IItemPropertyGetter() {
+		@SideOnly(Side.CLIENT)
+		@Override
+		public float apply(@Nonnull final ItemStack stack, @Nonnull final World worldIn,
+				@Nonnull final EntityLivingBase entityIn) {
+			return ItemMagicDevice.getCapability(stack).getVariant();
+		}
+	};
 
 	static {
 		for (final Type b : Type.values())
@@ -84,10 +95,19 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		setCreativeTab(DoodadsCreativeTab.tab);
 		setMaxStackSize(1);
 		setHasSubtypes(true);
+		addPropertyOverride(VARIANT_GETTER_ID, VARIANT_GETTER);
 	}
 
 	@Override
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
+		for (final Type t : Type.values()) {
+			final ItemStack stack = new ItemStack(this, 1, t.getMeta());
+			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
+					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
+			xface.setVariant(1);
+			items.add(stack);
+		}
+
 		for (final MagicDevice device : MagicDevice.DEVICES.values()) {
 			final ItemStack stack = new ItemStack(this, 1, device.getType().getMeta());
 			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
@@ -107,7 +127,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		// Register for each of the bauble slots
 		for (final Type bt : Type.values()) {
 			Doodads.proxy().registerItemRenderer(this, bt.getMeta(),
-					new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device", "type=" + bt.name()));
+					new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device_" + bt.name(), "inventory"));
 		}
 	}
 
@@ -119,7 +139,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public boolean showDurabilityBar(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null && Type.byMetadata(stack.getMetadata()) != Type.INERT;
+		return caps != null && caps.getMaxEnergy() > 0 && Type.byMetadata(stack.getMetadata()) != Type.INERT;
 	}
 
 	@Override
@@ -147,7 +167,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World worldIn,
 			@Nonnull final List<String> tooltip, @Nonnull final ITooltipFlag flagIn) {
-		tooltip.add(Localization.format("doodads.magicdevice.powerremaining", getPowerRemaining(stack)));
+		if (showDurabilityBar(stack))
+			tooltip.add(Localization.format("doodads.magicdevice.powerremaining", getPowerRemaining(stack)));
 		gatherToolTips(stack, tooltip);
 	}
 
@@ -170,7 +191,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	public Quality getQuality(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null ? caps.getQuality() : Quality.MUNDANE;
+		return caps != null ? caps.getQuality() : Quality.PLAIN;
 	}
 
 	@Nonnull
@@ -241,7 +262,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	 */
 	@Override
 	public boolean canEquip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return true;
+		return getBaubleType(itemstack) != null;
 	}
 
 	/**
@@ -269,13 +290,15 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	public static enum Quality {
 		//
-		MUNDANE("mundane", 0, TICKS_PER_MINUTE * 60 * BASE_CONSUMPTION_UNIT, EnumRarity.COMMON),
+		PLAIN("plain", 0, 0, EnumRarity.COMMON),
 		//
-		NORMAL("normal", 1, TICKS_PER_MINUTE * 60 * 2 * BASE_CONSUMPTION_UNIT, EnumRarity.UNCOMMON),
+		MUNDANE("mundane", 1, TICKS_PER_MINUTE * 60 * BASE_CONSUMPTION_UNIT, EnumRarity.COMMON),
 		//
-		PRIZED("prized", 2, TICKS_PER_MINUTE * 60 * 4 * BASE_CONSUMPTION_UNIT, EnumRarity.RARE),
+		NORMAL("normal", 2, TICKS_PER_MINUTE * 60 * 2 * BASE_CONSUMPTION_UNIT, EnumRarity.UNCOMMON),
 		//
-		LEGENDARY("legendary", 3, TICKS_PER_MINUTE * 60 * 8 * BASE_CONSUMPTION_UNIT, EnumRarity.EPIC);
+		PRIZED("prized", 3, TICKS_PER_MINUTE * 60 * 4 * BASE_CONSUMPTION_UNIT, EnumRarity.RARE),
+		//
+		LEGENDARY("legendary", 4, TICKS_PER_MINUTE * 60 * 8 * BASE_CONSUMPTION_UNIT, EnumRarity.EPIC);
 
 		private final String name;
 		private final int maxAbilities;

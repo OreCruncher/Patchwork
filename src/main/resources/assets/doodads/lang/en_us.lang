@@ -62,15 +62,11 @@ doodads.magicdevice.trinket.name=Trinket
 doodads.magicdevice.head.name=Circlet
 doodads.magicdevice.body.name=Sash
 doodads.magicdevice.charm.name=Charm
-doodads.magicdevice.helmet.name=Helmet
-doodads.magicdevice.chestplate.name=Chestplate
-doodads.magicdevice.leggings.name=Leggings
 doodads.magicdevice.boots.name=Boots
-doodads.magicdevice.weapon.name=Weapon
-doodads.magicdevice.shield.name=Shield
-doodads.magicdevice.staff.name=Staff
+doodads.magicdevice.rod.name=Rod
 doodads.magicdevice.wand.name=Wand
 
+doodads.devicequality.plain.name=Plain
 doodads.devicequality.mundane.name=Mundane
 doodads.devicequality.normal.name=Normal
 doodads.devicequality.prized.name=Prized
