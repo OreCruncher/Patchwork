@@ -26,7 +26,7 @@ config.doodads.mobnet.tooltip=Mob Net options
 config.doodads.mobnet.enableVillagerCapture=Enable Villager Capture
 config.doodads.mobnet.enableVillagerCapture.tooltip=Enable/disable use of the Mob Net on Villagers
 config.doodads.mobnet.enableHostileCapture=Enable Hostile Mob Capture
-config.doodads.mobnet.enableHostileCapture.tooltip=Enable/diable use of the Mob Net on hostile entities
+config.doodads.mobnet.enableHostileCapture.tooltip=Enable/disable use of the Mob Net on hostile entities
 config.doodads.mobnet.reusable=Mob Nets are reusable
 config.doodads.mobnet.reusable.tooltip=Enable/disable reuse of Mob Nets
 
