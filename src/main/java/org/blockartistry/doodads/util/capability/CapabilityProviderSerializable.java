@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
  *
  * @author Choonster
  */
-public class CapabilityProviderSerializable<HANDLER> extends CapabilityProviderSimple<HANDLER> implements INBTSerializable<NBTBase> {
+public class CapabilityProviderSerializable<H> extends CapabilityProviderSimple<H> implements INBTSerializable<NBTBase> {
 
 	/**
 	 * Create a provider for the default handler instance.
@@ -28,7 +28,7 @@ public class CapabilityProviderSerializable<HANDLER> extends CapabilityProviderS
 	 * @param capability The Capability instance to provide the handler for
 	 * @param facing     The EnumFacing to provide the handler for
 	 */
-	public CapabilityProviderSerializable(final Capability<HANDLER> capability, @Nullable final EnumFacing facing) {
+	public CapabilityProviderSerializable(final Capability<H> capability, @Nullable final EnumFacing facing) {
 		this(capability, facing, capability.getDefaultInstance());
 	}
 
@@ -39,7 +39,7 @@ public class CapabilityProviderSerializable<HANDLER> extends CapabilityProviderS
 	 * @param facing     The EnumFacing to provide the handler for
 	 * @param instance   The handler instance to provide
 	 */
-	public CapabilityProviderSerializable(final Capability<HANDLER> capability, @Nullable final EnumFacing facing, @Nullable final HANDLER instance) {
+	public CapabilityProviderSerializable(final Capability<H> capability, @Nullable final EnumFacing facing, @Nullable final H instance) {
 		super(capability, facing, instance);
 	}
 

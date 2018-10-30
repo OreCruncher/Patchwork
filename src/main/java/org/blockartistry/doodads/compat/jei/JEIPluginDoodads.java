@@ -26,8 +26,6 @@ package org.blockartistry.doodads.compat.jei;
 
 import javax.annotation.Nonnull;
 
-import org.blockartistry.doodads.common.item.ModItems;
-
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
@@ -43,7 +41,7 @@ public class JEIPluginDoodads implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		//subtypeRegistry.useNbtForSubtypes(ModItems.MAGIC_DEVICE);
+		// May need this hook...
 	}
 
 }

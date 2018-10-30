@@ -15,12 +15,12 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
  *
  * @author Choonster
  */
-public class CapabilityProviderSimple<HANDLER> implements ICapabilityProvider {
+public class CapabilityProviderSimple<H> implements ICapabilityProvider {
 
 	/**
 	 * The {@link Capability} instance to provide the handler for.
 	 */
-	protected final Capability<HANDLER> capability;
+	protected final Capability<H> capability;
 
 	/**
 	 * The {@link EnumFacing} to provide the handler for.
@@ -30,16 +30,16 @@ public class CapabilityProviderSimple<HANDLER> implements ICapabilityProvider {
 	/**
 	 * The handler instance to provide.
 	 */
-	protected final HANDLER instance;
+	protected final H instance;
 
-	public CapabilityProviderSimple(final Capability<HANDLER> capability, @Nullable final EnumFacing facing, @Nullable final HANDLER instance) {
+	public CapabilityProviderSimple(final Capability<H> capability, @Nullable final EnumFacing facing, @Nullable final H instance) {
 		this.capability = capability;
 		this.facing = facing;
 		this.instance = instance;
 	}
 
 	@Deprecated
-	public CapabilityProviderSimple(@Nullable final HANDLER instance, final Capability<HANDLER> capability, @Nullable final EnumFacing facing) {
+	public CapabilityProviderSimple(@Nullable final H instance, final Capability<H> capability, @Nullable final EnumFacing facing) {
 		this(capability, facing, instance);
 	}
 
@@ -88,7 +88,7 @@ public class CapabilityProviderSimple<HANDLER> implements ICapabilityProvider {
 	 *
 	 * @return The Capability instance
 	 */
-	public final Capability<HANDLER> getCapability() {
+	public final Capability<H> getCapability() {
 		return capability;
 	}
 
@@ -108,7 +108,7 @@ public class CapabilityProviderSimple<HANDLER> implements ICapabilityProvider {
 	 * @return The handler instance
 	 */
 	@Nullable
-	public final HANDLER getInstance() {
+	public final H getInstance() {
 		return instance;
 	}
 }

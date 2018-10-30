@@ -24,6 +24,9 @@
 
 package org.blockartistry.doodads.common.recipe;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.stream.StreamSupport;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -48,9 +51,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.GameData;
 
+//https://github.com/Xalcon/ChocoCraft3/tree/master/src/main/java/net/xalcon/chococraft/common/crafting
+//https://github.com/Choonster-Minecraft-Mods/TestMod3/tree/d064915183a4a3b803d779576f982279268b1ca3/src/main/java/choonster/testmod3/crafting/recipe
+//https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/d064915183a4a3b803d779576f982279268b1ca3/src/main/resources/assets/testmod3/recipes/_factories.json
+
 public final class RepairPasteRecipe extends ShapelessRecipes {
 
-	private static final ItemStack REPAIR_PASTE = new ItemStack(ModItems.MATERIAL, 1, ItemMaterial.Type.REPAIR_PASTE.getMeta());
+	private static final ItemStack REPAIR_PASTE = new ItemStack(ModItems.MATERIAL, 1,
+			ItemMaterial.Type.REPAIR_PASTE.getMeta());
 	private static final int REPAIR_AMOUNT = 50;
 
 	public RepairPasteRecipe(@Nonnull final String group, @Nonnull final ItemStack output,
@@ -110,21 +118,19 @@ public final class RepairPasteRecipe extends ShapelessRecipes {
 	}
 
 	// Scans the item registry looking for items that repair paste can be applied
-	// to. Limited
-	// to tools, armor, etc. that can be damaged.
+	// to. Limited to tools, armor, etc. that can be damaged.
 	public static void register() {
-		for (final ResourceLocation r : Item.REGISTRY.getKeys()) {
-			final Item item = Item.REGISTRY.getObject(r);
-			if (item.isDamageable() && isTypeAcceptable(item)) {
-				final ItemStack input = new ItemStack(item);
-				final ItemStack output = input.copy();
-				final ResourceLocation location = RecipeHelper.getNameForRecipe(output);
-				final RepairPasteRecipe recipe = new RepairPasteRecipe(location.getResourceDomain(), output,
-						RecipeHelper.buildInput(new Object[] { input, REPAIR_PASTE }));
-				recipe.setRegistryName(location);
-				GameData.register_impl(recipe);
-			}
-		}
+
+		StreamSupport.stream(Item.REGISTRY.spliterator(), false).filter(i -> i.isDamageable() && isTypeAcceptable(i))
+				.map(i -> new ItemStack(i))
+				.map(is -> new SimpleEntry<>(new ItemStack(is.getItem(), 1, is.getMaxDamage() / 2), is)).forEach(e -> {
+					// key is the input stack, value is the output stack
+					final ResourceLocation location = RecipeHelper.getNameForRecipe(e.getValue());
+					final RepairPasteRecipe recipe = new RepairPasteRecipe(location.getResourceDomain(), e.getValue(),
+							RecipeHelper.buildInput(new Object[] { e.getKey(), REPAIR_PASTE }));
+					recipe.setRegistryName(location);
+					GameData.register_impl(recipe);
+				});
 
 	}
 }

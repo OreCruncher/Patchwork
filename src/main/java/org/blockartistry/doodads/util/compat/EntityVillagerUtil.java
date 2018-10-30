@@ -19,7 +19,7 @@ public class EntityVillagerUtil {
 		try {
 			return careerId.getInt(entity);
 		} catch (@Nonnull final Throwable t) {
-			;
+			// Nothing...
 		}
 		return 1;
 	}
