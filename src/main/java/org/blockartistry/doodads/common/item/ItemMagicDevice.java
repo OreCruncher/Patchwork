@@ -47,7 +47,6 @@ import org.blockartistry.doodads.util.IVariant;
 import org.blockartistry.doodads.util.Localization;
 
 import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,7 +60,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemMagicDevice extends ItemBase implements IBauble {
+public class ItemMagicDevice extends ItemBase {
 
 	public static final int BASE_CONSUMPTION_UNIT = 10;
 	public static final int TICKS_PER_MINUTE = 20 * 60;
@@ -139,7 +138,7 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	@Override
 	public boolean showDurabilityBar(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null && caps.getMaxEnergy() > 0 && Type.byMetadata(stack.getMetadata()) != Type.AMULET;
+		return caps != null && caps.getMaxEnergy() > 0;
 	}
 
 	@Override
@@ -227,8 +226,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	/**
 	 * This method is called once per tick if the bauble is being worn by a player
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
 			process(itemstack, da -> da.doTick(player, itemstack));
@@ -236,8 +235,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	/**
 	 * This method is called when the bauble is equipped by a player
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
 			process(itemstack, da -> da.equip(player, itemstack));
@@ -245,8 +244,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	/**
 	 * This method is called when the bauble is unequipped by a player
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
 			process(itemstack, da -> da.unequip(player, itemstack));
@@ -255,8 +254,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	/**
 	 * This method return the type of bauble this is. Type is used to determine the
 	 * slots it can go into.
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	@Nonnull
 	public BaubleType getBaubleType(@Nonnull final ItemStack stack) {
 		return Type.byMetadata(stack.getMetadata()).getBaubleType();
@@ -264,16 +263,16 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	/**
 	 * can this bauble be placed in a bauble slot
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	public boolean canEquip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return getBaubleType(itemstack) != null;
 	}
 
 	/**
 	 * Can this bauble be removed from a bauble slot
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	public boolean canUnequip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return true;
 	}
@@ -282,8 +281,8 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 	 * Will bauble automatically sync to client if a change is detected in its NBT
 	 * or damage values? Default is off, so override and set to true if you want to
 	 * auto sync. This sync is not instant, but occurs every 10 ticks (.5 seconds).
+	 * Redirect from BaubleAdaptor.
 	 */
-	@Override
 	public boolean willAutoSync(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return false;
 	}

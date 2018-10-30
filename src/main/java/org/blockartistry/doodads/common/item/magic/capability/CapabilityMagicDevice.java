@@ -32,6 +32,7 @@ import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.util.INBTSerialization;
 import org.blockartistry.doodads.util.capability.CapabilityProviderSerializable;
 
+import baubles.common.Baubles;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,6 +52,8 @@ public class CapabilityMagicDevice {
 	public static final Capability<IMagicDevice> MAGIC_DEVICE = null;
 	public static final ResourceLocation CAPABILITY_ID = new ResourceLocation(ModInfo.MOD_ID, "magicdevice_caps");
 	public static final EnumFacing DEFAULT_FACING = null;
+
+	private static final ResourceLocation BAUBLE_CAPABILITY_ID = new ResourceLocation(Baubles.MODID, "bauble_cap");
 
 	public static void register() {
 		CapabilityManager.INSTANCE.register(IMagicDevice.class, new Capability.IStorage<IMagicDevice>() {
@@ -83,6 +86,10 @@ public class CapabilityMagicDevice {
 			final ItemStack stack = event.getObject();
 			if (stack.getItem() instanceof ItemMagicDevice) {
 				event.addCapability(CAPABILITY_ID, createProvider());
+
+				if (ItemMagicDevice.Type.byMetadata(stack.getMetadata()).getBaubleType() != null) {
+					event.addCapability(BAUBLE_CAPABILITY_ID, BaubleAdaptor.createBaubleProvider(stack));
+				}
 			}
 		}
 	}
