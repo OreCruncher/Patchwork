@@ -334,25 +334,27 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 
 	public static enum Type implements IVariant {
 		//
-		INERT(0, null, "inert"),
+		INERT(0, null, "inert", 1),
 		//
-		AMULET(1, BaubleType.AMULET, "amulet"),
+		AMULET(1, BaubleType.AMULET, "amulet", 8),
 		//
-		RING(2, BaubleType.RING, "ring"),
+		RING(2, BaubleType.RING, "ring", 1),
 		//
-		BELT(3, BaubleType.BELT, "belt"),
+		BELT(3, BaubleType.BELT, "belt", 1),
 		//
-		TRINKET(4, BaubleType.TRINKET, "trinket"),
+		TRINKET(4, BaubleType.TRINKET, "trinket", 1),
 		//
-		HEAD(5, BaubleType.HEAD, "head"),
+		HEAD(5, BaubleType.HEAD, "head", 1),
 		//
-		BODY(6, BaubleType.BODY, "body"),
+		BODY(6, BaubleType.BODY, "body", 1),
 		//
-		CHARM(7, BaubleType.CHARM, "charm"),
+		CHARM(7, BaubleType.CHARM, "charm", 1),
 		//
-		ROD(8, null, "rod"),
+		ROD(8, null, "rod", 1),
 		//
-		WAND(9, null, "wand");
+		WAND(9, null, "wand", 1),
+		//
+		SCROLL(10, null, "scroll", 1);
 
 		private static final Map<BaubleType, Type> fromBauble = new EnumMap<>(BaubleType.class);
 		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
@@ -368,12 +370,14 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		private final String unlocalizedName;
 		private final String name;
 		private final int meta;
+		private final int variants;
 
-		private Type(final int meta, @Nullable final BaubleType type, @Nonnull final String name) {
+		private Type(final int meta, @Nullable final BaubleType type, @Nonnull final String name, final int v) {
 			this.meta = meta;
 			this.bauble = type;
 			this.name = name;
 			this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".name";
+			this.variants = v;
 		}
 
 		@Nonnull
@@ -394,6 +398,10 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		@Override
 		public int getMeta() {
 			return this.meta;
+		}
+		
+		public int getVariants() {
+			return this.variants;
 		}
 
 		@Nullable

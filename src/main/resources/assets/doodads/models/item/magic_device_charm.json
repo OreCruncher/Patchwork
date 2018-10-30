@@ -6,9 +6,15 @@
 	"overrides": [
 		{
 			"predicate": {
+				"doodads:variant": 0
+			},
+			"model": "doodads:item/charm/charm_0"
+		},
+		{
+			"predicate": {
 				"doodads:variant": 1
 			},
-			"model": "minecraft:item/apple"
+			"model": "doodads:item/charm/charm_1"
 		}
 	]
 }

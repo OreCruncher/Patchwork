@@ -101,7 +101,7 @@ public class MagicDevice {
 	}
 
 	static {
-		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.CHARM)
+		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
 				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(ABILITY_FLIGHT);
 		DEVICES.put(device.getName(), device);
 	}
