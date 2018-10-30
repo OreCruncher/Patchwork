@@ -101,6 +101,7 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	@Override
 	public void setVariant(final int v) {
 		this.variant = v;
+		this.dirty = true;
 	}
 
 	@Override

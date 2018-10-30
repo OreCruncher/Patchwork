@@ -189,6 +189,11 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		return false;
 	}
 
+	@Nonnull
+	public Type getDeviceType(@Nonnull final ItemStack stack) {
+		return Type.byMetadata(stack.getMetadata());
+	}
+	
 	public Quality getQuality(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
 		return caps != null ? caps.getQuality() : Quality.PLAIN;
