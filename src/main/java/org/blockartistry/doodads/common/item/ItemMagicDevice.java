@@ -343,11 +343,11 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		//
 		AMULET(1, BaubleType.AMULET, "amulet", 8),
 		//
-		RING(2, BaubleType.RING, "ring", 1),
+		RING(2, BaubleType.RING, "ring", 5),
 		//
 		BELT(3, BaubleType.BELT, "belt", 1),
 		//
-		TRINKET(4, BaubleType.TRINKET, "trinket", 1),
+		TRINKET(4, BaubleType.TRINKET, "trinket", 7),
 		//
 		HEAD(5, BaubleType.HEAD, "head", 1),
 		//
@@ -355,11 +355,13 @@ public class ItemMagicDevice extends ItemBase implements IBauble {
 		//
 		CHARM(7, BaubleType.CHARM, "charm", 1),
 		//
-		ROD(8, null, "rod", 1),
+		ROD(8, null, "rod", 4),
 		//
-		WAND(9, null, "wand", 1),
+		WAND(9, null, "wand", 7),
 		//
-		SCROLL(10, null, "scroll", 1);
+		SCROLL(10, null, "scroll", 8),
+		//
+		STAFF(11, null, "staff", 8);
 
 		private static final Map<BaubleType, Type> fromBauble = new EnumMap<>(BaubleType.class);
 		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))

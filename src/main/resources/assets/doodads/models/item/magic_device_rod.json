@@ -2,5 +2,31 @@
 	"parent": "item/generated",
 	"textures": {
 		"layer0": "minecraft:items/gold_ingot"
-	}
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"doodads:variant": 0
+			},
+			"model": "doodads:item/rod/rod_0"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 1
+			},
+			"model": "doodads:item/rod/rod_1"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 2
+			},
+			"model": "doodads:item/rod/rod_2"
+		},
+		{
+			"predicate": {
+				"doodads:variant": 3
+			},
+			"model": "doodads:item/rod/rod_3"
+		}
+	]
 }
