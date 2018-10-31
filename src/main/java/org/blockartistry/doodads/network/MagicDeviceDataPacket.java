@@ -43,7 +43,7 @@ public class MagicDeviceDataPacket implements IMessage {
 		for (int index = 0; index < items.size(); index++) {
 			final IMagicDevice data = items.get(index);
 			if (data != null) {
-				final NBTTagCompound d = data.serialize();
+				final NBTTagCompound d = data.serializeNBT();
 				this.data.put(index, d);
 			}
 		}
@@ -141,7 +141,7 @@ public class MagicDeviceDataPacket implements IMessage {
 									CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 							assert newHandler != null;
 
-							newHandler.deserialize(data);
+							newHandler.deserializeNBT(data);
 
 							if (!originalHandler.equals(newHandler)) {
 								cracker.putStack(index, newStack);

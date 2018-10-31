@@ -29,11 +29,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
-import org.blockartistry.doodads.util.INBTSerialization;
-
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
+public interface IMagicDevice extends INBTSerializable<NBTTagCompound> {
 
 	/**
 	 * Returns an ID corresponding to the visual variant to be displayed.

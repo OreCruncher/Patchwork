@@ -154,7 +154,7 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 
 	@Override
 	@Nonnull
-	public NBTTagCompound serialize() {
+	public NBTTagCompound serializeNBT() {
 		final NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setByte(NBT.VARIANT, (byte) this.variant);
 		nbt.setByte(NBT.QUALITY, (byte) this.quality.ordinal());
@@ -170,7 +170,7 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	}
 
 	@Override
-	public void deserialize(@Nonnull final NBTTagCompound nbt) {
+	public void deserializeNBT(@Nonnull final NBTTagCompound nbt) {
 		this.variant = nbt.getByte(NBT.VARIANT);
 		this.quality = ItemMagicDevice.Quality.values()[nbt.getByte(NBT.QUALITY)];
 		this.maxEnergy = nbt.getInteger(NBT.MAX_ENERGY);

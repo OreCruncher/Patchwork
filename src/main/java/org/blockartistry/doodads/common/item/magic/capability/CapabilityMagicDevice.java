@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
-import org.blockartistry.doodads.util.INBTSerialization;
 import org.blockartistry.doodads.util.capability.CapabilityProviderSerializable;
 
 import baubles.common.Baubles;
@@ -42,6 +41,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -60,13 +60,13 @@ public class CapabilityMagicDevice {
 			@Override
 			public NBTBase writeNBT(@Nonnull final Capability<IMagicDevice> capability,
 					@Nonnull final IMagicDevice instance, @Nullable final EnumFacing side) {
-				return ((INBTSerialization<NBTTagCompound>) instance).serialize();
+				return ((INBTSerializable<NBTTagCompound>) instance).serializeNBT();
 			}
 
 			@Override
 			public void readNBT(@Nonnull final Capability<IMagicDevice> capability,
 					@Nonnull final IMagicDevice instance, @Nullable final EnumFacing side, @Nonnull final NBTBase nbt) {
-				((INBTSerialization<NBTTagCompound>) instance).deserialize((NBTTagCompound) nbt);
+				((INBTSerializable<NBTTagCompound>) instance).deserializeNBT((NBTTagCompound) nbt);
 			}
 		}, () -> new MagicDeviceData());
 	}

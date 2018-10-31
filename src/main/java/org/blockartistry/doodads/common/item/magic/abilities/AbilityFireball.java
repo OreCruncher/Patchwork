@@ -76,14 +76,14 @@ public class AbilityFireball extends AbilityHandler {
 			// Create the entity using this CTOR.  It sets up the player as the shooter
 			final EntitySmallFireball fireball = new EntitySmallFireball(world, player, dX, dY, dZ);
 			
-			// Adjust its positition so it is not at the players feet :\
+			// Adjust its position so it is not at the players feet :\
 			final double x = player.posX + lookVec.x;
 			final double y = player.posY + player.getEyeHeight() + lookVec.y;
 			final double z = player.posZ + lookVec.z;
 			fireball.setPosition(x, y, z);
 
-			// Refigure the acceleration vectors because the entity CTOR puts a lot of
-			// english on the trajectory
+			// Recalculate the acceleration vectors because the entity CTOR puts a lot of
+			// English on the trajectory
 	        double d0 = (double)MathHelper.sqrt(dX * dX + dY * dY + dZ * dZ);
 	        fireball.accelerationX = dX / d0 * 0.1D;
 	        fireball.accelerationY = dY / d0 * 0.1D;
@@ -97,9 +97,7 @@ public class AbilityFireball extends AbilityHandler {
             player.world.playEvent((EntityPlayer)null, 1018, soundPos, 0);
 
             success = true;
-			// Start the cooldown
-			player.getCooldownTracker().setCooldown(ModItems.MAGIC_DEVICE, COOLDOWN_TICKS);
-		
+            
 		} else {
 			// Need to play a click sound because they are empty
 			playNoChargeSound(player);
