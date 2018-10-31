@@ -30,6 +30,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.ModInfo;
+import org.blockartistry.doodads.common.item.ItemMagicDevice;
+import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.network.MagicDeviceDataPacket;
 import org.blockartistry.doodads.network.NetworkHandler;
 import org.blockartistry.doodads.util.capability.CapabilityUtils;
@@ -39,6 +41,7 @@ import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -90,9 +93,42 @@ public final class MagicDeviceMonitor {
 		return hasCaps;
 	}
 
+	private static void tickStack(@Nonnull final EntityPlayer player, @Nonnull final ItemStack stack,
+			@Nonnull final ItemMagicDevice.TickWhen... when) {
+		final IMagicDevice c = ItemMagicDevice.getCapability(stack);
+		if (c != null) {
+			boolean doTheTick = false;
+			for (int i = 0; i < when.length && !doTheTick; i++)
+				doTheTick = ItemMagicDevice.Type.bySubTypeId(stack.getMetadata()).canTick(when[i]);
+			if (doTheTick)
+				ModItems.MAGIC_DEVICE.onWornTick(stack, player);
+		}
+	}
+
+	public static void tickInventory(@Nonnull final EntityPlayer player, @Nonnull final NonNullList<ItemStack> inv,
+			@Nonnull final ItemMagicDevice.TickWhen when) {
+		final ItemStack heldStack = player.getHeldItemMainhand();
+		for (final ItemStack stack : inv) {
+			// We skip the held item - that is processed separately from the general
+			// iteration
+			if (heldStack != stack && !stack.isEmpty() && stack.getItem() instanceof ItemMagicDevice) {
+				tickStack(player, stack, when);
+			}
+		}
+	}
+
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void playerTick(@Nonnull final TickEvent.PlayerTickEvent evt) {
 		if (evt.side == Side.SERVER && evt.phase == Phase.END) {
+
+			// First thing - tick the items in inventory
+			tickInventory(evt.player, evt.player.inventory.mainInventory, ItemMagicDevice.TickWhen.ALWAYS);
+			tickInventory(evt.player, evt.player.inventory.armorInventory, ItemMagicDevice.TickWhen.WORN);
+			tickStack(evt.player, evt.player.getHeldItemMainhand(), ItemMagicDevice.TickWhen.HELD,
+					ItemMagicDevice.TickWhen.ALWAYS);
+			tickStack(evt.player, evt.player.getHeldItemOffhand(), ItemMagicDevice.TickWhen.HELD,
+					ItemMagicDevice.TickWhen.ALWAYS);
+
 			List<IMagicDevice> caps = new ArrayList<>();
 			if (getBaubleCaps(evt.player, caps)) {
 				final MagicDeviceDataPacket packet = new MagicDeviceDataPacket(evt.player, true, caps);

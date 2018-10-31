@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,6 +48,8 @@ import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettab
 import org.blockartistry.doodads.util.IVariant;
 import org.blockartistry.doodads.util.Localization;
 import org.blockartistry.doodads.util.MathStuff;
+import org.blockartistry.doodads.util.collections.EmptySet;
+import org.blockartistry.doodads.util.collections.IdentityHashSet;
 
 import baubles.api.BaubleType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -75,7 +78,6 @@ public class ItemMagicDevice extends ItemBase {
 
 	private static final String POWER_FORMAT_STRING = Localization.loadString("doodads.magicdevice.powerremaining");
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("doodads.magicdevice.basicname");
-	private static final String DEVICE_NAME_FANCY_FMT = Localization.loadString("doodads.magicdevice.fancyname");
 	private static final Map<Type, String> DEVICE_TYPE_NAMES = new EnumMap<>(Type.class);
 	private static final Map<Quality, String> DEVICE_QUALITY_NAMES = new EnumMap<>(Quality.class);
 
@@ -160,12 +162,13 @@ public class ItemMagicDevice extends ItemBase {
 	public String getItemStackDisplayName(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
 		if (caps != null) {
-			final String quality = DEVICE_QUALITY_NAMES.get(caps.getQuality());
-			final String device = DEVICE_TYPE_NAMES.get(Type.bySubTypeId(stack.getMetadata()));
 			final String moniker = caps.getMoniker();
-			if (moniker.isEmpty())
+			if (moniker.isEmpty()) {
+				final String quality = DEVICE_QUALITY_NAMES.get(caps.getQuality());
+				final String device = DEVICE_TYPE_NAMES.get(Type.bySubTypeId(stack.getMetadata()));
 				return String.format(DEVICE_NAME_SIMPLE_FMT, quality, device);
-			return String.format(DEVICE_NAME_FANCY_FMT, quality, device, Localization.loadString(moniker));
+			}
+			return Localization.loadString(moniker);
 		}
 		return "WFT?";
 	}
@@ -288,7 +291,7 @@ public class ItemMagicDevice extends ItemBase {
 			gatherHandlers(caps).forEach(da -> da.doTick(caps, player, stack));
 		}
 	}
-
+	
 	/**
 	 * This method is called when the bauble is equipped by a player Redirect from
 	 * BaubleAdaptor.
@@ -312,6 +315,19 @@ public class ItemMagicDevice extends ItemBase {
 	}
 
 	/**
+	 * Indicates if the given ItemStack can be ticked based on the TickWhen supplied
+	 * 
+	 * @param stack
+	 *                  Stack to check
+	 * @param when
+	 *                  When the tick is occuring
+	 * @return true if the stack can be ticked; false otherwise
+	 */
+	public boolean canBeTicked(@Nonnull final ItemStack stack, @Nonnull final TickWhen when) {
+		return Type.bySubTypeId(stack.getMetadata()).canTick(when);
+	}
+
+	/**
 	 * This method return the type of bauble this is. Type is used to determine the
 	 * slots it can go into. Redirect from BaubleAdaptor.
 	 */
@@ -323,6 +339,18 @@ public class ItemMagicDevice extends ItemBase {
 	@Nonnull
 	private static Stream<AbilityHandler> gatherHandlers(@Nonnull final IMagicDevice caps) {
 		return caps.getAbilities().stream().map(r -> AbilityHandler.REGISTRY.getValue(r)).filter(Objects::nonNull);
+	}
+
+	public static enum TickWhen {
+		// Never tick the item. Will still get the other events like clicking
+		// equip, and unequip.
+		NEVER,
+		// Only tick when held in the main or off hand.
+		HELD,
+		// Tick when worn, such as a bauble or armor slot
+		WORN,
+		// Always tick - as long as it is somewhere in player inventory
+		ALWAYS;
 	}
 
 	public static enum Quality {
@@ -371,27 +399,27 @@ public class ItemMagicDevice extends ItemBase {
 
 	public static enum Type implements IVariant {
 		//
-		AMULET(0, BaubleType.AMULET, "amulet", 8),
+		AMULET(0, BaubleType.AMULET, "amulet", 8, TickWhen.WORN),
 		//
-		RING(1, BaubleType.RING, "ring", 5),
+		RING(1, BaubleType.RING, "ring", 5, TickWhen.WORN),
 		//
-		BELT(2, BaubleType.BELT, "belt", 1),
+		BELT(2, BaubleType.BELT, "belt", 1, TickWhen.WORN),
 		//
-		TRINKET(3, BaubleType.TRINKET, "trinket", 7),
+		TRINKET(3, BaubleType.TRINKET, "trinket", 7, TickWhen.WORN),
 		//
-		HEAD(4, BaubleType.HEAD, "head", 8),
+		HEAD(4, BaubleType.HEAD, "head", 8, TickWhen.WORN),
 		//
-		BODY(5, BaubleType.BODY, "body", 8),
+		BODY(5, BaubleType.BODY, "body", 8, TickWhen.WORN),
 		//
-		CHARM(6, BaubleType.CHARM, "charm", 8),
+		CHARM(6, BaubleType.CHARM, "charm", 8, TickWhen.WORN),
 		//
-		ROD(7, null, "rod", 4),
+		ROD(7, null, "rod", 4, TickWhen.HELD),
 		//
-		WAND(8, null, "wand", 7),
+		WAND(8, null, "wand", 7, TickWhen.NEVER),
 		//
-		SCROLL(9, null, "scroll", 8),
+		SCROLL(9, null, "scroll", 8, TickWhen.NEVER),
 		//
-		STAFF(10, null, "staff", 8);
+		STAFF(10, null, "staff", 8, TickWhen.HELD);
 
 		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values())
 				.sorted(Comparator.comparing(Type::getSubTypeId)).toArray(Type[]::new);
@@ -401,13 +429,17 @@ public class ItemMagicDevice extends ItemBase {
 		private final String name;
 		private final int subTypeId;
 		private final int variants;
+		private final Set<TickWhen> whenToTick;
 
-		private Type(final int subTypeId, @Nullable final BaubleType type, @Nonnull final String name, final int v) {
+		private Type(final int subTypeId, @Nullable final BaubleType type, @Nonnull final String name, final int v,
+				@Nonnull final TickWhen... ticking) {
 			this.subTypeId = subTypeId;
 			this.bauble = type;
 			this.name = name;
 			this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".name";
 			this.variants = v;
+			this.whenToTick = (ticking == null || ticking.length == 0) ? EmptySet.empty()
+					: new IdentityHashSet<>(ticking);
 		}
 
 		@Nonnull
@@ -432,6 +464,10 @@ public class ItemMagicDevice extends ItemBase {
 
 		public int getVariants() {
 			return this.variants;
+		}
+
+		public boolean canTick(@Nonnull final TickWhen when) {
+			return this.whenToTick.contains(when);
 		}
 
 		@Nonnull

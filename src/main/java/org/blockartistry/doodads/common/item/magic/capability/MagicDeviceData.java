@@ -34,9 +34,8 @@ import javax.annotation.Nonnull;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.util.MathStuff;
+import org.blockartistry.doodads.util.collections.EmptyList;
 import org.blockartistry.doodads.util.simplecaps.SimpleDataRegistry;
-
-import com.google.common.collect.ImmutableList;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -60,7 +59,7 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 	@Override
 	@Nonnull
 	public List<ResourceLocation> getAbilities() {
-		return this.abilities != null ? this.abilities : ImmutableList.of();
+		return this.abilities != null ? this.abilities : EmptyList.empty();
 	}
 
 	@Override

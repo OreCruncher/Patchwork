@@ -1,5 +1,4 @@
-/*
- * This file is part of Doodads, licensed under the MIT License (MIT).
+/* This file is part of Doodads, licensed under the MIT License (MIT).
  *
  * Copyright (c) OreCruncher
  *
@@ -22,23 +21,46 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.common.item;
+package org.blockartistry.doodads.util.collections;
 
-import org.blockartistry.doodads.common.item.magic.MagicAbilities;
+import java.util.Collection;
 
-import net.minecraft.item.Item;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class ModItems {
+import gnu.trove.set.hash.THashSet;
 
-	public static final Item COIN = new ItemCoin();
-	public static final Item MATERIAL = new ItemMaterial();
-	public static final Item MOB_NET = new ItemMobNet();
-	public static final ItemMagicDevice MAGIC_DEVICE = new ItemMagicDevice("magic_device");
+public final class IdentityHashSet<T> extends THashSet<T> {
 
-	// Currently a do nothing function. By calling this it triggers the
-	// classes static initializers to run.
-	public static void initialize() {
-		MagicAbilities.initialize();
+	public IdentityHashSet() {
+		super();
 	}
 
+	public IdentityHashSet(@Nonnull final T[] objs) {
+		super();
+		for (int i = 0; i < objs.length; i++)
+			add(objs[i]);
+	}
+
+	public IdentityHashSet(final int initialCapacity) {
+		super(initialCapacity);
+	}
+
+	public IdentityHashSet(final int initialCapacity, final float loadFactor) {
+		super(initialCapacity, loadFactor);
+	}
+
+	public IdentityHashSet(@Nonnull final Collection<? extends T> collection) {
+		super(collection);
+	}
+
+	@Override
+	protected int hash(@Nonnull final Object notnull) {
+		return System.identityHashCode(notnull);
+	}
+
+	@Override
+	protected boolean equals(@Nonnull final Object notnull, @Nullable final Object two) {
+		return notnull == two;
+	}
 }
