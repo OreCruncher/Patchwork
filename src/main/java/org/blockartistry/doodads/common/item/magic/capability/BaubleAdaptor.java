@@ -58,26 +58,32 @@ public class BaubleAdaptor implements IBauble {
 		return this.type;
 	}
 
+	@Override
 	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		DEVICE.onWornTick(itemstack, player);
 	}
 
+	@Override
 	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		DEVICE.onEquipped(itemstack, player);
 	}
 
+	@Override
 	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		DEVICE.onUnequipped(itemstack, player);
 	}
 
+	@Override
 	public boolean canEquip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return DEVICE.canEquip(itemstack, player);
 	}
 
+	@Override
 	public boolean canUnequip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return DEVICE.canUnequip(itemstack, player);
 	}
 
+	@Override
 	public boolean willAutoSync(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return DEVICE.willAutoSync(itemstack, player);
 	}

@@ -123,10 +123,11 @@ public abstract class SideSupport {
 	 * @param meta
 	 * @param id
 	 */
-	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta, @Nonnull final ModelResourceLocation loc) {
+	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta,
+			@Nonnull final ModelResourceLocation loc) {
 		// This method intentionally left blank
 	}
-	
+
 	@Nullable
 	public World getClientWorld() {
 		return null;
@@ -134,6 +135,7 @@ public abstract class SideSupport {
 
 	/**
 	 * Force a proxy to pick a side in this fight
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -141,6 +143,7 @@ public abstract class SideSupport {
 
 	/**
 	 * Force a proxy to pick a side in this fight
+	 * 
 	 * @param context
 	 * @return
 	 */

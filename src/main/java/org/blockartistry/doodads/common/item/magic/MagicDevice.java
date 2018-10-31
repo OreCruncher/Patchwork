@@ -40,7 +40,7 @@ public class MagicDevice {
 
 	// Collect IDs for capabilities here
 	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
-	
+
 	// Pre-built fancy devices
 	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
 
@@ -50,7 +50,7 @@ public class MagicDevice {
 	private final String unlocalizedName;
 	private ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.NORMAL;
 	private ItemMagicDevice.Type type = ItemMagicDevice.Type.AMULET;
-	
+
 	public MagicDevice(@Nonnull final String name) {
 		this.name = name;
 		this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".moniker";
@@ -60,7 +60,7 @@ public class MagicDevice {
 	public String getName() {
 		return this.name;
 	}
-	
+
 	@Nonnull
 	public String getUnlocalizedName() {
 		return this.unlocalizedName;
@@ -101,7 +101,7 @@ public class MagicDevice {
 	}
 
 	static {
-		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
+		final MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
 				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(ABILITY_FLIGHT);
 		DEVICES.put(device.getName(), device);
 	}

@@ -77,6 +77,7 @@ public class ClientSupport extends SideSupport {
 		// new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
 	}
 
+	@Override
 	@Nullable
 	public World getClientWorld() {
 		return Minecraft.getMinecraft().world;

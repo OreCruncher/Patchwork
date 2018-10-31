@@ -37,13 +37,14 @@ public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
 	/**
 	 * Returns an ID corresponding to the visual variant to be displayed.
+	 * 
 	 * @return
 	 */
 	public int getVariant();
-	
+
 	/**
 	 * Returns a list of the devices abilities
-	 * 
+	 *
 	 * @return A list of the devices abilities
 	 */
 	@Nonnull
@@ -51,28 +52,29 @@ public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
 	/**
 	 * Returns the maximum possible energy for the device
-	 * 
+	 *
 	 * @return Maximum possible energy that can be stored in the device
 	 */
 	int getMaxEnergy();
 
 	/**
 	 * Returns the current amount of energy available in the device
-	 * 
+	 *
 	 * @return Current amount of energy available in the device
 	 */
 	int getCurrentEnergy();
 
 	/**
-	 * Returns the current amount of energy available as a ratio
-	 * 0 - 100.  Think of it as percentage of power remaining.
+	 * Returns the current amount of energy available as a ratio 0 - 100. Think of
+	 * it as percentage of power remaining.
+	 * 
 	 * @return
 	 */
 	float getPowerRatio();
 
 	/**
 	 * Returns quality information about the device
-	 * 
+	 *
 	 * @return Device quality information
 	 */
 	@Nonnull
@@ -80,7 +82,7 @@ public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
 	/**
 	 * The fancy name of the device (i.e. "Ralph's Wonderous Ring")
-	 * 
+	 *
 	 * @return
 	 */
 	@Nonnull
@@ -88,7 +90,7 @@ public interface IMagicDevice extends INBTSerialization<NBTTagCompound> {
 
 	/**
 	 * Detemines if the device has enough energy to meet the request.
-	 * 
+	 *
 	 * @param amt
 	 *                The amount to be requested
 	 * @return true if there is enough energy; false otherwise

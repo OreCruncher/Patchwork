@@ -52,7 +52,8 @@ public class ServerSupport extends SideSupport {
 		if (context.side.isServer()) {
 			return context.getServerHandler().player;
 		} else {
-			throw new IllegalStateException("Tried to get the player from a client-side MessageContext on the dedicated server");
+			throw new IllegalStateException(
+					"Tried to get the player from a client-side MessageContext on the dedicated server");
 		}
 	}
 }

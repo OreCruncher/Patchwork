@@ -27,7 +27,7 @@ package org.blockartistry.doodads.util;
 import javax.annotation.Nonnull;
 
 public interface INBTSerialization<T> {
-	
+
 	@Nonnull
 	T serialize();
 

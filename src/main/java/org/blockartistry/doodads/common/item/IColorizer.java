@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IColorizer {
-	
+
 	@SideOnly(Side.CLIENT)
 	public int getColor(@Nonnull final ItemStack stack);
 }

@@ -9,7 +9,8 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class EntityVillagerUtil {
 
-	private static final Field careerId = ReflectionHelper.findField(EntityVillager.class, "careerId", "field_175563_bv");
+	private static final Field careerId = ReflectionHelper.findField(EntityVillager.class, "careerId",
+			"field_175563_bv");
 
 	private EntityVillagerUtil() {
 

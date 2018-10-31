@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -51,11 +51,17 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -192,7 +198,7 @@ public class ItemMagicDevice extends ItemBase {
 	public Type getDeviceType(@Nonnull final ItemStack stack) {
 		return Type.byMetadata(stack.getMetadata());
 	}
-	
+
 	public Quality getQuality(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
 		return caps != null ? caps.getQuality() : Quality.PLAIN;
@@ -210,7 +216,8 @@ public class ItemMagicDevice extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Nonnull
 	public static void gatherToolTips(@Nonnull final ItemStack stack, @Nonnull final List<String> tips) {
-		process(stack, da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
+		gatherHandlers(stack).forEach(
+				da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
 	}
 
 	@Nonnull
@@ -225,36 +232,79 @@ public class ItemMagicDevice extends ItemBase {
 	}
 
 	/**
+	 * Called when a Block is right-clicked with this Item
+	 */
+	@Override
+	@Nonnull
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
+			float hitX, float hitY, float hitZ) {
+		final ItemStack stack = player.getHeldItem(hand);
+		if (!player.getEntityWorld().isRemote)
+			gatherHandlers(stack)
+					.forEach(da -> da.onItemUse(stack, player, world, pos, hand, facing, hitX, hitY, hitZ));
+		return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+	}
+
+	/**
+	 * Called when the equipped item is right clicked.
+	 */
+	@Override
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(@Nonnull final World world, @Nonnull final EntityPlayer player,
+			@Nonnull final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
+		if (!player.getEntityWorld().isRemote)
+			gatherHandlers(stack).forEach(da -> da.onItemRightClick(stack, world, player, hand));
+		return super.onItemRightClick(world, player, hand);
+	}
+
+	/**
+	 * Called when an entity is hit with the item
+	 *
+	 * @param entity
+	 * @param player
+	 */
+	@Override
+	public boolean hitEntity(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase target,
+			@Nonnull final EntityLivingBase attacker) {
+		if (!attacker.getEntityWorld().isRemote) {
+			final Optional<Boolean> result = gatherHandlers(stack).map(da -> da.hitEntity(stack, target, attacker))
+					.reduce(Boolean::logicalOr);
+			return result.isPresent() ? result.get() : false;
+		}
+		return false;
+	}
+
+	/**
 	 * This method is called once per tick if the bauble is being worn by a player
 	 * Redirect from BaubleAdaptor.
 	 */
 	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			process(itemstack, da -> da.doTick(player, itemstack));
+			gatherHandlers(itemstack).forEach(da -> da.doTick(player, itemstack));
 	}
 
 	/**
-	 * This method is called when the bauble is equipped by a player
-	 * Redirect from BaubleAdaptor.
+	 * This method is called when the bauble is equipped by a player Redirect from
+	 * BaubleAdaptor.
 	 */
 	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			process(itemstack, da -> da.equip(player, itemstack));
+			gatherHandlers(itemstack).forEach(da -> da.equip(player, itemstack));
 	}
 
 	/**
-	 * This method is called when the bauble is unequipped by a player
-	 * Redirect from BaubleAdaptor.
+	 * This method is called when the bauble is unequipped by a player Redirect from
+	 * BaubleAdaptor.
 	 */
 	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		if (!player.getEntityWorld().isRemote)
-			process(itemstack, da -> da.unequip(player, itemstack));
+			gatherHandlers(itemstack).forEach(da -> da.unequip(player, itemstack));
 	}
 
 	/**
 	 * This method return the type of bauble this is. Type is used to determine the
-	 * slots it can go into.
-	 * Redirect from BaubleAdaptor.
+	 * slots it can go into. Redirect from BaubleAdaptor.
 	 */
 	@Nonnull
 	public BaubleType getBaubleType(@Nonnull final ItemStack stack) {
@@ -262,16 +312,14 @@ public class ItemMagicDevice extends ItemBase {
 	}
 
 	/**
-	 * can this bauble be placed in a bauble slot
-	 * Redirect from BaubleAdaptor.
+	 * can this bauble be placed in a bauble slot Redirect from BaubleAdaptor.
 	 */
 	public boolean canEquip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return getBaubleType(itemstack) != null;
+		return true;
 	}
 
 	/**
-	 * Can this bauble be removed from a bauble slot
-	 * Redirect from BaubleAdaptor.
+	 * Can this bauble be removed from a bauble slot Redirect from BaubleAdaptor.
 	 */
 	public boolean canUnequip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
 		return true;
@@ -287,9 +335,10 @@ public class ItemMagicDevice extends ItemBase {
 		return false;
 	}
 
-	private static void process(@Nonnull final ItemStack stack, @Nonnull final Consumer<AbilityHandler> op) {
-		getAbilities(stack).stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
-				.filter(e -> e != null).sorted((a, b) -> a.getPriority() - b.getPriority()).forEach(op);
+	@Nonnull
+	private static Stream<AbilityHandler> gatherHandlers(@Nonnull final ItemStack stack) {
+		return getAbilities(stack).stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
+				.filter(e -> e != null);
 	}
 
 	public static enum Quality {
@@ -360,15 +409,8 @@ public class ItemMagicDevice extends ItemBase {
 		//
 		STAFF(10, null, "staff", 8);
 
-		private static final Map<BaubleType, Type> fromBauble = new EnumMap<>(BaubleType.class);
 		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
 				.toArray(Type[]::new);
-
-		static {
-			for (final Type t : Type.values())
-				if (t.getBaubleType() != null)
-					fromBauble.put(t.getBaubleType(), t);
-		}
 
 		private final BaubleType bauble;
 		private final String unlocalizedName;
@@ -403,14 +445,9 @@ public class ItemMagicDevice extends ItemBase {
 		public int getMeta() {
 			return this.meta;
 		}
-		
+
 		public int getVariants() {
 			return this.variants;
-		}
-
-		@Nullable
-		public static Type fromBauble(@Nonnull final BaubleType t) {
-			return fromBauble.get(t);
 		}
 
 		@Nonnull

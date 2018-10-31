@@ -33,7 +33,7 @@ import net.minecraft.util.ResourceLocation;
 public interface IMagicDeviceSettable extends IMagicDevice {
 
 	void setVariant(final int v);
-	
+
 	void addAbilities(@Nonnull final ResourceLocation... ability);
 
 	void setMaxEnergy(final int energy);
@@ -46,7 +46,7 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 
 	/**
 	 * Consumes the specified amount of energy from the device
-	 * 
+	 *
 	 * @param amount
 	 *                   The amount of energy to be consumed
 	 * @return true if the operation completed; false if there isn't enough energy

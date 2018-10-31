@@ -30,6 +30,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
+import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.util.MathStuff;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -108,6 +109,7 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 	public void addAbilities(@Nonnull final ResourceLocation... ability) {
 		for (final ResourceLocation r : ability)
 			this.abilities.add(r.toString());
+		sortAbilities();
 		this.dirty = true;
 	}
 
@@ -180,8 +182,17 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		final int count = theList.tagCount();
 		for (int i = 0; i < count; i++)
 			this.abilities.add(theList.getStringTagAt(i));
-
+		sortAbilities();
 		this.dirty = true;
+	}
+
+	private void sortAbilities() {
+		// Sort the abilities based on priority
+		this.abilities.sort((s1, s2) -> {
+			final AbilityHandler h1 = AbilityHandler.REGISTRY.getValue(new ResourceLocation(s1));
+			final AbilityHandler h2 = AbilityHandler.REGISTRY.getValue(new ResourceLocation(s2));
+			return h1.getPriority() - h2.getPriority();
+		});
 	}
 
 	private static class NBT {

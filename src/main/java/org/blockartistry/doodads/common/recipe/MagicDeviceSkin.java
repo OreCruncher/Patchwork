@@ -28,8 +28,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
-import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.common.item.ItemMagicDevice.Type;
+import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
 import org.blockartistry.doodads.util.RecipeHelper;
 
@@ -99,7 +99,7 @@ public class MagicDeviceSkin extends ShapelessRecipes {
 				final ItemStack output = input.copy();
 				final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(output);
 				caps.setVariant(caps.getVariant() + 1);
-				
+
 				final ResourceLocation location = RecipeHelper.getNameForRecipe(output);
 				final MagicDeviceSkin recipe = new MagicDeviceSkin(location.getResourceDomain(), output,
 						RecipeHelper.buildInput(new Object[] { input }));
