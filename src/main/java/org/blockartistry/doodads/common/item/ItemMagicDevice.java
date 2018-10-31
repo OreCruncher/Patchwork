@@ -419,7 +419,9 @@ public class ItemMagicDevice extends ItemBase {
 		//
 		SCROLL(9, null, "scroll", 8, TickWhen.NEVER),
 		//
-		STAFF(10, null, "staff", 8, TickWhen.HELD);
+		STAFF(10, null, "staff", 8, TickWhen.HELD),
+		//
+		TOME(11, null, "tome", 8, TickWhen.ALWAYS);
 
 		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values())
 				.sorted(Comparator.comparing(Type::getSubTypeId)).toArray(Type[]::new);
