@@ -50,7 +50,7 @@ public class BaubleAdaptor implements IBauble {
 	private final BaubleType type;
 
 	private BaubleAdaptor(@Nonnull final ItemStack stack) {
-		this.type = ItemMagicDevice.Type.byMetadata(stack.getMetadata()).getBaubleType();
+		this.type = ItemMagicDevice.Type.bySubTypeId(stack.getMetadata()).getBaubleType();
 	}
 
 	@Override
@@ -75,17 +75,20 @@ public class BaubleAdaptor implements IBauble {
 
 	@Override
 	public boolean canEquip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return DEVICE.canEquip(itemstack, player);
+		// Always true for ItemMagicDevice
+		return true;
 	}
 
 	@Override
 	public boolean canUnequip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return DEVICE.canUnequip(itemstack, player);
+		// Always true for ItemMagicDevice
+		return true;
 	}
 
 	@Override
 	public boolean willAutoSync(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return DEVICE.willAutoSync(itemstack, player);
+		// Always false for ItemMagicDevice
+		return false;
 	}
 
 	@Nonnull

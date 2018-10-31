@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IMagicDevice extends INBTSerializable<NBTTagCompound> {
@@ -47,7 +48,7 @@ public interface IMagicDevice extends INBTSerializable<NBTTagCompound> {
 	 * @return A list of the devices abilities
 	 */
 	@Nonnull
-	List<String> getAbilities();
+	List<ResourceLocation> getAbilities();
 
 	/**
 	 * Returns the maximum possible energy for the device

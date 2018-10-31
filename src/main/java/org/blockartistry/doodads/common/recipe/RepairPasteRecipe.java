@@ -58,7 +58,7 @@ import net.minecraftforge.registries.GameData;
 public final class RepairPasteRecipe extends ShapelessRecipes {
 
 	private static final ItemStack REPAIR_PASTE = new ItemStack(ModItems.MATERIAL, 1,
-			ItemMaterial.Type.REPAIR_PASTE.getMeta());
+			ItemMaterial.Type.REPAIR_PASTE.getSubTypeId());
 	private static final int REPAIR_AMOUNT = 50;
 
 	public RepairPasteRecipe(@Nonnull final String group, @Nonnull final ItemStack output,

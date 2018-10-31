@@ -31,6 +31,7 @@ import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
+import org.blockartistry.doodads.util.Localization;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -55,6 +58,8 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	protected static final SoundEvent NO_CHARGE = SoundEvent.REGISTRY
 			.getObject(new ResourceLocation("ui.button.click"));
 
+	private static final String FORMAT_STRING = Localization.loadString("doodads.deviceability.format");
+
 	private String unlocalizedName;
 	private int priority = 10000;
 
@@ -63,6 +68,12 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 		setUnlocalizedName(ModInfo.MOD_ID + ".deviceability." + name + ".name");
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Nullable
+	public String getToolTip() {
+		return String.format(FORMAT_STRING, Localization.loadString(getUnlocalizedName()));
+	}
+	
 	/**
 	 * Indicates if the Ability can be applied to the type of device specified.
 	 *

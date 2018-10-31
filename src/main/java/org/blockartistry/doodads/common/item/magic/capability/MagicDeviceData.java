@@ -25,7 +25,9 @@
 package org.blockartistry.doodads.common.item.magic.capability;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -34,6 +36,8 @@ import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.util.MathStuff;
 import org.blockartistry.doodads.util.simplecaps.SimpleDataRegistry;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -41,24 +45,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceSettable {
 
-	protected List<String> abilities = new ArrayList<>();
+	protected List<ResourceLocation> abilities = null;
 	protected int variant = 0;
 	protected int maxEnergy = 0;
 	protected int currentEnergy = 0;
 	protected ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.PLAIN;
-	protected String moniker = "";
-
-	protected boolean dirty;
-
-	@Override
-	public boolean isDirty() {
-		return this.dirty;
-	}
-
-	@Override
-	public void clearDirty() {
-		this.dirty = false;
-	}
+	protected String moniker = null;
 
 	@Override
 	public int getVariant() {
@@ -67,8 +59,8 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 	@Override
 	@Nonnull
-	public List<String> getAbilities() {
-		return this.abilities;
+	public List<ResourceLocation> getAbilities() {
+		return this.abilities != null ? this.abilities : ImmutableList.of();
 	}
 
 	@Override
@@ -97,46 +89,50 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 	@Override
 	@Nonnull
 	public String getMoniker() {
-		return this.moniker;
+		return Objects.toString(this.moniker, "");
 	}
 
 	@Override
 	public void setVariant(final int v) {
 		this.variant = v;
-		this.dirty = true;
+		setDirty();
 	}
 
 	@Override
 	public void addAbilities(@Nonnull final ResourceLocation... ability) {
-		for (final ResourceLocation r : ability)
-			this.abilities.add(r.toString());
-		sortAbilities();
-		this.dirty = true;
+		if (ability != null && ability.length > 0) {
+			if (this.abilities == null)
+				this.abilities = new ArrayList<>(4);
+			for (final ResourceLocation r : ability)
+				this.abilities.add(r);
+			sort(this.abilities);
+			setDirty();
+		}
 	}
 
 	@Override
 	public void setMaxEnergy(final int energy) {
 		this.maxEnergy = MathStuff.clamp(energy, 0, Integer.MAX_VALUE);
 		setCurrentEnergy(this.currentEnergy);
-		this.dirty = true;
+		setDirty();
 	}
 
 	@Override
 	public void setCurrentEnergy(final int energy) {
 		this.currentEnergy = MathStuff.clamp(energy, 0, this.maxEnergy);
-		this.dirty = true;
+		setDirty();
 	}
 
 	@Override
 	public void setQuality(@Nonnull final ItemMagicDevice.Quality q) {
 		this.quality = q;
-		this.dirty = true;
+		setDirty();
 	}
 
 	@Override
 	public void setMoniker(@Nonnull final String moniker) {
 		this.moniker = moniker;
-		this.dirty = true;
+		setDirty();
 	}
 
 	@Override
@@ -149,7 +145,7 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 		if (amount > this.currentEnergy)
 			return false;
 		this.currentEnergy -= amount;
-		this.dirty = true;
+		setDirty();
 		return true;
 	}
 
@@ -161,14 +157,21 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 		nbt.setByte(NBT.QUALITY, (byte) this.quality.ordinal());
 		nbt.setInteger(NBT.MAX_ENERGY, this.maxEnergy);
 		nbt.setInteger(NBT.CURRENT_ENERGY, this.currentEnergy);
-		nbt.setString(NBT.MONIKER, this.moniker);
+		if (this.moniker != null)
+			nbt.setString(NBT.MONIKER, this.moniker);
 
-		final NBTTagList theList = new NBTTagList();
-		for (final String s : this.abilities)
-			theList.appendTag(new NBTTagString(s));
-		nbt.setTag(NBT.ABILITIES, theList);
+		if (this.abilities != null && this.abilities.size() > 0) {
+			final NBTTagList theList = new NBTTagList();
+			for (final ResourceLocation r : this.abilities)
+				theList.appendTag(new NBTTagString(r.toString()));
+			nbt.setTag(NBT.ABILITIES, theList);
+		}
 
-		nbt.setTag(NBT.DATA, super.serializeNBT());
+		// Serialize base!
+		final NBTTagCompound base = super.serializeNBT();
+		if (base != null && !base.hasNoTags())
+			nbt.setTag(NBT.DATA, base);
+
 		return nbt;
 	}
 
@@ -178,27 +181,35 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 		this.quality = ItemMagicDevice.Quality.values()[nbt.getByte(NBT.QUALITY)];
 		this.maxEnergy = nbt.getInteger(NBT.MAX_ENERGY);
 		this.currentEnergy = nbt.getInteger(NBT.CURRENT_ENERGY);
-		this.moniker = nbt.getString(NBT.MONIKER);
+		if (nbt.hasKey(NBT.MONIKER))
+			this.moniker = nbt.getString(NBT.MONIKER);
 
-		this.abilities = new ArrayList<>();
-		final NBTTagList theList = nbt.getTagList(NBT.ABILITIES, 8);
-		final int count = theList.tagCount();
-		for (int i = 0; i < count; i++)
-			this.abilities.add(theList.getStringTagAt(i));
-		super.deserializeNBT(nbt.getCompoundTag(NBT.DATA));
-		sortAbilities();
+		if (nbt.hasKey(NBT.ABILITIES)) {
+			final NBTTagList theList = nbt.getTagList(NBT.ABILITIES, 8);
+			final int count = theList.tagCount();
+			this.abilities = new ArrayList<>(count);
+			for (int i = 0; i < count; i++)
+				this.abilities.add(new ResourceLocation(theList.getStringTagAt(i)));
+			sort(this.abilities);
+		}
 
-		this.dirty = true;
+		// Deserialize base!
+		if (nbt.hasKey(NBT.DATA))
+			super.deserializeNBT(nbt.getCompoundTag(NBT.DATA));
+
+		setDirty();
 	}
 
-	private void sortAbilities() {
-		// Sort the abilities based on priority
-		this.abilities.sort((s1, s2) -> {
-			final AbilityHandler h1 = AbilityHandler.REGISTRY.getValue(new ResourceLocation(s1));
-			final AbilityHandler h2 = AbilityHandler.REGISTRY.getValue(new ResourceLocation(s2));
-			return h1.getPriority() - h2.getPriority();
-		});
+	private static final void sort(@Nonnull final List<ResourceLocation> theList) {
+		if (theList != null && theList.size() > 1)
+			theList.sort(ABILITY_SORT);
 	}
+
+	private static final Comparator<ResourceLocation> ABILITY_SORT = (r1, r2) -> {
+		final AbilityHandler h1 = AbilityHandler.REGISTRY.getValue(r1);
+		final AbilityHandler h2 = AbilityHandler.REGISTRY.getValue(r2);
+		return h1.getPriority() - h2.getPriority();
+	};
 
 	private static class NBT {
 		public static final String VARIANT = "v";

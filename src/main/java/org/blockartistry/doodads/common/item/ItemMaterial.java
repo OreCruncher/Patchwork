@@ -49,7 +49,7 @@ public class ItemMaterial extends ItemBase {
 	@Override
 	public void registerItemModel() {
 		for (final Type bt : Type.values()) {
-			Doodads.proxy().registerItemRenderer(this, bt.getMeta(),
+			Doodads.proxy().registerItemRenderer(this, bt.getSubTypeId(),
 					new ModelResourceLocation(ModInfo.MOD_ID + ":material", "type=" + bt.getName()));
 		}
 	}
@@ -58,7 +58,7 @@ public class ItemMaterial extends ItemBase {
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
 		if (isInCreativeTab(tab)) {
 			for (final Type t : Type.values())
-				items.add(new ItemStack(this, 1, t.getMeta()));
+				items.add(new ItemStack(this, 1, t.getSubTypeId()));
 		}
 	}
 
@@ -72,7 +72,7 @@ public class ItemMaterial extends ItemBase {
 
 		REPAIR_PASTE(0, "repairpaste"), MAGICAL_AMALGAM(1, "magicalamalgam");
 
-		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
+		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getSubTypeId))
 				.toArray(Type[]::new);
 
 		private final String name;
@@ -97,7 +97,7 @@ public class ItemMaterial extends ItemBase {
 		}
 
 		@Override
-		public int getMeta() {
+		public int getSubTypeId() {
 			return this.meta;
 		}
 

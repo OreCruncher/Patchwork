@@ -87,7 +87,7 @@ public class CapabilityMagicDevice {
 			if (stack.getItem() instanceof ItemMagicDevice) {
 				event.addCapability(CAPABILITY_ID, createProvider());
 
-				if (ItemMagicDevice.Type.byMetadata(stack.getMetadata()).getBaubleType() != null) {
+				if (ItemMagicDevice.Type.bySubTypeId(stack.getMetadata()).getBaubleType() != null) {
 					event.addCapability(BAUBLE_CAPABILITY_ID, BaubleAdaptor.createBaubleProvider(stack));
 				}
 			}

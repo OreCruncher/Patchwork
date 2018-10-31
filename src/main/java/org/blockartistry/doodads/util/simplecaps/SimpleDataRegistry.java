@@ -29,30 +29,32 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Simple data registry that maps POJO class references to data
- * instances of that class.  This is that anonymous data can be
- * centralized and serialization handled.
+ * Simple data registry that maps POJO class references to data instances of
+ * that class. This is that anonymous data can be centralized and serialization
+ * handled.
  */
-public class SimpleDataRegistry implements ISimpleDataRegistry {
+public abstract class SimpleDataRegistry implements ISimpleDataRegistry {
 
 	private Map<Class<? extends ISimpleData>, ISimpleData> dataMap = null;
-
-	public SimpleDataRegistry() {
-
-	}
+	private boolean isDirty;
 
 	@Override
-	@Nonnull
+	@Nullable
 	public NBTTagCompound serializeNBT() {
-		final NBTTagCompound nbt = new NBTTagCompound();
-		if (this.dataMap != null && !this.dataMap.isEmpty()) {
-			for (final Entry<Class<? extends ISimpleData>, ISimpleData> e : this.dataMap.entrySet()) {
-				final String key = e.getKey().getName();
-				final NBTTagCompound value = e.getValue().serializeNBT();
-				nbt.setTag(key, value);
+		NBTTagCompound nbt = null;
+		if (this.dataMap != null) {
+			nbt = new NBTTagCompound();
+			if (this.dataMap != null && !this.dataMap.isEmpty()) {
+				for (final Entry<Class<? extends ISimpleData>, ISimpleData> e : this.dataMap.entrySet()) {
+					final String key = e.getKey().getName();
+					final NBTTagCompound value = e.getValue().serializeNBT();
+					nbt.setTag(key, value);
+				}
 			}
 		}
 		return nbt;
@@ -92,5 +94,20 @@ public class SimpleDataRegistry implements ISimpleDataRegistry {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public boolean isDirty() {
+		return this.isDirty;
+	}
+
+	@Override
+	public void setDirty() {
+		this.isDirty = true;
+	}
+
+	@Override
+	public void clearDirty() {
+		this.isDirty = false;
 	}
 }

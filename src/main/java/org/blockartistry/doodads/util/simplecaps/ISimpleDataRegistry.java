@@ -32,5 +32,11 @@ import net.minecraftforge.common.util.INBTSerializable;
 public interface ISimpleDataRegistry extends INBTSerializable<NBTTagCompound> {
 	
 	ISimpleData getData(@Nonnull final Class<? extends ISimpleData> clazz);
+	
+	boolean isDirty();
+	
+	void setDirty();
+	
+	void clearDirty();
 
 }

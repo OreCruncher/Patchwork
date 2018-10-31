@@ -33,6 +33,7 @@ import org.blockartistry.doodads.Doodads;
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.client.DoodadsCreativeTab;
 import org.blockartistry.doodads.util.IVariant;
+import org.blockartistry.doodads.util.MathStuff;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -50,7 +51,7 @@ public class ItemCoin extends ItemBase implements IColorizer {
 	@Override
 	public void registerItemModel() {
 		for (final Type bt : Type.values()) {
-			Doodads.proxy().registerItemRenderer(this, bt.getMeta(),
+			Doodads.proxy().registerItemRenderer(this, bt.getSubTypeId(),
 					new ModelResourceLocation(ModInfo.MOD_ID + ":coin", "inventory"));
 		}
 	}
@@ -59,19 +60,19 @@ public class ItemCoin extends ItemBase implements IColorizer {
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
 		if (isInCreativeTab(tab)) {
 			for (final Type t : Type.values())
-				items.add(new ItemStack(this, 1, t.getMeta()));
+				items.add(new ItemStack(this, 1, t.getSubTypeId()));
 		}
 	}
 
 	@Override
 	@Nonnull
 	public String getUnlocalizedName(@Nonnull final ItemStack stack) {
-		return Type.byMetadata(stack.getMetadata()).getUnlocalizedName();
+		return Type.bySubTypeId(stack.getMetadata()).getUnlocalizedName();
 	}
 
 	@Override
 	public int getColor(@Nonnull final ItemStack stack) {
-		return Type.byMetadata(stack.getMetadata()).getColor();
+		return Type.bySubTypeId(stack.getMetadata()).getColor();
 	}
 
 	public static enum Type implements IVariant {
@@ -87,16 +88,16 @@ public class ItemCoin extends ItemBase implements IColorizer {
 		// #e5e4e2
 		PLATINUM(4, "platinum", 5066338);
 
-		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
-				.toArray(Type[]::new);
+		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values())
+				.sorted(Comparator.comparing(Type::getSubTypeId)).toArray(Type[]::new);
 
 		private final int color;
 		private final String name;
 		private final String unlocalizedName;
-		private final int meta;
+		private final int subTypeId;
 
-		private Type(final int meta, @Nonnull final String name, final int color) {
-			this.meta = meta;
+		private Type(final int subTypeId, @Nonnull final String name, final int color) {
+			this.subTypeId = subTypeId;
 			this.name = name;
 			this.color = color;
 			this.unlocalizedName = "item." + ModInfo.MOD_ID + ".coin_" + this.name;
@@ -114,8 +115,8 @@ public class ItemCoin extends ItemBase implements IColorizer {
 		}
 
 		@Override
-		public int getMeta() {
-			return this.meta;
+		public int getSubTypeId() {
+			return this.subTypeId;
 		}
 
 		public int getColor() {
@@ -123,12 +124,8 @@ public class ItemCoin extends ItemBase implements IColorizer {
 		}
 
 		@Nonnull
-		public static Type byMetadata(int meta) {
-			if (meta < 0 || meta >= META_LOOKUP.length) {
-				meta = 0;
-			}
-
-			return META_LOOKUP[meta];
+		public static Type bySubTypeId(int subTypeId) {
+			return SUBTYPE_LOOKUP[MathStuff.clamp(subTypeId, 0, SUBTYPE_LOOKUP.length)];
 		}
 
 	}

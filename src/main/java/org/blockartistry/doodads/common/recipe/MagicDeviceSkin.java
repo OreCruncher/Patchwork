@@ -95,7 +95,7 @@ public class MagicDeviceSkin extends ShapelessRecipes {
 	public static void register() {
 		for (final Type t : ItemMagicDevice.Type.values()) {
 			if (t.getVariants() > 1) {
-				final ItemStack input = new ItemStack(ModItems.MAGIC_DEVICE, 1, t.getMeta());
+				final ItemStack input = new ItemStack(ModItems.MAGIC_DEVICE, 1, t.getSubTypeId());
 				final ItemStack output = input.copy();
 				final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(output);
 				caps.setVariant(caps.getVariant() + 1);

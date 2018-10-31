@@ -28,7 +28,9 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -44,6 +46,7 @@ import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
 import org.blockartistry.doodads.util.IVariant;
 import org.blockartistry.doodads.util.Localization;
+import org.blockartistry.doodads.util.MathStuff;
 
 import baubles.api.BaubleType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -70,7 +73,7 @@ public class ItemMagicDevice extends ItemBase {
 	public static final int BASE_CONSUMPTION_UNIT = 10;
 	public static final int TICKS_PER_MINUTE = 20 * 60;
 
-	private static final String FORMAT_STRING = Localization.loadString("doodads.deviceability.format");
+	private static final String POWER_FORMAT_STRING = Localization.loadString("doodads.magicdevice.powerremaining");
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("doodads.magicdevice.basicname");
 	private static final String DEVICE_NAME_FANCY_FMT = Localization.loadString("doodads.magicdevice.fancyname");
 	private static final Map<Type, String> DEVICE_TYPE_NAMES = new EnumMap<>(Type.class);
@@ -105,7 +108,7 @@ public class ItemMagicDevice extends ItemBase {
 	@Override
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
 		for (final Type t : Type.values()) {
-			final ItemStack stack = new ItemStack(this, 1, t.getMeta());
+			final ItemStack stack = new ItemStack(this, 1, t.getSubTypeId());
 			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
 					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 			xface.setVariant(0);
@@ -113,7 +116,7 @@ public class ItemMagicDevice extends ItemBase {
 		}
 
 		for (final MagicDevice device : MagicDevice.DEVICES.values()) {
-			final ItemStack stack = new ItemStack(this, 1, device.getType().getMeta());
+			final ItemStack stack = new ItemStack(this, 1, device.getType().getSubTypeId());
 			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
 					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 			xface.setMoniker(device.getUnlocalizedName());
@@ -130,7 +133,7 @@ public class ItemMagicDevice extends ItemBase {
 	public void registerItemModel() {
 		// Register for each of the bauble slots
 		for (final Type bt : Type.values()) {
-			Doodads.proxy().registerItemRenderer(this, bt.getMeta(),
+			Doodads.proxy().registerItemRenderer(this, bt.getSubTypeId(),
 					new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device_" + bt.name(), "inventory"));
 		}
 	}
@@ -158,7 +161,7 @@ public class ItemMagicDevice extends ItemBase {
 		final IMagicDevice caps = getCapability(stack);
 		if (caps != null) {
 			final String quality = DEVICE_QUALITY_NAMES.get(caps.getQuality());
-			final String device = DEVICE_TYPE_NAMES.get(Type.byMetadata(stack.getMetadata()));
+			final String device = DEVICE_TYPE_NAMES.get(Type.bySubTypeId(stack.getMetadata()));
 			final String moniker = caps.getMoniker();
 			if (moniker.isEmpty())
 				return String.format(DEVICE_NAME_SIMPLE_FMT, quality, device);
@@ -172,7 +175,7 @@ public class ItemMagicDevice extends ItemBase {
 	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World worldIn,
 			@Nonnull final List<String> tooltip, @Nonnull final ITooltipFlag flagIn) {
 		if (showDurabilityBar(stack))
-			tooltip.add(Localization.format("doodads.magicdevice.powerremaining", getPowerRemaining(stack)));
+			tooltip.add(String.format(POWER_FORMAT_STRING, getPowerRemaining(stack)));
 		gatherToolTips(stack, tooltip);
 	}
 
@@ -195,7 +198,7 @@ public class ItemMagicDevice extends ItemBase {
 
 	@Nonnull
 	public Type getDeviceType(@Nonnull final ItemStack stack) {
-		return Type.byMetadata(stack.getMetadata());
+		return Type.bySubTypeId(stack.getMetadata());
 	}
 
 	public Quality getQuality(@Nonnull final ItemStack stack) {
@@ -216,8 +219,9 @@ public class ItemMagicDevice extends ItemBase {
 	@Nonnull
 	public static void gatherToolTips(@Nonnull final ItemStack stack, @Nonnull final List<String> tips) {
 		final IMagicDevice caps = getCapability(stack);
-		gatherHandlers(caps).forEach(
-				da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
+		final List<String> t = gatherHandlers(caps).map(AbilityHandler::getToolTip).filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		tips.addAll(t);
 	}
 
 	@Nullable
@@ -313,37 +317,12 @@ public class ItemMagicDevice extends ItemBase {
 	 */
 	@Nonnull
 	public BaubleType getBaubleType(@Nonnull final ItemStack stack) {
-		return Type.byMetadata(stack.getMetadata()).getBaubleType();
-	}
-
-	/**
-	 * can this bauble be placed in a bauble slot Redirect from BaubleAdaptor.
-	 */
-	public boolean canEquip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return true;
-	}
-
-	/**
-	 * Can this bauble be removed from a bauble slot Redirect from BaubleAdaptor.
-	 */
-	public boolean canUnequip(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return true;
-	}
-
-	/**
-	 * Will bauble automatically sync to client if a change is detected in its NBT
-	 * or damage values? Default is off, so override and set to true if you want to
-	 * auto sync. This sync is not instant, but occurs every 10 ticks (.5 seconds).
-	 * Redirect from BaubleAdaptor.
-	 */
-	public boolean willAutoSync(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		return false;
+		return Type.bySubTypeId(stack.getMetadata()).getBaubleType();
 	}
 
 	@Nonnull
 	private static Stream<AbilityHandler> gatherHandlers(@Nonnull final IMagicDevice caps) {
-		return caps.getAbilities().stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
-				.filter(e -> e != null);
+		return caps.getAbilities().stream().map(r -> AbilityHandler.REGISTRY.getValue(r)).filter(Objects::nonNull);
 	}
 
 	public static enum Quality {
@@ -414,17 +393,17 @@ public class ItemMagicDevice extends ItemBase {
 		//
 		STAFF(10, null, "staff", 8);
 
-		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getMeta))
-				.toArray(Type[]::new);
+		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values())
+				.sorted(Comparator.comparing(Type::getSubTypeId)).toArray(Type[]::new);
 
 		private final BaubleType bauble;
 		private final String unlocalizedName;
 		private final String name;
-		private final int meta;
+		private final int subTypeId;
 		private final int variants;
 
-		private Type(final int meta, @Nullable final BaubleType type, @Nonnull final String name, final int v) {
-			this.meta = meta;
+		private Type(final int subTypeId, @Nullable final BaubleType type, @Nonnull final String name, final int v) {
+			this.subTypeId = subTypeId;
 			this.bauble = type;
 			this.name = name;
 			this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".name";
@@ -447,8 +426,8 @@ public class ItemMagicDevice extends ItemBase {
 		}
 
 		@Override
-		public int getMeta() {
-			return this.meta;
+		public int getSubTypeId() {
+			return this.subTypeId;
 		}
 
 		public int getVariants() {
@@ -456,12 +435,8 @@ public class ItemMagicDevice extends ItemBase {
 		}
 
 		@Nonnull
-		public static Type byMetadata(int meta) {
-			if (meta < 0 || meta >= META_LOOKUP.length) {
-				meta = 0;
-			}
-
-			return META_LOOKUP[meta];
+		public static Type bySubTypeId(int subTypeId) {
+			return SUBTYPE_LOOKUP[MathStuff.clamp(subTypeId, 0, SUBTYPE_LOOKUP.length)];
 		}
 
 	}
