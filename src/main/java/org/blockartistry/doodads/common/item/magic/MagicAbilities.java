@@ -23,13 +23,26 @@
  */
 package org.blockartistry.doodads.common.item.magic;
 
+import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.magic.abilities.AbilityFireball;
 import org.blockartistry.doodads.common.item.magic.abilities.AbilityFlight;
+import org.blockartistry.doodads.common.item.magic.abilities.AbilityCharging;
+import org.blockartistry.doodads.common.item.magic.abilities.AbilitySymbiotic;
+
+import net.minecraft.util.ResourceLocation;
 
 public class MagicAbilities {
 
+	// Collect IDs for capabilities here
+	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
+	public static final ResourceLocation ABILITY_FIREBALL = new ResourceLocation(ModInfo.MOD_ID, "fireball");
+	public static final ResourceLocation ABILITY_SYMBIOTIC = new ResourceLocation(ModInfo.MOD_ID, "symbiotic");
+	public static final ResourceLocation ABILITY_CHARGE = new ResourceLocation(ModInfo.MOD_ID, "charging");
+
 	public static final AbilityHandler FLIGHT = new AbilityFlight().register();
 	public static final AbilityHandler FIREBALL = new AbilityFireball().register();
+	public static final AbilityHandler SYMBIOTIC = new AbilitySymbiotic().register();
+	public static final AbilityHandler CHARGING = new AbilityCharging().register();
 
 	public static void initialize() {
 		// Nothing here

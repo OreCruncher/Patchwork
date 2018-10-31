@@ -39,6 +39,8 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 	void setMaxEnergy(final int energy);
 
 	void setCurrentEnergy(final int energy);
+	
+	void addCurrentEnergy(final int energy);
 
 	void setQuality(@Nonnull final ItemMagicDevice.Quality q);
 

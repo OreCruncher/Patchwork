@@ -37,10 +37,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class MagicDevice {
 
-	// Collect IDs for capabilities here
-	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
-	public static final ResourceLocation ABILITY_FIREBALL = new ResourceLocation(ModInfo.MOD_ID, "fireball");
-
 	// Pre-built fancy devices
 	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
 
@@ -102,11 +98,15 @@ public class MagicDevice {
 
 	static {
 		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
-				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(ABILITY_FLIGHT);
+				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(MagicAbilities.ABILITY_FLIGHT);
 		DEVICES.put(device.getName(), device);
 
 		device = new MagicDevice("fireball").setType(ItemMagicDevice.Type.WAND)
-				.setQuality(ItemMagicDevice.Quality.PRIZED).addAbility(ABILITY_FIREBALL);
+				.setQuality(ItemMagicDevice.Quality.PRIZED).addAbility(MagicAbilities.ABILITY_FIREBALL);
+		DEVICES.put(device.getName(), device);
+		
+		device = new MagicDevice("tome").setType(ItemMagicDevice.Type.TOME)
+				.setQuality(ItemMagicDevice.Quality.MUNDANE).addAbility(MagicAbilities.ABILITY_CHARGE).addAbility(MagicAbilities.ABILITY_SYMBIOTIC);
 		DEVICES.put(device.getName(), device);
 	}
 }

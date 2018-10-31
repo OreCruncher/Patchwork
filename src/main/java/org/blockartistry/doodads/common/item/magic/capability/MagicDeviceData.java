@@ -121,6 +121,12 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 		this.currentEnergy = MathStuff.clamp(energy, 0, this.maxEnergy);
 		setDirty();
 	}
+	
+	@Override
+	public void addCurrentEnergy(final int energy) {
+		this.currentEnergy = MathStuff.clamp(this.currentEnergy + energy, 0, this.maxEnergy);
+		setDirty();
+	}
 
 	@Override
 	public void setQuality(@Nonnull final ItemMagicDevice.Quality q) {

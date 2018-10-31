@@ -135,17 +135,7 @@ public class MagicDeviceDataPacket implements IMessage {
 								CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 
 						if (originalHandler != null) {
-							final ItemStack newStack = originalStack.copy();
-
-							final IMagicDevice newHandler = CapabilityUtils.getCapability(newStack,
-									CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
-							assert newHandler != null;
-
-							newHandler.deserializeNBT(data);
-
-							if (!originalHandler.equals(newHandler)) {
-								cracker.putStack(index, newStack);
-							}
+							originalHandler.deserializeNBT(data);
 						}
 					}
 				}

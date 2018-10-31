@@ -77,6 +77,7 @@ doodads.devicequality.legendary.name=Legendary
 
 doodads.magicdevice.flight.moniker=Amulet of Agile Flight
 doodads.magicdevice.fireball.moniker=Wand of Blasting
+doodads.magicdevice.tome.moniker=Tome of Agonizing Magic
 
 doodads.magicdevice.basicname=%1$s %2$s
 doodads.magicdevice.powerremaining=Essence Remaining: %1$.1f%%
@@ -84,3 +85,5 @@ doodads.magicdevice.powerremaining=Essence Remaining: %1$.1f%%
 doodads.deviceability.format=§aAbility:§r §e%1$s§r
 doodads.deviceability.flight.name=Flight
 doodads.deviceability.fireball.name=Fireball
+doodads.deviceability.symbiotic.name=Symbiotic
+doodads.deviceability.charging.name=Charging
