@@ -40,6 +40,7 @@ public class MagicDevice {
 
 	// Collect IDs for capabilities here
 	public static final ResourceLocation ABILITY_FLIGHT = new ResourceLocation(ModInfo.MOD_ID, "flight");
+	public static final ResourceLocation ABILITY_FIREBALL = new ResourceLocation(ModInfo.MOD_ID, "fireball");
 
 	// Pre-built fancy devices
 	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
@@ -101,8 +102,12 @@ public class MagicDevice {
 	}
 
 	static {
-		final MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
+		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
 				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(ABILITY_FLIGHT);
+		DEVICES.put(device.getName(), device);
+
+		device = new MagicDevice("fireball").setType(ItemMagicDevice.Type.WAND)
+				.setQuality(ItemMagicDevice.Quality.PRIZED).addAbility(ABILITY_FIREBALL);
 		DEVICES.put(device.getName(), device);
 	}
 }

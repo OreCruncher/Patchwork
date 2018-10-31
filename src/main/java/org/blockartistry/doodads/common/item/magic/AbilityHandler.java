@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
+import org.blockartistry.doodads.common.item.ModItems;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +37,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -47,6 +50,9 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	public static final IForgeRegistry<AbilityHandler> REGISTRY = new RegistryBuilder<AbilityHandler>()
 			.setName(new ResourceLocation(ModInfo.MOD_ID, "deviceabilities")).allowModification()
 			.setType(AbilityHandler.class).create();
+
+	protected static final SoundEvent NO_CHARGE = SoundEvent.REGISTRY
+			.getObject(new ResourceLocation("ui.button.click"));
 
 	private String unlocalizedName;
 	private int priority = 10000;
@@ -173,5 +179,38 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 			@Nonnull final EntityLivingBase attacker) {
 		// Override in a sub-class to provide functionality
 		return false;
+	}
+
+	/**
+	 * Do an arm swing and perform a cooldown using the specified amount
+	 */
+	protected void setCooldown(@Nonnull final EntityPlayer player, final int cooldownTicks) {
+		player.getCooldownTracker().setCooldown(ModItems.MAGIC_DEVICE, cooldownTicks);
+		player.swingArm(EnumHand.MAIN_HAND);
+	}
+	
+	/**
+	 * Play a sound by the player indicating no charge available on the device
+	 *
+	 * @param player
+	 */
+	protected void playNoChargeSound(@Nonnull final EntityPlayer player) {
+		playSoundAtPlayer(player, NO_CHARGE, 0.15F, 1.5F);
+	}
+
+	/**
+	 * Play a sound at the player location. The player will also recieve the sound.
+	 * Don't forget processing in an AbilityHandler is always on the server thread.
+	 * 
+	 * @param player
+	 * @param event
+	 * @param v
+	 * @param p
+	 */
+	protected void playSoundAtPlayer(@Nonnull final EntityPlayer player, @Nonnull final SoundEvent event, final float v,
+			final float p) {
+		player.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, event,
+				SoundCategory.PLAYERS, v, p);
+
 	}
 }

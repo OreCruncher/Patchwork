@@ -22,23 +22,28 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.doodads.common.item.magic;
+package org.blockartistry.doodads.common.item.magic.abilities;
 
 import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
+import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
-public class AbilityHandlerFlight extends AbilityHandler {
+public class AbilityFlight extends AbilityHandler {
 
 	private static final int POWER_COST = 10;
 
-	public AbilityHandlerFlight() {
+	public AbilityFlight() {
 		super("flight");
+	}
+
+	public boolean canBeAppliedTo(@Nonnull final ItemMagicDevice.Type type) {
+		return type == ItemMagicDevice.Type.AMULET || type == ItemMagicDevice.Type.BODY;
 	}
 
 	/**

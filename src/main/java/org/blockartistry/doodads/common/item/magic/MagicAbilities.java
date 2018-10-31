@@ -23,9 +23,13 @@
  */
 package org.blockartistry.doodads.common.item.magic;
 
+import org.blockartistry.doodads.common.item.magic.abilities.AbilityFireball;
+import org.blockartistry.doodads.common.item.magic.abilities.AbilityFlight;
+
 public class MagicAbilities {
 
-	public static final AbilityHandler FLIGHT = new AbilityHandlerFlight().register();
+	public static final AbilityHandler FLIGHT = new AbilityFlight().register();
+	public static final AbilityHandler FIREBALL = new AbilityFireball().register();
 
 	public static void initialize() {
 		// Nothing here

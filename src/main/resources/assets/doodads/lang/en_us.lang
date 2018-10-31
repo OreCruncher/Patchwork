@@ -75,6 +75,7 @@ doodads.devicequality.prized.name=Prized
 doodads.devicequality.legendary.name=Legendary
 
 doodads.magicdevice.flight.moniker=Flight
+doodads.magicdevice.fireball.moniker=Fireball
 
 doodads.magicdevice.basicname=%1$s %2$s
 doodads.magicdevice.fancyname=%1$s %2$s of %3$s
@@ -82,3 +83,4 @@ doodads.magicdevice.powerremaining=Power Remaining: %1$.1f%%
 
 doodads.deviceability.format=§aAbility:§r §e%1$s§r
 doodads.deviceability.flight.name=Flight
+doodads.deviceability.fireball.name=Fireball

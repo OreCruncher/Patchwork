@@ -17,7 +17,7 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -109,16 +109,16 @@ public class MagicDeviceDataPacket implements IMessage {
 						}
 
 					} else {
-						final Container inv = ((EntityPlayer) p).inventoryContainer;
+						final InventoryPlayer inv = ((EntityPlayer) p).inventory;
 						cracker = new SlotCracker() {
 							@Override
 							public ItemStack getStack(int slot) {
-								return inv.getSlot(slot).getStack();
+								return inv.getStackInSlot(slot);
 							}
 
 							@Override
 							public void putStack(int slot, ItemStack stack) {
-								inv.putStackInSlot(slot, stack);
+								inv.setInventorySlotContents(slot, stack);
 							}
 						};
 					}
