@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.ModItems;
+import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -128,7 +129,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param player
 	 * @param device
 	 */
-	public void equip(@Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
+	public void equip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
 		// Override in a sub-class to provide functionality
 	}
 
@@ -138,7 +139,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param player
 	 * @param device
 	 */
-	public void unequip(@Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
+	public void unequip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
 		// Override to provide functionality
 	}
 
@@ -148,14 +149,14 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param player
 	 * @param device
 	 */
-	public void doTick(@Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
+	public void doTick(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
 		// Override in a sub-class to provide functionality
 	}
 
 	/**
 	 * Called when a Block is right-clicked with this Item
 	 */
-	public void onItemUse(@Nonnull final ItemStack stack, @Nonnull final EntityPlayer player,
+	public void onItemUse(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack, @Nonnull final EntityPlayer player,
 			@Nonnull final World worldIn, @Nonnull final BlockPos pos, @Nonnull final EnumHand hand,
 			@Nonnull final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		// Override in a sub-class to provide functionality
@@ -164,7 +165,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	/**
 	 * Called when the equipped item is right clicked.
 	 */
-	public void onItemRightClick(@Nonnull final ItemStack stack, @Nonnull final World worldIn,
+	public void onItemRightClick(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack, @Nonnull final World worldIn,
 			@Nonnull final EntityPlayer playerIn, @Nonnull final EnumHand handIn) {
 		// Override in a sub-class to provide functionality
 	}
@@ -175,7 +176,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param entity
 	 * @param player
 	 */
-	public boolean hitEntity(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase target,
+	public boolean hitEntity(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack, @Nonnull final EntityLivingBase target,
 			@Nonnull final EntityLivingBase attacker) {
 		// Override in a sub-class to provide functionality
 		return false;

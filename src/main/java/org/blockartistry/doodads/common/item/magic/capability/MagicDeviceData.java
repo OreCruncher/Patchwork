@@ -32,13 +32,14 @@ import javax.annotation.Nonnull;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.magic.AbilityHandler;
 import org.blockartistry.doodads.util.MathStuff;
+import org.blockartistry.doodads.util.simplecaps.SimpleDataRegistry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 
-public class MagicDeviceData implements IMagicDeviceSettable {
+public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceSettable {
 
 	protected List<String> abilities = new ArrayList<>();
 	protected int variant = 0;
@@ -166,6 +167,8 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		for (final String s : this.abilities)
 			theList.appendTag(new NBTTagString(s));
 		nbt.setTag(NBT.ABILITIES, theList);
+
+		nbt.setTag(NBT.DATA, super.serializeNBT());
 		return nbt;
 	}
 
@@ -182,7 +185,9 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		final int count = theList.tagCount();
 		for (int i = 0; i < count; i++)
 			this.abilities.add(theList.getStringTagAt(i));
+		super.deserializeNBT(nbt.getCompoundTag(NBT.DATA));
 		sortAbilities();
+
 		this.dirty = true;
 	}
 
@@ -202,6 +207,7 @@ public class MagicDeviceData implements IMagicDeviceSettable {
 		public static final String CURRENT_ENERGY = "c";
 		public static final String QUALITY = "q";
 		public static final String MONIKER = "n";
+		public static final String DATA = "d";
 	}
 
 }

@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.magic.AbilityHandler;
+import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -42,8 +43,10 @@ public class AbilityFlight extends AbilityHandler {
 		super("flight");
 	}
 
+	@Override
 	public boolean canBeAppliedTo(@Nonnull final ItemMagicDevice.Type type) {
-		return type == ItemMagicDevice.Type.AMULET || type == ItemMagicDevice.Type.BODY;
+		return type == ItemMagicDevice.Type.AMULET || type == ItemMagicDevice.Type.BODY
+				|| type == ItemMagicDevice.Type.BELT;
 	}
 
 	/**
@@ -53,7 +56,8 @@ public class AbilityFlight extends AbilityHandler {
 	 * @param device
 	 */
 	@Override
-	public void equip(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
+	public void equip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase entity,
+			@Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		ensureFlightSet(player);
 	}
@@ -65,7 +69,8 @@ public class AbilityFlight extends AbilityHandler {
 	 * @param device
 	 */
 	@Override
-	public void unequip(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
+	public void unequip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase entity,
+			@Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
 			player.capabilities.isFlying = false;
@@ -80,16 +85,17 @@ public class AbilityFlight extends AbilityHandler {
 	 * @param device
 	 */
 	@Override
-	public void doTick(@Nonnull final EntityLivingBase entity, @Nonnull final ItemStack device) {
+	public void doTick(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase entity,
+			@Nonnull final ItemStack device) {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 		if (!player.isCreative()) {
-			final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(device);
+			final IMagicDeviceSettable c = (IMagicDeviceSettable) caps;
 			if (caps.hasEnergyFor(POWER_COST)) {
 				ensureFlightSet(player);
 				if (player.capabilities.isFlying)
-					caps.consumeEnergy(POWER_COST);
+					c.consumeEnergy(POWER_COST);
 			} else {
-				unequip(player, device);
+				unequip(caps, player, device);
 			}
 		}
 	}

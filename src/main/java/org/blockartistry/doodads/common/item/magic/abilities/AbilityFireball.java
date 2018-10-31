@@ -29,6 +29,7 @@ import javax.annotation.Nonnull;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
 import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.common.item.magic.AbilityHandler;
+import org.blockartistry.doodads.common.item.magic.capability.IMagicDevice;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,25 +58,25 @@ public class AbilityFireball extends AbilityHandler {
 	}
 
 	@Override
-	public void onItemRightClick(@Nonnull final ItemStack stack, @Nonnull final World world,
-			@Nonnull final EntityPlayer player, @Nonnull final EnumHand hand) {
+	public void onItemRightClick(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack,
+			@Nonnull final World world, @Nonnull final EntityPlayer player, @Nonnull final EnumHand hand) {
 		// There is a cooldown on this item
 		if (player.getCooldownTracker().hasCooldown(ModItems.MAGIC_DEVICE))
 			return;
 
 		boolean success = false;
-		
-		final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(stack);
-		if (caps.consumeEnergy(ACTIVATION_COST)) {
+
+		final IMagicDeviceSettable c = (IMagicDeviceSettable) caps;
+		if (c.consumeEnergy(ACTIVATION_COST)) {
 			// Calculate an acceleration vector based on the player look vector
 			final Vec3d lookVec = player.getLookVec();
 			final double dX = lookVec.x;
 			final double dY = lookVec.y;
 			final double dZ = lookVec.z;
 
-			// Create the entity using this CTOR.  It sets up the player as the shooter
+			// Create the entity using this CTOR. It sets up the player as the shooter
 			final EntitySmallFireball fireball = new EntitySmallFireball(world, player, dX, dY, dZ);
-			
+
 			// Adjust its position so it is not at the players feet :\
 			final double x = player.posX + lookVec.x;
 			final double y = player.posY + player.getEyeHeight() + lookVec.y;
@@ -84,26 +85,26 @@ public class AbilityFireball extends AbilityHandler {
 
 			// Recalculate the acceleration vectors because the entity CTOR puts a lot of
 			// English on the trajectory
-	        double d0 = (double)MathHelper.sqrt(dX * dX + dY * dY + dZ * dZ);
-	        fireball.accelerationX = dX / d0 * 0.1D;
-	        fireball.accelerationY = dY / d0 * 0.1D;
-	        fireball.accelerationZ = dZ / d0 * 0.1D;
+			final double d0 = MathHelper.sqrt(dX * dX + dY * dY + dZ * dZ);
+			fireball.accelerationX = dX / d0 * 0.1D;
+			fireball.accelerationY = dY / d0 * 0.1D;
+			fireball.accelerationZ = dZ / d0 * 0.1D;
 
 			// Spawn the sucker
 			world.spawnEntity(fireball);
 
 			// Play the sound
 			final BlockPos soundPos = new BlockPos(player);
-            player.world.playEvent((EntityPlayer)null, 1018, soundPos, 0);
+			player.world.playEvent((EntityPlayer) null, 1018, soundPos, 0);
 
-            success = true;
-            
+			success = true;
+
 		} else {
 			// Need to play a click sound because they are empty
 			playNoChargeSound(player);
 		}
-		
-		this.setCooldown(player, success? COOLDOWN_TICKS : 20);
+
+		setCooldown(player, success ? COOLDOWN_TICKS : 20);
 	}
 
 }

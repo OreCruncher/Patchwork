@@ -24,7 +24,6 @@
 
 package org.blockartistry.doodads.common.item;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
@@ -216,14 +215,9 @@ public class ItemMagicDevice extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Nonnull
 	public static void gatherToolTips(@Nonnull final ItemStack stack, @Nonnull final List<String> tips) {
-		gatherHandlers(stack).forEach(
-				da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
-	}
-
-	@Nonnull
-	public static List<String> getAbilities(@Nonnull final ItemStack stack) {
 		final IMagicDevice caps = getCapability(stack);
-		return caps != null ? caps.getAbilities() : new ArrayList<>();
+		gatherHandlers(caps).forEach(
+				da -> tips.add(String.format(FORMAT_STRING, Localization.loadString(da.getUnlocalizedName()))));
 	}
 
 	@Nullable
@@ -239,9 +233,11 @@ public class ItemMagicDevice extends ItemBase {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
 			float hitX, float hitY, float hitZ) {
 		final ItemStack stack = player.getHeldItem(hand);
-		if (!player.getEntityWorld().isRemote)
-			gatherHandlers(stack)
-					.forEach(da -> da.onItemUse(stack, player, world, pos, hand, facing, hitX, hitY, hitZ));
+		if (!player.getEntityWorld().isRemote) {
+			final IMagicDevice caps = getCapability(stack);
+			gatherHandlers(caps)
+					.forEach(da -> da.onItemUse(caps, stack, player, world, pos, hand, facing, hitX, hitY, hitZ));
+		}
 		return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
 	}
 
@@ -253,8 +249,10 @@ public class ItemMagicDevice extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(@Nonnull final World world, @Nonnull final EntityPlayer player,
 			@Nonnull final EnumHand hand) {
 		final ItemStack stack = player.getHeldItem(hand);
-		if (!player.getEntityWorld().isRemote)
-			gatherHandlers(stack).forEach(da -> da.onItemRightClick(stack, world, player, hand));
+		if (!player.getEntityWorld().isRemote) {
+			final IMagicDevice caps = getCapability(stack);
+			gatherHandlers(caps).forEach(da -> da.onItemRightClick(caps, stack, world, player, hand));
+		}
 		return super.onItemRightClick(world, player, hand);
 	}
 
@@ -268,7 +266,8 @@ public class ItemMagicDevice extends ItemBase {
 	public boolean hitEntity(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase target,
 			@Nonnull final EntityLivingBase attacker) {
 		if (!attacker.getEntityWorld().isRemote) {
-			final Optional<Boolean> result = gatherHandlers(stack).map(da -> da.hitEntity(stack, target, attacker))
+			final IMagicDevice caps = getCapability(stack);
+			final Optional<Boolean> result = gatherHandlers(caps).map(da -> da.hitEntity(caps, stack, target, attacker))
 					.reduce(Boolean::logicalOr);
 			return result.isPresent() ? result.get() : false;
 		}
@@ -279,27 +278,33 @@ public class ItemMagicDevice extends ItemBase {
 	 * This method is called once per tick if the bauble is being worn by a player
 	 * Redirect from BaubleAdaptor.
 	 */
-	public void onWornTick(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		if (!player.getEntityWorld().isRemote)
-			gatherHandlers(itemstack).forEach(da -> da.doTick(player, itemstack));
+	public void onWornTick(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase player) {
+		if (!player.getEntityWorld().isRemote) {
+			final IMagicDevice caps = getCapability(stack);
+			gatherHandlers(caps).forEach(da -> da.doTick(caps, player, stack));
+		}
 	}
 
 	/**
 	 * This method is called when the bauble is equipped by a player Redirect from
 	 * BaubleAdaptor.
 	 */
-	public void onEquipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		if (!player.getEntityWorld().isRemote)
-			gatherHandlers(itemstack).forEach(da -> da.equip(player, itemstack));
+	public void onEquipped(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase player) {
+		if (!player.getEntityWorld().isRemote) {
+			final IMagicDevice caps = getCapability(stack);
+			gatherHandlers(caps).forEach(da -> da.equip(caps, player, stack));
+		}
 	}
 
 	/**
 	 * This method is called when the bauble is unequipped by a player Redirect from
 	 * BaubleAdaptor.
 	 */
-	public void onUnequipped(@Nonnull final ItemStack itemstack, @Nonnull final EntityLivingBase player) {
-		if (!player.getEntityWorld().isRemote)
-			gatherHandlers(itemstack).forEach(da -> da.unequip(player, itemstack));
+	public void onUnequipped(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase player) {
+		if (!player.getEntityWorld().isRemote) {
+			final IMagicDevice caps = getCapability(stack);
+			gatherHandlers(caps).forEach(da -> da.unequip(caps, player, stack));
+		}
 	}
 
 	/**
@@ -336,8 +341,8 @@ public class ItemMagicDevice extends ItemBase {
 	}
 
 	@Nonnull
-	private static Stream<AbilityHandler> gatherHandlers(@Nonnull final ItemStack stack) {
-		return getAbilities(stack).stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
+	private static Stream<AbilityHandler> gatherHandlers(@Nonnull final IMagicDevice caps) {
+		return caps.getAbilities().stream().map(s -> AbilityHandler.REGISTRY.getValue(new ResourceLocation(s)))
 				.filter(e -> e != null);
 	}
 

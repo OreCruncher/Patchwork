@@ -33,7 +33,6 @@ import javax.annotation.Nonnull;
 
 import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
-
 import net.minecraft.util.ResourceLocation;
 
 public class MagicDevice {
