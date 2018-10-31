@@ -49,8 +49,7 @@ public class MagicDeviceSkin extends ShapelessRecipes {
 	}
 
 	private boolean isProperIngredient(final ItemStack stack) {
-		return stack.getItem() instanceof ItemMagicDevice
-				&& ((ItemMagicDevice) stack.getItem()).getDeviceType(stack).getVariants() > 1;
+		return stack.getItem() instanceof ItemMagicDevice;
 	}
 
 	@Override
@@ -60,10 +59,13 @@ public class MagicDeviceSkin extends ShapelessRecipes {
 			final ItemStack stack = inv.getStackInSlot(i);
 			if (stack.isEmpty())
 				continue;
-			if (isProperIngredient(inv.getStackInSlot(i))) {
+			if (isProperIngredient(stack)) {
 				if (found)
 					return false;
 				found = true;
+			} else {
+				// Came across something that shouldn't be there
+				return false;
 			}
 		}
 		return found;

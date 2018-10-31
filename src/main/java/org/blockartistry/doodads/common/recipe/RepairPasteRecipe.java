@@ -80,8 +80,6 @@ public final class RepairPasteRecipe extends ShapelessRecipes {
 			if (ingredient.isEmpty())
 				continue;
 			if (ItemStack.areItemsEqual(REPAIR_PASTE, ingredient)) {
-				if (foundPaste)
-					return false;
 				foundPaste = true;
 			} else if (isBrokenItem(ingredient)) {
 				if (foundBrokenItem)
@@ -100,15 +98,20 @@ public final class RepairPasteRecipe extends ShapelessRecipes {
 	public ItemStack getCraftingResult(@Nonnull final InventoryCrafting inv) {
 		// Just need to locate the broken item
 		final int invSize = inv.getSizeInventory();
+		ItemStack result = null;
+		int pasteCount = 0;
 		for (int i = 0; i < invSize; i++) {
 			final ItemStack ingredient = inv.getStackInSlot(i);
+			if (ingredient.isEmpty())
+				continue;
 			if (isBrokenItem(ingredient)) {
-				final ItemStack result = ingredient.copy();
-				result.setItemDamage(Math.max(0, result.getItemDamage() - REPAIR_AMOUNT));
-				return result;
+				result = ingredient.copy();
+			} else if (ItemStack.areItemsEqual(REPAIR_PASTE, ingredient)) {
+				pasteCount++;
 			}
 		}
-		return null;
+		result.setItemDamage(Math.max(0, result.getItemDamage() - REPAIR_AMOUNT * pasteCount));
+		return result;
 	}
 
 	private static boolean isTypeAcceptable(@Nonnull final Item item) {
