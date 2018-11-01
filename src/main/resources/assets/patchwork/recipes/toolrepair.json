@@ -1,0 +1,11 @@
+{
+	"_comment": [
+		"Repair tools using repair paste"
+	],
+	"type": "patchwork:toolrepair",
+	"group": "patchwork:toolrepair",
+	"ingredients": [
+	],
+	"result": {
+	}
+}

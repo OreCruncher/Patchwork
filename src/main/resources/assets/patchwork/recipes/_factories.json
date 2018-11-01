@@ -1,0 +1,6 @@
+{
+	"recipes": {
+		"toolrepair": "org.blockartistry.patchwork.common.recipe.ToolRepairRecipe$Factory",
+		"magicdevicereskin": "org.blockartistry.patchwork.common.recipe.MagicDeviceReskinRecipe$Factory"
+	}
+}

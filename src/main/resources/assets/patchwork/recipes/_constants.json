@@ -1,0 +1,37 @@
+[
+	{
+		"name": "coin_copper",
+		"ingredient": {
+			"item": "patchwork:coin",
+			"data": 0
+		}
+	},
+	{
+		"name": "coin_bronze",
+		"ingredient": {
+			"item": "patchwork:coin",
+			"data": 1
+		}
+	},
+	{
+		"name": "coin_silver",
+		"ingredient": {
+			"item": "patchwork:coin",
+			"data": 2
+		}
+	},
+	{
+		"name": "coin_gold",
+		"ingredient": {
+			"item": "patchwork:coin",
+			"data": 3
+		}
+	},
+	{
+		"name": "coin_platinum",
+		"ingredient": {
+			"item": "patchwork:coin",
+			"data": 4
+		}
+	}
+]

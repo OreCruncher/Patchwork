@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "#coin_bronze"
+		}
+	],
+	"result": {
+		"_comment": "Copper coin meta 0",
+		"item": "patchwork:coin",
+		"data": 0,
+		"count": 9
+	}
+}

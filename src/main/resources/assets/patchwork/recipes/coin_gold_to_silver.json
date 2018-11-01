@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "#coin_gold"
+		}
+	],
+	"result": {
+		"_comment": "Silver coin meta 2",
+		"item": "patchwork:coin",
+		"data": 2,
+		"count": 9
+	}
+}

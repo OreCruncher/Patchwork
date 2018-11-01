@@ -1,0 +1,37 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		},
+		{
+			"item": "#coin_gold"
+		}
+	],
+	"result": {
+		"_comment": "Platinum coin meta 4",
+		"item": "patchwork:coin",
+		"data": 4
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"_comment": [
+		"Reskin magic devices"
+	],
+	"type": "patchwork:magicdevicereskin",
+	"group": "patchwork:magicdevicereskin",
+	"ingredients": [
+	],
+	"result": {
+	}
+}

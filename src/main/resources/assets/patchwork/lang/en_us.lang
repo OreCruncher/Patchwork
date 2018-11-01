@@ -1,0 +1,89 @@
+#PARSE_ESCAPES
+# US English Translations
+patchwork.msg.patchwork=Patchwork
+
+# Version checking strings
+patchwork.msg.NewVersion=["§6Update Available: §9[",{"text":"§2%1$s §ev%2$s§f","color":"gold","hoverEvent":{"action":"show_text","value":{"text":"Click for CurseForge Project Page","color":"aqua"}},"clickEvent":{"action":"open_url","value":"%3$s"}},"§9]"]
+
+# Metadata Updates
+patchwork.metadata.Name=§3Patchwork
+patchwork.metadata.Credits=§cNetHack, Rogue, etc.§r
+patchwork.metadata.Authors=§aOreCruncher§r
+patchwork.metadata.Description=Adds miscellaneous items and functions that can be used in an adventure centric modpack
+
+# Configuration
+config.patchwork.title=Patchwork Configuration
+
+config.patchwork.logging=Logging
+config.patchwork.logging.tooltip=Logging options
+config.patchwork.logging.enableLogging=Enable Debug Trace
+config.patchwork.logging.enableLogging.tooltip=Enable/Disable debug trace output to the Forge log
+config.patchwork.logging.enableVersionCheck=Enable Version Check
+config.patchwork.logging.enableVersionCheck.tooltip=Enable/Disable message related to a newer version of the mod being available
+
+config.patchwork.mobnet=Mob Net
+config.patchwork.mobnet.tooltip=Mob Net options
+config.patchwork.mobnet.enableVillagerCapture=Enable Villager Capture
+config.patchwork.mobnet.enableVillagerCapture.tooltip=Enable/disable use of the Mob Net on Villagers
+config.patchwork.mobnet.enableHostileCapture=Enable Hostile Mob Capture
+config.patchwork.mobnet.enableHostileCapture.tooltip=Enable/disable use of the Mob Net on hostile entities
+config.patchwork.mobnet.reusable=Mob Nets are reusable
+config.patchwork.mobnet.reusable.tooltip=Enable/disable reuse of Mob Nets
+
+config.patchwork.features=Features
+config.patchwork.features.tooltip=Options to control various features
+config.patchwork.features.mobsdropcoins=Mobs Drop Coins
+config.patchwork.features.mobsdropcoins.tooltip=Enable/disable dropping of coins from mobs
+config.patchwork.features.nodropsfromspawnermobs=No Mob Drops from Spawner Mobs
+config.patchwork.features.nodropsfromspawnermobs.tooltip=Enable/disable scrubbing drops from mobs that come from spawners
+
+# Creative Tab
+itemGroup.creativetab.patchwork.main=§3Patchwork
+
+# Coin items
+item.patchwork.coin_copper.name=Copper Coin
+item.patchwork.coin_bronze.name=Bronze Coin
+item.patchwork.coin_silver.name=Silver Coin
+item.patchwork.coin_gold.name=Gold Coin
+item.patchwork.coin_platinum.name=Platinum Coin
+
+# Miscellaneous
+item.patchwork.mobnet.name=Mob Net
+
+# Materials
+item.patchwork.material_repairpaste.name=Repair Paste
+item.patchwork.material_magicalamalgam.name=Magical Amalgam
+
+# Magical stuff
+patchwork.magicdevice.amulet.name=Amulet
+patchwork.magicdevice.ring.name=Ring
+patchwork.magicdevice.belt.name=Belt
+patchwork.magicdevice.trinket.name=Trinket
+patchwork.magicdevice.head.name=Head Covering
+patchwork.magicdevice.body.name=Frock
+patchwork.magicdevice.charm.name=Charm
+patchwork.magicdevice.boots.name=Boots
+patchwork.magicdevice.rod.name=Rod
+patchwork.magicdevice.wand.name=Wand
+patchwork.magicdevice.scroll.name=Scroll
+patchwork.magicdevice.staff.name=Staff
+patchwork.magicdevice.tome.name=Tome
+
+patchwork.devicequality.plain.name=Plain
+patchwork.devicequality.mundane.name=Mundane
+patchwork.devicequality.normal.name=Normal
+patchwork.devicequality.prized.name=Prized
+patchwork.devicequality.legendary.name=Legendary
+
+patchwork.magicdevice.flight.moniker=Amulet of Agile Flight
+patchwork.magicdevice.fireball.moniker=Wand of Blasting
+patchwork.magicdevice.tome.moniker=Tome of Agonizing Magic
+
+patchwork.magicdevice.basicname=%1$s %2$s
+patchwork.magicdevice.powerremaining=Essence Remaining: %1$.1f%%
+
+patchwork.deviceability.format=§aAbility:§r §e%1$s§r
+patchwork.deviceability.flight.name=Flight
+patchwork.deviceability.fireball.name=Fireball
+patchwork.deviceability.symbiotic.name=Symbiotic
+patchwork.deviceability.charging.name=Charging

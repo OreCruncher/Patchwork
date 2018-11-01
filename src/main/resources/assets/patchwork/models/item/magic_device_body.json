@@ -1,0 +1,56 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "minecraft:items/string"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"patchwork:variant": 0
+			},
+			"model": "patchwork:item/body/body_0"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 1
+			},
+			"model": "patchwork:item/body/body_1"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 2
+			},
+			"model": "patchwork:item/body/body_2"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 3
+			},
+			"model": "patchwork:item/body/body_3"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 4
+			},
+			"model": "patchwork:item/body/body_4"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 5
+			},
+			"model": "patchwork:item/body/body_5"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 6
+			},
+			"model": "patchwork:item/body/body_6"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 7
+			},
+			"model": "patchwork:item/body/body_7"
+		}
+	]
+}

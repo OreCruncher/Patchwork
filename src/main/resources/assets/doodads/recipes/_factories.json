@@ -1,6 +1,0 @@
-{
-	"recipes": {
-		"toolrepair": "org.blockartistry.doodads.common.recipe.ToolRepairRecipe$Factory",
-		"magicdevicereskin": "org.blockartistry.doodads.common.recipe.MagicDeviceReskinRecipe$Factory"
-	}
-}

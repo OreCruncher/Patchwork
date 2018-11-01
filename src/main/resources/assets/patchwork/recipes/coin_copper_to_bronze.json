@@ -1,0 +1,37 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		},
+		{
+			"item": "#coin_copper"
+		}
+	],
+	"result": {
+		"_comment": "Bronze coin meta 1",
+		"item": "patchwork:coin",
+		"data": 1
+	}
+}
