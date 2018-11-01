@@ -71,7 +71,7 @@ public abstract class SimpleDataRegistry implements ISimpleDataRegistry {
 				final ISimpleData data = getData(clazz);
 				data.deserializeNBT(nbt.getCompoundTag(className));
 			} catch (@Nonnull final Throwable t) {
-				throw new RuntimeException(t);
+				throw new IllegalStateException(t);
 			}
 		}
 	}
