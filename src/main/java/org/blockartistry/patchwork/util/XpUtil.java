@@ -22,6 +22,13 @@ public class XpUtil {
 	public static final int RATIO = 20;
 
 	/**
+	 * The highest level that can be converted into experience points that can be
+	 * stored as an {@link Integer}.
+	 */
+	private static final int MAX_LEVEL = 21862;
+	private static final int[] xpmap = new int[MAX_LEVEL + 1];
+
+	/**
 	 * Converts the given fluid amount into experience points.
 	 * <p>
 	 * Note that this calculation has a remainder!
@@ -46,13 +53,6 @@ public class XpUtil {
 	public static int experienceToLiquid(int xp) {
 		return xp * RATIO;
 	}
-
-	/**
-	 * The highest level that can be converted into experience points that can be
-	 * stored as an {@link Integer}.
-	 */
-	private static final int MAX_LEVEL = 21862;
-	private static final int[] xpmap = new int[MAX_LEVEL + 1];
 
 	/**
 	 * 

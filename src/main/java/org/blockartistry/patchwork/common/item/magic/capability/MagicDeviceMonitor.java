@@ -111,7 +111,7 @@ public final class MagicDeviceMonitor {
 		for (final ItemStack stack : inv) {
 			// We skip the held item - that is processed separately from the general
 			// iteration
-			if (heldStack != stack && !stack.isEmpty() && stack.getItem() instanceof ItemMagicDevice) {
+			if (!heldStack.equals(stack) && !stack.isEmpty() && stack.getItem() instanceof ItemMagicDevice) {
 				tickStack(player, stack, when);
 			}
 		}

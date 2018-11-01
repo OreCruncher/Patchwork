@@ -489,7 +489,7 @@ public class ItemMagicDevice extends ItemBase {
 
 		@Nonnull
 		public static Type bySubTypeId(int subTypeId) {
-			return SUBTYPE_LOOKUP[MathStuff.clamp(subTypeId, 0, SUBTYPE_LOOKUP.length)];
+			return SUBTYPE_LOOKUP[MathStuff.clamp(subTypeId, 0, SUBTYPE_LOOKUP.length - 1)];
 		}
 
 	}

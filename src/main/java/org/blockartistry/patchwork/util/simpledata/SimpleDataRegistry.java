@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.patchwork.util.simplecaps;
+package org.blockartistry.patchwork.util.simpledata;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -90,7 +90,7 @@ public abstract class SimpleDataRegistry implements ISimpleDataRegistry {
 			try {
 				result = clazz.newInstance();
 			} catch (@Nonnull final Throwable t) {
-				throw new RuntimeException(t);
+				throw new IllegalStateException(t);
 			}
 		}
 		return result;

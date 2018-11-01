@@ -109,9 +109,13 @@ public class MathStuff {
 		return tan((float) rad);
 	}
 
-	public static final float atan2(float y, float x) {
-		final float add, mul;
+	public static final float atan2(final float Y, final float X) {
+		final float add;
+		final float mul;
 
+		float y = Y;
+		float x = X;
+		
 		if (x < 0.0f) {
 			if (y < 0.0f) {
 				x = -x;
@@ -158,32 +162,32 @@ public class MathStuff {
 		return radians * RAD_TO_DEG;
 	}
 
-	public static float wrapDegrees(float value) {
-		value = value % 360.0F;
+	public static float wrapDegrees(final float value) {
+		float v = value % 360.0F;
 
-		if (value >= 180.0F) {
-			value -= 360.0F;
+		if (v >= 180.0F) {
+			v -= 360.0F;
 		}
 
-		if (value < -180.0F) {
-			value += 360.0F;
+		if (v < -180.0F) {
+			v += 360.0F;
 		}
 
-		return value;
+		return v;
 	}
 
-	public static double wrapDegrees(double value) {
-		value = value % 360.0D;
+	public static double wrapDegrees(final double value) {
+		double v = value % 360.0D;
 
-		if (value >= 180.0D) {
-			value -= 360.0D;
+		if (v >= 180.0D) {
+			v -= 360.0D;
 		}
 
-		if (value < -180.0D) {
-			value += 360.0D;
+		if (v < -180.0D) {
+			v += 360.0D;
 		}
 
-		return value;
+		return v;
 	}
 
 	public static final float abs(final float val) {

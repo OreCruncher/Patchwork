@@ -22,11 +22,21 @@
  * THE SOFTWARE.
  */
 
-package org.blockartistry.patchwork.util.simplecaps;
+package org.blockartistry.patchwork.util.simpledata;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface ISimpleData extends INBTSerializable<NBTTagCompound> {
+public interface ISimpleDataRegistry extends INBTSerializable<NBTTagCompound> {
+	
+	ISimpleData getData(@Nonnull final Class<? extends ISimpleData> clazz);
+	
+	boolean isDirty();
+	
+	void setDirty();
+	
+	void clearDirty();
 
 }

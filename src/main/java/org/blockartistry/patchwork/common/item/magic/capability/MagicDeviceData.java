@@ -36,7 +36,7 @@ import org.blockartistry.patchwork.common.item.ItemMagicDevice;
 import org.blockartistry.patchwork.common.item.magic.AbilityHandler;
 import org.blockartistry.patchwork.util.MathStuff;
 import org.blockartistry.patchwork.util.collections.EmptyList;
-import org.blockartistry.patchwork.util.simplecaps.SimpleDataRegistry;
+import org.blockartistry.patchwork.util.simpledata.SimpleDataRegistry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

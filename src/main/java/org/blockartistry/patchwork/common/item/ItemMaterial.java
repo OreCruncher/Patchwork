@@ -33,6 +33,7 @@ import org.blockartistry.patchwork.ModBase;
 import org.blockartistry.patchwork.ModInfo;
 import org.blockartistry.patchwork.client.ModCreativeTab;
 import org.blockartistry.patchwork.util.IVariant;
+import org.blockartistry.patchwork.util.MathStuff;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -105,11 +106,7 @@ public class ItemMaterial extends ItemBase {
 
 		@Nonnull
 		public static Type bySubTypeId(int meta) {
-			if (meta < 0 || meta >= SUBTYPE_LOOKUP.length) {
-				meta = 0;
-			}
-
-			return SUBTYPE_LOOKUP[meta];
+			return SUBTYPE_LOOKUP[MathStuff.clamp(meta, 0,  SUBTYPE_LOOKUP.length - 1)];
 		}
 
 	}
