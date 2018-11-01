@@ -109,25 +109,27 @@ public class ItemMagicDevice extends ItemBase {
 
 	@Override
 	public void getSubItems(@Nonnull final CreativeTabs tab, @Nonnull final NonNullList<ItemStack> items) {
-		for (final Type t : Type.values()) {
-			final ItemStack stack = new ItemStack(this, 1, t.getSubTypeId());
-			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
-					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
-			xface.setVariant(0);
-			items.add(stack);
-		}
+		if (isInCreativeTab(tab)) {
+			for (final Type t : Type.values()) {
+				final ItemStack stack = new ItemStack(this, 1, t.getSubTypeId());
+				final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
+						.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
+				xface.setVariant(0);
+				items.add(stack);
+			}
 
-		for (final MagicDevice device : MagicDevice.DEVICES.values()) {
-			final ItemStack stack = new ItemStack(this, 1, device.getType().getSubTypeId());
-			final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
-					.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
-			xface.setMoniker(device.getUnlocalizedName());
-			xface.setQuality(device.getQuality());
-			xface.setMaxEnergy(device.getQuality().getMaxPower());
-			xface.setCurrentEnergy(xface.getMaxEnergy());
-			for (final ResourceLocation r : device.getAbilities())
-				xface.addAbilities(r);
-			items.add(stack);
+			for (final MagicDevice device : MagicDevice.DEVICES.values()) {
+				final ItemStack stack = new ItemStack(this, 1, device.getType().getSubTypeId());
+				final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
+						.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
+				xface.setMoniker(device.getUnlocalizedName());
+				xface.setQuality(device.getQuality());
+				xface.setMaxEnergy(device.getQuality().getMaxPower());
+				xface.setCurrentEnergy(xface.getMaxEnergy());
+				for (final ResourceLocation r : device.getAbilities())
+					xface.addAbilities(r);
+				items.add(stack);
+			}
 		}
 	}
 
@@ -292,7 +294,7 @@ public class ItemMagicDevice extends ItemBase {
 			gatherHandlers(caps).forEach(da -> da.doTick(caps, player, stack));
 		}
 	}
-	
+
 	/**
 	 * This method is called when the bauble is equipped by a player Redirect from
 	 * BaubleAdaptor.
@@ -317,7 +319,7 @@ public class ItemMagicDevice extends ItemBase {
 
 	/**
 	 * Indicates if the given ItemStack can be ticked based on the TickWhen supplied
-	 * 
+	 *
 	 * @param stack
 	 *                  Stack to check
 	 * @param when
