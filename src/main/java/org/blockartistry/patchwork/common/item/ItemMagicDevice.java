@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -52,6 +51,7 @@ import org.blockartistry.patchwork.util.collections.EmptySet;
 import org.blockartistry.patchwork.util.collections.IdentityHashSet;
 
 import baubles.api.BaubleType;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -76,8 +76,12 @@ public class ItemMagicDevice extends ItemBase {
 	public static final int BASE_CONSUMPTION_UNIT = 10;
 	public static final int TICKS_PER_MINUTE = 20 * 60;
 
-	private static final String POWER_FORMAT_STRING = Localization.loadString("patchwork.magicdevice.powerremaining");
+	private static final String POWER_FMT = Localization.loadString("patchwork.magicdevice.powerremaining");
+	private static final String DEVICE_POWER_LEVELS_FMT = Localization.loadString("patchwork.magicdevice.powerlevels");
+	private static final String DEVICE_QUALITY_FMT = Localization.loadString("patchwork.magicdevice.quality");
 	private static final String DEVICE_NAME_SIMPLE_FMT = Localization.loadString("patchwork.magicdevice.basicname");
+	private static final String ADVANCED_TOOLTIP_FMT = Localization.loadString("patchwork.msg.advanced_tooltip");
+
 	private static final Map<Type, String> DEVICE_TYPE_NAMES = new EnumMap<>(Type.class);
 	private static final Map<Quality, String> DEVICE_QUALITY_NAMES = new EnumMap<>(Quality.class);
 
@@ -124,7 +128,6 @@ public class ItemMagicDevice extends ItemBase {
 						.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
 				xface.setMoniker(device.getUnlocalizedName());
 				xface.setQuality(device.getQuality());
-				xface.setMaxEnergy(device.getQuality().getMaxPower());
 				xface.setCurrentEnergy(xface.getMaxEnergy());
 				for (final ResourceLocation r : device.getAbilities())
 					xface.addAbilities(r);
@@ -140,11 +143,6 @@ public class ItemMagicDevice extends ItemBase {
 			ModBase.proxy().registerItemRenderer(this, bt.getSubTypeId(),
 					new ModelResourceLocation(ModInfo.MOD_ID + ":magic_device_" + bt.name(), "inventory"));
 		}
-	}
-
-	public float getPowerRemaining(@Nonnull final ItemStack stack) {
-		final IMagicDevice caps = getCapability(stack);
-		return caps != null ? caps.getPowerRatio() : 0F;
 	}
 
 	@Override
@@ -177,11 +175,34 @@ public class ItemMagicDevice extends ItemBase {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World worldIn,
-			@Nonnull final List<String> tooltip, @Nonnull final ITooltipFlag flagIn) {
-		if (showDurabilityBar(stack))
-			tooltip.add(String.format(POWER_FORMAT_STRING, getPowerRemaining(stack)));
-		gatherToolTips(stack, tooltip);
+	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World world,
+			@Nonnull final List<String> tips, @Nonnull final ITooltipFlag flag) {
+
+		final boolean doAdvanced = GuiScreen.isShiftKeyDown();
+		final IMagicDevice caps = getCapability(stack);
+
+		if (showDurabilityBar(stack)) {
+			tips.add(String.format(POWER_FMT, caps.getPowerRatio()));
+			if (doAdvanced)
+				tips.add(String.format(DEVICE_POWER_LEVELS_FMT, caps.getCurrentEnergy(), caps.getMaxEnergy()));
+		}
+
+		if (doAdvanced) {
+			tips.add(String.format(DEVICE_QUALITY_FMT, DEVICE_QUALITY_NAMES.get(caps.getQuality())));
+		}
+
+		gatherHandlers(caps).forEach(h -> {
+			tips.add(h.getName());
+			if (doAdvanced) {
+				for (final String s : h.getToolTip())
+					tips.add("    " + s);
+			}
+		});
+
+		if (!doAdvanced) {
+			tips.add("");
+			tips.add(ADVANCED_TOOLTIP_FMT);
+		}
 	}
 
 	@Override
@@ -218,15 +239,6 @@ public class ItemMagicDevice extends ItemBase {
 			caps.addAbilities(ability);
 		}
 		return stack;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Nonnull
-	public static void gatherToolTips(@Nonnull final ItemStack stack, @Nonnull final List<String> tips) {
-		final IMagicDevice caps = getCapability(stack);
-		final List<String> t = gatherHandlers(caps).map(AbilityHandler::getToolTip).filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		tips.addAll(t);
 	}
 
 	@Nullable

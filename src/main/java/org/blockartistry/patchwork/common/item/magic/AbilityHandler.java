@@ -27,6 +27,7 @@ package org.blockartistry.patchwork.common.item.magic;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.blockartistry.patchwork.ModInfo;
 import org.blockartistry.patchwork.common.item.ItemMagicDevice;
 import org.blockartistry.patchwork.common.item.ModItems;
@@ -58,20 +59,28 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	protected static final SoundEvent NO_CHARGE = SoundEvent.REGISTRY
 			.getObject(new ResourceLocation("ui.button.click"));
 
-	private static final String FORMAT_STRING = Localization.loadString("patchwork.deviceability.format");
+	private static final int TOOLTIP_WIDTH = 40;
 
-	private String unlocalizedName;
+	private final String name;
+	private final String[] tipText;
+
 	private int priority = 10000;
 
 	public AbilityHandler(@Nonnull final String name) {
 		this.setRegistryName(name);
-		setUnlocalizedName(ModInfo.MOD_ID + ".deviceability." + name + ".name");
+		this.name = Localization.loadString(ModInfo.MOD_ID + ".deviceability." + name + ".name");
+		this.tipText = WordUtils.wrap(Localization.loadString(ModInfo.MOD_ID + ".deviceability." + name + ".tooltip"), TOOLTIP_WIDTH).split("\\r?\\n");
 	}
 
+	@Nonnull
+	public String getName() {
+		return this.name;
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@Nullable
-	public String getToolTip() {
-		return String.format(FORMAT_STRING, Localization.loadString(getUnlocalizedName()));
+	public String[] getToolTip() {
+		return this.tipText;
 	}
 	
 	/**
@@ -83,22 +92,6 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 */
 	public boolean canBeAppliedTo(@Nonnull final ItemMagicDevice.Type type) {
 		return true;
-	}
-
-	/**
-	 * Unlocalized name of the ability. Need to be translated via Localization.
-	 *
-	 * @return Unlocalized name of the Ability
-	 */
-	@Nullable
-	public String getUnlocalizedName() {
-		return this.unlocalizedName;
-	}
-
-	@Nonnull
-	protected AbilityHandler setUnlocalizedName(@Nonnull final String name) {
-		this.unlocalizedName = name;
-		return this;
 	}
 
 	/**

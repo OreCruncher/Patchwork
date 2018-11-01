@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.Nonnull;
 
@@ -46,7 +47,6 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 	protected List<ResourceLocation> abilities = null;
 	protected int variant = 0;
-	protected int maxEnergy = 0;
 	protected int currentEnergy = 0;
 	protected ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.PLAIN;
 	protected String moniker = null;
@@ -64,7 +64,7 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 	@Override
 	public int getMaxEnergy() {
-		return this.maxEnergy;
+		return this.quality.getMaxPower();
 	}
 
 	@Override
@@ -74,9 +74,7 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 	@Override
 	public float getPowerRatio() {
-		if (this.maxEnergy == 0)
-			return 0;
-		return ((float) this.currentEnergy / this.maxEnergy) * 100F;
+		return ((float) this.currentEnergy / getMaxEnergy()) * 100F;
 	}
 
 	@Override
@@ -110,21 +108,14 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 	}
 
 	@Override
-	public void setMaxEnergy(final int energy) {
-		this.maxEnergy = MathStuff.clamp(energy, 0, Integer.MAX_VALUE);
-		setCurrentEnergy(this.currentEnergy);
+	public void setCurrentEnergy(final int energy) {
+		this.currentEnergy = MathStuff.clamp(energy, 0, getMaxEnergy());
 		setDirty();
 	}
 
 	@Override
-	public void setCurrentEnergy(final int energy) {
-		this.currentEnergy = MathStuff.clamp(energy, 0, this.maxEnergy);
-		setDirty();
-	}
-	
-	@Override
 	public void addCurrentEnergy(final int energy) {
-		this.currentEnergy = MathStuff.clamp(this.currentEnergy + energy, 0, this.maxEnergy);
+		this.currentEnergy = MathStuff.clamp(this.currentEnergy + energy, 0, getMaxEnergy());
 		setDirty();
 	}
 
@@ -158,16 +149,16 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 	@Nonnull
 	public NBTTagCompound serializeNBT() {
 		final NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setByte(NBT.VARIANT, (byte) this.variant);
-		nbt.setByte(NBT.QUALITY, (byte) this.quality.ordinal());
-		nbt.setInteger(NBT.MAX_ENERGY, this.maxEnergy);
-		nbt.setInteger(NBT.CURRENT_ENERGY, this.currentEnergy);
-		if (this.moniker != null)
-			nbt.setString(NBT.MONIKER, this.moniker);
+		nbt.setByte(NBT.VARIANT, (byte) getVariant());
+		nbt.setByte(NBT.QUALITY, (byte) getQuality().ordinal());
+		nbt.setInteger(NBT.CURRENT_ENERGY, getCurrentEnergy());
+		if (getMoniker() != null)
+			nbt.setString(NBT.MONIKER, getMoniker());
 
-		if (this.abilities != null && this.abilities.size() > 0) {
+		final List<ResourceLocation> a = getAbilities();
+		if (a.size() > 0) {
 			final NBTTagList theList = new NBTTagList();
-			for (final ResourceLocation r : this.abilities)
+			for (final ResourceLocation r : a)
 				theList.appendTag(new NBTTagString(r.toString()));
 			nbt.setTag(NBT.ABILITIES, theList);
 		}
@@ -182,20 +173,21 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 	@Override
 	public void deserializeNBT(@Nonnull final NBTTagCompound nbt) {
-		this.variant = nbt.getByte(NBT.VARIANT);
-		this.quality = ItemMagicDevice.Quality.values()[nbt.getByte(NBT.QUALITY)];
-		this.maxEnergy = nbt.getInteger(NBT.MAX_ENERGY);
-		this.currentEnergy = nbt.getInteger(NBT.CURRENT_ENERGY);
+		setVariant(nbt.getByte(NBT.VARIANT));
+		setQuality(ItemMagicDevice.Quality.values()[nbt.getByte(NBT.QUALITY)]);
+		setCurrentEnergy(nbt.getInteger(NBT.CURRENT_ENERGY));
 		if (nbt.hasKey(NBT.MONIKER))
-			this.moniker = nbt.getString(NBT.MONIKER);
+			setMoniker(nbt.getString(NBT.MONIKER));
 
 		if (nbt.hasKey(NBT.ABILITIES)) {
 			final NBTTagList theList = nbt.getTagList(NBT.ABILITIES, 8);
-			final int count = theList.tagCount();
-			this.abilities = new ArrayList<>(count);
-			for (int i = 0; i < count; i++)
-				this.abilities.add(new ResourceLocation(theList.getStringTagAt(i)));
-			sort(this.abilities);
+			if (!theList.hasNoTags()) {
+				this.abilities = new ArrayList<>(nbt.getSize());
+				final ResourceLocation[] handlers = StreamSupport.stream(theList.spliterator(), false)
+						.map(e -> new ResourceLocation(((NBTTagString) e).getString()))
+						.toArray(ResourceLocation[]::new);
+				addAbilities(handlers);
+			}
 		}
 
 		// Deserialize base!
@@ -219,7 +211,6 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 	private static class NBT {
 		public static final String VARIANT = "v";
 		public static final String ABILITIES = "a";
-		public static final String MAX_ENERGY = "m";
 		public static final String CURRENT_ENERGY = "c";
 		public static final String QUALITY = "q";
 		public static final String MONIKER = "n";

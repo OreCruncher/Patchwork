@@ -37,24 +37,27 @@ config.patchwork.features.mobsdropcoins.tooltip=Enable/disable dropping of coins
 config.patchwork.features.nodropsfromspawnermobs=No Mob Drops from Spawner Mobs
 config.patchwork.features.nodropsfromspawnermobs.tooltip=Enable/disable scrubbing drops from mobs that come from spawners
 
+# Format strings
+patchwork.msg.advanced_tooltip=Press <SHIFT> for more
+
 # Creative Tab
 itemGroup.creativetab.patchwork.main=§3Patchwork
 
-# Coin items
+# Coin Items
 item.patchwork.coin_copper.name=Copper Coin
 item.patchwork.coin_bronze.name=Bronze Coin
 item.patchwork.coin_silver.name=Silver Coin
 item.patchwork.coin_gold.name=Gold Coin
 item.patchwork.coin_platinum.name=Platinum Coin
 
-# Miscellaneous
+# Miscellaneous Items
 item.patchwork.mobnet.name=Mob Net
 
-# Materials
+# Material Items
 item.patchwork.material_repairpaste.name=Repair Paste
 item.patchwork.material_magicalamalgam.name=Magical Amalgam
 
-# Magical stuff
+# Magical Items
 patchwork.magicdevice.amulet.name=Amulet
 patchwork.magicdevice.ring.name=Ring
 patchwork.magicdevice.belt.name=Belt
@@ -80,10 +83,16 @@ patchwork.magicdevice.fireball.moniker=Wand of Blasting
 patchwork.magicdevice.tome.moniker=Tome of Agonizing Magic
 
 patchwork.magicdevice.basicname=%1$s %2$s
-patchwork.magicdevice.powerremaining=Essence Remaining: %1$.1f%%
+patchwork.magicdevice.powerremaining=§2Essence: %1$.1f%%§r
+patchwork.magicdevice.powerlevels=§2%1$d / %2$d§r
+patchwork.magicdevice.quality=§aQuality: %1$s§r
 
 patchwork.deviceability.format=§aAbility:§r §e%1$s§r
-patchwork.deviceability.flight.name=Flight
-patchwork.deviceability.fireball.name=Fireball
-patchwork.deviceability.symbiotic.name=Symbiotic
-patchwork.deviceability.charging.name=Charging
+patchwork.deviceability.flight.name=§eFlight§r
+patchwork.deviceability.flight.tooltip=Provides creative flight as long as the item is worn and has essence. Essence is only consumed when the player is flying.  Don't run out of essence when flying...
+patchwork.deviceability.fireball.name=§eFireball§r
+patchwork.deviceability.fireball.tooltip=Shoots a firey ball at your target causing flame and other sorts of agony.  Becareful using the magic device around wooden structures.  No warranties are given or implied. 
+patchwork.deviceability.symbiotic.name=§eSymbiotic§r
+patchwork.deviceability.symbiotic.tooltip=Consumes player experience in order to recharge the magic device.  The amount of transfer per tick is limited so be cautious. 
+patchwork.deviceability.charging.name=§eCharging§r
+patchwork.deviceability.charging.tooltip=The device shares it's magic essence with other devices that are being worn or in the player inventory.  The amount shared per tick is limited.  The first device in the player inventory will be recharged before going on to the second.  Bauble inventory is given priority.

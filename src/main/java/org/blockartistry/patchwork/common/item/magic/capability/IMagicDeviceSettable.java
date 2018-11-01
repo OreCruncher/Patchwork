@@ -36,8 +36,6 @@ public interface IMagicDeviceSettable extends IMagicDevice {
 
 	void addAbilities(@Nonnull final ResourceLocation... ability);
 
-	void setMaxEnergy(final int energy);
-
 	void setCurrentEnergy(final int energy);
 	
 	void addCurrentEnergy(final int energy);
