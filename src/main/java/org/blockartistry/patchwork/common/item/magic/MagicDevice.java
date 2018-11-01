@@ -105,9 +105,9 @@ public class MagicDevice {
 		device = new MagicDevice("fireball").setType(ItemMagicDevice.Type.WAND)
 				.setQuality(ItemMagicDevice.Quality.PRIZED).addAbility(MagicAbilities.ABILITY_FIREBALL);
 		DEVICES.put(device.getName(), device);
-		
-		device = new MagicDevice("tome").setType(ItemMagicDevice.Type.TOME)
-				.setQuality(ItemMagicDevice.Quality.MUNDANE).addAbility(MagicAbilities.ABILITY_CHARGE).addAbility(MagicAbilities.ABILITY_SYMBIOTIC);
+
+		device = new MagicDevice("tome").setType(ItemMagicDevice.Type.TOME).setQuality(ItemMagicDevice.Quality.MUNDANE)
+				.addAbility(MagicAbilities.ABILITY_CHARGING).addAbility(MagicAbilities.ABILITY_SYMBIOTIC);
 		DEVICES.put(device.getName(), device);
 	}
 }

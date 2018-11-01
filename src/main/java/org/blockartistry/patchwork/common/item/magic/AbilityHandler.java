@@ -107,9 +107,9 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @return An instance of the Ability.
 	 */
 	@Nonnull
-	public AbilityHandler register() {
+	public ResourceLocation register() {
 		REGISTRY.register(this);
-		return this;
+		return getRegistryName();
 	}
 
 	/**
@@ -198,7 +198,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 */
 	protected void setCooldown(@Nonnull final EntityPlayer player, final int cooldownTicks) {
 		player.getCooldownTracker().setCooldown(ModItems.MAGIC_DEVICE, cooldownTicks);
-		player.swingArm(EnumHand.MAIN_HAND);
+		//player.swingArm(EnumHand.MAIN_HAND);
 	}
 	
 	/**
