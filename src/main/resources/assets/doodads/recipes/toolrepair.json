@@ -1,0 +1,11 @@
+{
+	"_comment": [
+		"Repair tools using repair paste"
+	],
+	"type": "doodads:toolrepair",
+	"group": "doodads:toolrepair",
+	"ingredients": [
+	],
+	"result": {
+	}
+}

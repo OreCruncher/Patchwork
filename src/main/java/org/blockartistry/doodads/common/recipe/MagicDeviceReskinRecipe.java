@@ -28,25 +28,19 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.doodads.common.item.ItemMagicDevice;
-import org.blockartistry.doodads.common.item.ItemMagicDevice.Type;
-import org.blockartistry.doodads.common.item.ModItems;
 import org.blockartistry.doodads.common.item.magic.capability.IMagicDeviceSettable;
-import org.blockartistry.doodads.util.RecipeHelper;
+
+import com.google.gson.JsonObject;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.GameData;
+import net.minecraftforge.common.crafting.IRecipeFactory;
+import net.minecraftforge.common.crafting.JsonContext;
 
-public class MagicDeviceSkin extends ShapelessRecipes {
-
-	public MagicDeviceSkin(String group, ItemStack output, NonNullList<Ingredient> ingredients) {
-		super(group, output, ingredients);
-	}
+public class MagicDeviceReskinRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe>
+		implements IRecipe {
 
 	private boolean isProperIngredient(final ItemStack stack) {
 		return stack.getItem() instanceof ItemMagicDevice;
@@ -94,21 +88,23 @@ public class MagicDeviceSkin extends ShapelessRecipes {
 		return null;
 	}
 
-	public static void register() {
-		for (final Type t : ItemMagicDevice.Type.values()) {
-			if (t.getVariants() > 1) {
-				final ItemStack input = new ItemStack(ModItems.MAGIC_DEVICE, 1, t.getSubTypeId());
-				final ItemStack output = input.copy();
-				final IMagicDeviceSettable caps = (IMagicDeviceSettable) ItemMagicDevice.getCapability(output);
-				caps.setVariant(caps.getVariant() + 1);
+	@Override
+	public boolean canFit(final int width, final int height) {
+		return width * height > 0;
+	}
 
-				final ResourceLocation location = RecipeHelper.getNameForRecipe(output);
-				final MagicDeviceSkin recipe = new MagicDeviceSkin(location.getResourceDomain(), output,
-						RecipeHelper.buildInput(new Object[] { input }));
-				recipe.setRegistryName(location);
-				GameData.register_impl(recipe);
+	@Override
+	@Nonnull
+	public ItemStack getRecipeOutput() {
+		return ItemStack.EMPTY;
+	}
 
-			}
+	public static class Factory implements IRecipeFactory {
+		@Override
+		@Nonnull
+		public IRecipe parse(@Nonnull final JsonContext context, @Nonnull final JsonObject json) {
+			return new MagicDeviceReskinRecipe();
 		}
 	}
+
 }

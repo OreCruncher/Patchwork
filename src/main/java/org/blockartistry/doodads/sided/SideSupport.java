@@ -32,8 +32,6 @@ import org.blockartistry.doodads.ModInfo;
 import org.blockartistry.doodads.common.item.ItemBase;
 import org.blockartistry.doodads.common.item.magic.capability.CapabilityMagicDevice;
 import org.blockartistry.doodads.common.loot.LootRegistrationHandler;
-import org.blockartistry.doodads.common.recipe.MagicDeviceSkin;
-import org.blockartistry.doodads.common.recipe.RepairPasteRecipe;
 import org.blockartistry.doodads.network.NetworkHandler;
 import org.blockartistry.doodads.util.Localization;
 
@@ -90,8 +88,6 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
-		RepairPasteRecipe.register();
-		MagicDeviceSkin.register();
 		LootRegistrationHandler.initialize();
 	}
 
