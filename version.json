@@ -1,7 +1,7 @@
 {
-	"homepage": "https://minecraft.curseforge.com/projects/doodads/files",
+	"homepage": "https://minecraft.curseforge.com/projects/patchwork/files",
 	"1.12.2": {
-		"1.0.0.0": "See https://github.com/OreCruncher/Doodads/blob/master/CHANGELOG.md"
+		"1.0.0.0": "See https://github.com/OreCruncher/Patchwork/blob/master/CHANGELOG.md"
 	},
 	"promos": {
 		"1.12.2-latest": "1.0.0.0",

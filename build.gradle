@@ -46,6 +46,11 @@ repositories {
     }
     
     maven {
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    }
+    
+    maven {
         url "http://dvs1.progwml6.com/files/maven"
     }
     
@@ -67,10 +72,16 @@ repositories {
     maven {
 		url 'https://repo.elytradev.com/'
 	}
+	
 	maven {
         name = "thiakil"
         url = "http://maven.thiakil.com"
     }
+    
+    maven { // TOP
+	    name 'tterrag maven'
+	    url "http://maven.tterrag.com/"
+	}
 }
 
 dependencies {
@@ -78,10 +89,11 @@ dependencies {
     compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:deobf"
     
 	// http://dvs1.progwml6.com/files/maven/mezz/jei/
-    deobfCompile "mezz.jei:jei_1.12.2:4.11.0.212:api"
-    runtime "mezz.jei:jei_1.12.2:4.11.0.212"
-    
+    deobfCompile "mezz.jei:jei_1.12.2:4.12.1.217:api"
+    runtime "mezz.jei:jei_1.12.2:4.12.1.217"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
+	deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.20-12"
 }
 
 processResources
