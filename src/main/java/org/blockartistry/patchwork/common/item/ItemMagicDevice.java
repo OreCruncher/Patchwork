@@ -48,7 +48,8 @@ import org.blockartistry.patchwork.util.IVariant;
 import org.blockartistry.patchwork.util.Localization;
 import org.blockartistry.patchwork.util.MathStuff;
 import org.blockartistry.patchwork.util.collections.EmptySet;
-import org.blockartistry.patchwork.util.collections.IdentityHashSet;
+
+import com.google.common.collect.Sets;
 
 import baubles.api.BaubleType;
 import net.minecraft.client.gui.GuiScreen;
@@ -449,14 +450,13 @@ public class ItemMagicDevice extends ItemBase {
 		private final Set<TickWhen> whenToTick;
 
 		private Type(final int subTypeId, @Nullable final BaubleType type, @Nonnull final String name, final int v,
-				@Nonnull final TickWhen... ticking) {
+				@Nonnull final TickWhen when, @Nonnull final TickWhen... ticking) {
 			this.subTypeId = subTypeId;
 			this.bauble = type;
 			this.name = name;
 			this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".name";
 			this.variants = v;
-			this.whenToTick = (ticking == null || ticking.length == 0) ? EmptySet.empty()
-					: new IdentityHashSet<>(ticking);
+			this.whenToTick = ticking == null ? EmptySet.empty() : Sets.immutableEnumSet(when, ticking);
 		}
 
 		@Nonnull
