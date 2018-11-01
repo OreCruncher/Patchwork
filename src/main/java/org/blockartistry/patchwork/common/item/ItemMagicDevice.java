@@ -260,6 +260,7 @@ public class ItemMagicDevice extends ItemBase {
 			final IMagicDevice caps = getCapability(stack);
 			gatherHandlers(caps).forEach(da -> da.onItemRightClick(caps, stack, world, player, hand));
 		}
+		player.swingArm(EnumHand.MAIN_HAND);
 		return super.onItemRightClick(world, player, hand);
 	}
 

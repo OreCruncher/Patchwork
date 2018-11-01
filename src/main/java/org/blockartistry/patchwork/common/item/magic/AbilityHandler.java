@@ -198,7 +198,6 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 */
 	protected void setCooldown(@Nonnull final EntityPlayer player, final int cooldownTicks) {
 		player.getCooldownTracker().setCooldown(ModItems.MAGIC_DEVICE, cooldownTicks);
-		//player.swingArm(EnumHand.MAIN_HAND);
 	}
 	
 	/**
