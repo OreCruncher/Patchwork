@@ -65,14 +65,16 @@ public class ItemMaterial extends ItemBase {
 	@Override
 	@Nonnull
 	public String getUnlocalizedName(@Nonnull final ItemStack stack) {
-		return Type.byMetadata(stack.getMetadata()).getUnlocalizedName();
+		return Type.bySubTypeId(stack.getMetadata()).getUnlocalizedName();
 	}
 
 	public static enum Type implements IVariant {
+		//
+		REPAIR_PASTE(0, "repairpaste"),
+		//
+		MAGICAL_AMALGAM(1, "magicalamalgam");
 
-		REPAIR_PASTE(0, "repairpaste"), MAGICAL_AMALGAM(1, "magicalamalgam");
-
-		private static final Type[] META_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getSubTypeId))
+		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getSubTypeId))
 				.toArray(Type[]::new);
 
 		private final String name;
@@ -102,12 +104,12 @@ public class ItemMaterial extends ItemBase {
 		}
 
 		@Nonnull
-		public static Type byMetadata(int meta) {
-			if (meta < 0 || meta >= META_LOOKUP.length) {
+		public static Type bySubTypeId(int meta) {
+			if (meta < 0 || meta >= SUBTYPE_LOOKUP.length) {
 				meta = 0;
 			}
 
-			return META_LOOKUP[meta];
+			return SUBTYPE_LOOKUP[meta];
 		}
 
 	}

@@ -119,7 +119,7 @@ public class EmptyList<T> implements List<T> {
 
 	@Override
 	public void clear() {
-
+		// Ignore since there is no data
 	}
 
 	@Override

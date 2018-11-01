@@ -56,7 +56,7 @@ public class AbilityCharging extends AbilityHandler {
 				int energyForDisbursment = Math.min(MAX_CHARGE, caps.getCurrentEnergy());
 				for (final ItemStack stack : devices) {
 					// Skip ourselves for obvious reasons
-					if (stack == device)
+					if (stack.equals(device))
 						continue;
 					final IMagicDevice deviceCap = ItemMagicDevice.getCapability(stack);
 					if (deviceCap != null) {

@@ -45,6 +45,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceSettable {
 
+	private static final Comparator<ResourceLocation> ABILITY_SORT = (r1, r2) -> {
+		final AbilityHandler h1 = AbilityHandler.REGISTRY.getValue(r1);
+		final AbilityHandler h2 = AbilityHandler.REGISTRY.getValue(r2);
+		return h1.getPriority() - h2.getPriority();
+	};
+
 	protected List<ResourceLocation> abilities = null;
 	protected int variant = 0;
 	protected int currentEnergy = 0;
@@ -201,12 +207,6 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 		if (theList != null && theList.size() > 1)
 			theList.sort(ABILITY_SORT);
 	}
-
-	private static final Comparator<ResourceLocation> ABILITY_SORT = (r1, r2) -> {
-		final AbilityHandler h1 = AbilityHandler.REGISTRY.getValue(r1);
-		final AbilityHandler h2 = AbilityHandler.REGISTRY.getValue(r2);
-		return h1.getPriority() - h2.getPriority();
-	};
 
 	private static class NBT {
 		public static final String VARIANT = "v";

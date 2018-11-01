@@ -117,7 +117,7 @@ public class EmptySet<T> implements Set<T> {
 
 	@Override
 	public void clear() {
-		
+		// Ignore since there is no data
 	}
 
 }

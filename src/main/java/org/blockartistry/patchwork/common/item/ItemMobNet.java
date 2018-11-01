@@ -59,14 +59,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMobNet extends ItemBase {
 
-	private static class NBT {
-		public static final String ID = "id";
-		public static final String STORED_ENTITY = "ent";
-		public static final String ENTITY_TYPE_NAME = "typ";
-		public static final String ENTITY_PROFESSION = "pro";
-		public static final String MONIKER = "mon";
-	}
-
 	private static final ResourceLocation VARIANT_GETTER_ID = new ResourceLocation(ModInfo.MOD_ID, "variant");
 	private static final IItemPropertyGetter VARIANT_GETTER = new IItemPropertyGetter() {
 		@SideOnly(Side.CLIENT)
@@ -263,5 +255,13 @@ public class ItemMobNet extends ItemBase {
 		} catch (final Throwable e) {
 			return null;
 		}
+	}
+
+	private static class NBT {
+		public static final String ID = "id";
+		public static final String STORED_ENTITY = "ent";
+		public static final String ENTITY_TYPE_NAME = "typ";
+		public static final String ENTITY_PROFESSION = "pro";
+		public static final String MONIKER = "mon";
 	}
 }
