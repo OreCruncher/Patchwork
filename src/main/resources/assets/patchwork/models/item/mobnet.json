@@ -2,5 +2,19 @@
 	"parent": "item/generated",
 	"textures": {
 		"layer0": "patchwork:items/net"
-	}
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"patchwork:variant": 0
+			},
+			"model": "patchwork:item/mobnet/mobnet_0"
+		},
+		{
+			"predicate": {
+				"patchwork:variant": 1
+			},
+			"model": "patchwork:item/mobnet/mobnet_1"
+		}
+	]
 }

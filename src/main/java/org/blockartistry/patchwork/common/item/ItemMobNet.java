@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.blockartistry.patchwork.Configuration;
+import org.blockartistry.patchwork.ModInfo;
 import org.blockartistry.patchwork.client.ModCreativeTab;
 import org.blockartistry.patchwork.util.Localization;
 import org.blockartistry.patchwork.util.compat.EntityVillagerUtil;
@@ -43,14 +44,18 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMobNet extends ItemBase {
 
@@ -62,10 +67,21 @@ public class ItemMobNet extends ItemBase {
 		public static final String MONIKER = "mon";
 	}
 
+	private static final ResourceLocation VARIANT_GETTER_ID = new ResourceLocation(ModInfo.MOD_ID, "variant");
+	private static final IItemPropertyGetter VARIANT_GETTER = new IItemPropertyGetter() {
+		@SideOnly(Side.CLIENT)
+		@Override
+		public float apply(@Nonnull final ItemStack stack, @Nonnull final World worldIn,
+				@Nonnull final EntityLivingBase entityIn) {
+			return hasCapturedAnimal(stack) ? 1 : 0;
+		}
+	};
+
 	public ItemMobNet() {
 		super("mobnet");
 		setCreativeTab(ModCreativeTab.tab);
 		setMaxStackSize(1);
+		addPropertyOverride(VARIANT_GETTER_ID, VARIANT_GETTER);
 	}
 
 	@Override
