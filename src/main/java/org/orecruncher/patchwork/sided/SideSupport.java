@@ -27,9 +27,7 @@ package org.orecruncher.patchwork.sided;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModBase;
-import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemBase;
 import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.common.loot.LootRegistrationHandler;
@@ -45,7 +43,6 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class SideSupport {
 
@@ -65,8 +62,6 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		final Side targetSide = isDedicatedServer() ? Side.SERVER : Side.CLIENT;
-		Localization.initialize(targetSide, ModInfo.MOD_ID);
 		CapabilityMagicDevice.register();
 	}
 

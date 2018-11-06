@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemBase;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,6 +52,11 @@ public class ClientSupport extends SideSupport {
 	@Override
 	public boolean isDedicatedServer() {
 		return false;
+	}
+
+	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
+		super.preInit(event);
+		Localization.initialize(Side.CLIENT, ModInfo.MOD_ID);
 	}
 
 	@Override
