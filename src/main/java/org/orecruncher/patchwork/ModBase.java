@@ -26,9 +26,9 @@ package org.orecruncher.patchwork;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.VersionChecker;
+import org.orecruncher.lib.logging.ModLog;
 import org.orecruncher.patchwork.sided.SideSupport;
-import org.orecruncher.patchwork.util.ModLog;
-import org.orecruncher.patchwork.util.VersionChecker;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

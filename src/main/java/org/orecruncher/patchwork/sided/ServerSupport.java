@@ -40,7 +40,7 @@ public class ServerSupport extends SideSupport {
 	@Override
 	public IThreadListener getThreadListener(@Nonnull final MessageContext context) {
 		if (context.side.isServer()) {
-			return context.getServerHandler().player.mcServer;
+			return context.getServerHandler().player.getServer();
 		} else {
 			throw new IllegalStateException(
 					"Tried to get the IThreadListener from a client-side MessageContext on the dedicated server");

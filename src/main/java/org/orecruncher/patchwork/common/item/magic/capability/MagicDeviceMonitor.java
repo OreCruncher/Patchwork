@@ -29,12 +29,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.capability.CapabilityUtils;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.ModItems;
 import org.orecruncher.patchwork.network.MagicDeviceDataPacket;
 import org.orecruncher.patchwork.network.NetworkHandler;
-import org.orecruncher.patchwork.util.capability.CapabilityUtils;
 
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;

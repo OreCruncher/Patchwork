@@ -36,6 +36,10 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.lib.IVariant;
+import org.orecruncher.lib.Localization;
+import org.orecruncher.lib.collections.EmptySet;
+import org.orecruncher.lib.math.MathStuff;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
@@ -44,10 +48,6 @@ import org.orecruncher.patchwork.common.item.magic.MagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDeviceSettable;
-import org.orecruncher.patchwork.util.IVariant;
-import org.orecruncher.patchwork.util.Localization;
-import org.orecruncher.patchwork.util.MathStuff;
-import org.orecruncher.patchwork.util.collections.EmptySet;
 
 import com.google.common.collect.Sets;
 

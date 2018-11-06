@@ -30,10 +30,10 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.lib.capability.CapabilityUtils;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
-import org.orecruncher.patchwork.util.capability.CapabilityUtils;
 
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;

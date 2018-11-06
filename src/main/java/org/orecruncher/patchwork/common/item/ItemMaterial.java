@@ -29,11 +29,11 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.IVariant;
+import org.orecruncher.lib.math.MathStuff;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
-import org.orecruncher.patchwork.util.IVariant;
-import org.orecruncher.patchwork.util.MathStuff;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -65,7 +65,7 @@ public class ItemMaterial extends ItemBase {
 
 	@Override
 	@Nonnull
-	public String getUnlocalizedName(@Nonnull final ItemStack stack) {
+	public String getTranslationKey(@Nonnull final ItemStack stack) {
 		return Type.bySubTypeId(stack.getMetadata()).getUnlocalizedName();
 	}
 

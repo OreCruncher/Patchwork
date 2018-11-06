@@ -28,10 +28,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.orecruncher.patchwork.ModOptions;
+import org.orecruncher.lib.Localization;
+import org.orecruncher.lib.compat.EntityVillagerUtil;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
-import org.orecruncher.patchwork.util.Localization;
-import org.orecruncher.patchwork.util.compat.EntityVillagerUtil;
 
 import net.minecraft.block.BlockFence;
 import net.minecraft.entity.Entity;

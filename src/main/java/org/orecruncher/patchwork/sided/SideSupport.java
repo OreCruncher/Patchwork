@@ -27,13 +27,13 @@ package org.orecruncher.patchwork.sided;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemBase;
 import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.common.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
-import org.orecruncher.patchwork.util.Localization;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;

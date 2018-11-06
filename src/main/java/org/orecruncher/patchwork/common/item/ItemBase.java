@@ -40,7 +40,7 @@ public class ItemBase extends Item {
 	public ItemBase(@Nonnull final String name) {
 		this.name = name;
 		setRegistryName(this.name);
-		setUnlocalizedName(ModInfo.MOD_ID + "." + this.name);
+		setTranslationKey(ModInfo.MOD_ID + "." + this.name);
 
 		// Let the registration handler know about this
 		// new item.

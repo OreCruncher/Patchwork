@@ -27,9 +27,9 @@ package org.orecruncher.patchwork.common.item.magic.capability;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.lib.capability.CapabilityProviderSerializable;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemMagicDevice;
-import org.orecruncher.patchwork.util.capability.CapabilityProviderSerializable;
 
 import baubles.common.Baubles;
 import net.minecraft.item.ItemStack;

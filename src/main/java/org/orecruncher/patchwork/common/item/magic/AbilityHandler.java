@@ -28,11 +28,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.ModItems;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
-import org.orecruncher.patchwork.util.Localization;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

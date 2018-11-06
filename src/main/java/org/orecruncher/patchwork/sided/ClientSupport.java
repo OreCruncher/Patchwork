@@ -30,10 +30,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.common.item.ItemBase;
-import org.orecruncher.patchwork.util.ForgeUtils;
-import org.orecruncher.patchwork.util.Localization;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -60,7 +59,7 @@ public class ClientSupport extends SideSupport {
 		super.postInit(event);
 
 		// Fancify our mod config info page
-		final ModMetadata data = ForgeUtils.getModMetadata(ModInfo.MOD_ID);
+		final ModMetadata data = org.orecruncher.lib.ForgeUtils.getModMetadata(ModInfo.MOD_ID);
 		if (data != null) {
 			data.name = Localization.format(ModInfo.MOD_ID + ".metadata.Name");
 			data.credits = Localization.format(ModInfo.MOD_ID + ".metadata.Credits");
@@ -88,7 +87,7 @@ public class ClientSupport extends SideSupport {
 		if (context.side.isClient()) {
 			return Minecraft.getMinecraft();
 		} else {
-			return context.getServerHandler().player.mcServer;
+			return context.getServerHandler().player.getServer();
 		}
 	}
 

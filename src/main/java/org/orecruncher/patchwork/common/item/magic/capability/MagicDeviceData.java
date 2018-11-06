@@ -32,11 +32,11 @@ import java.util.stream.StreamSupport;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.collections.EmptyList;
+import org.orecruncher.lib.math.MathStuff;
+import org.orecruncher.lib.simpledata.SimpleDataRegistry;
 import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.AbilityHandler;
-import org.orecruncher.patchwork.util.MathStuff;
-import org.orecruncher.patchwork.util.collections.EmptyList;
-import org.orecruncher.patchwork.util.simpledata.SimpleDataRegistry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -171,7 +171,7 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 		// Serialize base!
 		final NBTTagCompound base = super.serializeNBT();
-		if (base != null && !base.hasNoTags())
+		if (base != null && base.getSize() > 0)
 			nbt.setTag(NBT.DATA, base);
 
 		return nbt;
@@ -187,7 +187,7 @@ public class MagicDeviceData extends SimpleDataRegistry implements IMagicDeviceS
 
 		if (nbt.hasKey(NBT.ABILITIES)) {
 			final NBTTagList theList = nbt.getTagList(NBT.ABILITIES, 8);
-			if (!theList.hasNoTags()) {
+			if (theList.tagCount() > 0) {
 				this.abilities = new ArrayList<>(nbt.getSize());
 				final ResourceLocation[] handlers = StreamSupport.stream(theList.spliterator(), false)
 						.map(e -> new ResourceLocation(((NBTTagString) e).getString()))

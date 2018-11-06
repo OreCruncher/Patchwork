@@ -30,8 +30,8 @@ public final class ModInfo {
 	public static final String MOD_NAME = "Patchwork";
 	public static final String VERSION = "@VERSION@";
 	public static final String MINECRAFT_VERSIONS = "[1.12.2,)";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.1.2555,);required-after:baubles@[1.5.2,)";
-	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/ModBase/master/version.json";
+	public static final String DEPENDENCIES = "required-after:forge@[14.23.1.2555,);required-after:baubles@[1.5.2,);required-after:orelib@[3.5,)";
+	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/Doodads/master/version.json";
 	public static final String FINGERPRINT = "7a2128d395ad96ceb9d9030fbd41d035b435753a";
 
 	private ModInfo() {

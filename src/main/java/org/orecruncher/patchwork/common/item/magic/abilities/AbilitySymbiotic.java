@@ -26,10 +26,10 @@ package org.orecruncher.patchwork.common.item.magic.abilities;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.XpUtil;
 import org.orecruncher.patchwork.common.item.magic.AbilityHandler;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDeviceSettable;
-import org.orecruncher.patchwork.util.XpUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
