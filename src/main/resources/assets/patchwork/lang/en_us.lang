@@ -96,3 +96,7 @@ patchwork.deviceability.symbiotic.name=§eSymbiotic§r
 patchwork.deviceability.symbiotic.tooltip=Consumes player experience in order to recharge the magic device.  The amount of transfer per tick is limited so be cautious. 
 patchwork.deviceability.charging.name=§eCharging§r
 patchwork.deviceability.charging.tooltip=The device shares it's magic essence with other devices that are being worn or in the player inventory.  The amount shared per tick is limited.  The first device in the player inventory will be recharged before going on to the second.  Bauble inventory is given priority.
+
+# Blocks
+tile.patchwork.furnace.name=Furnace
+

@@ -32,10 +32,10 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
-import org.orecruncher.patchwork.common.item.ItemBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -75,10 +75,9 @@ public class ClientSupport extends SideSupport {
 	}
 
 	@Override
-	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta,
+	public void registerItemRenderer(@Nonnull final Item item, final int meta,
 			@Nonnull final ModelResourceLocation loc) {
 		ModelLoader.setCustomModelResourceLocation(item, meta, loc);
-		// new ModelResourceLocation(ModInfo.MOD_ID + ":" + id, "inventory"));
 	}
 
 	@Override

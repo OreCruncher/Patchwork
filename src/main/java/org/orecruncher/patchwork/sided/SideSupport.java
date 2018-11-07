@@ -28,13 +28,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.orecruncher.patchwork.ModBase;
-import org.orecruncher.patchwork.common.item.ItemBase;
 import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.common.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
@@ -114,7 +114,7 @@ public abstract class SideSupport {
 	 * @param meta
 	 * @param id
 	 */
-	public void registerItemRenderer(@Nonnull final ItemBase item, final int meta,
+	public void registerItemRenderer(@Nonnull final Item item, final int meta,
 			@Nonnull final ModelResourceLocation loc) {
 		// This method intentionally left blank
 	}

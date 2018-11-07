@@ -1,0 +1,10 @@
+{
+	"parent": "block/orientable",
+	"textures": {
+		"top": "patchwork:blocks/furnace_top",
+		"bottom": "patchwork:blocks/furnace_top",
+		"side": "patchwork:blocks/furnace_side",
+		"front": "patchwork:blocks/furnace_front",
+		"particle": "patchwork:blocks/furnace_top"
+	}
+}
