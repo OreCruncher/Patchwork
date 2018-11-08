@@ -47,8 +47,9 @@ public class BlockFurnace extends BlockContainerBase {
 	protected BlockFurnace() {
 		super("furnace", Material.ROCK);
 		setCreativeTab(ModCreativeTab.tab);
-        setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-}
+		setDefaultState(
+				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
@@ -65,33 +66,36 @@ public class BlockFurnace extends BlockContainerBase {
 	 * Called by ItemBlocks just before a block is actually set in the world, to
 	 * allow for adjustments to the IBlockstate
 	 */
+	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	/**
 	 * Convert the given metadata into a BlockState for this Block
 	 */
+	@Override
 	public IBlockState getStateFromMeta(final int meta) {
 		final int bits = (meta & 0x7);
-		final int facingBits = (bits >> 1);
 		final int activeBits = (bits & 1);
-		EnumFacing enumfacing = EnumFacing.byIndex(facingBits);
+		final int facingBits = (bits >> 1);
+		EnumFacing enumfacing = EnumFacing.byHorizontalIndex(facingBits);
 
 		if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
 			enumfacing = EnumFacing.NORTH;
 		}
 
-		return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(ACTIVE, activeBits == 1 ? true : false);
+		return getDefaultState().withProperty(FACING, enumfacing).withProperty(ACTIVE, activeBits != 0);
 	}
 
 	/**
 	 * Convert the BlockState into the correct metadata value
 	 */
+	@Override
 	public int getMetaFromState(IBlockState state) {
-		final int activeBits = state.getValue(ACTIVE) ? 1 : 0;
-		return activeBits | ((((EnumFacing) state.getValue(FACING)).getIndex()) << 1);
+		final int activeBits = state.getValue(ACTIVE).booleanValue() ? 1 : 0;
+		return activeBits | ((state.getValue(FACING).getHorizontalIndex()) << 1);
 	}
 
 }

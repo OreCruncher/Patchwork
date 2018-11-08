@@ -2,7 +2,12 @@
 	"forge_marker": 1,
 	"defaults": {
 		"uvlock": true,
-		"model": "patchwork:furnace"
+		"model": "patchwork:furnace",
+		"textures": {
+			"particle": "patchwork:blocks/furnace_top",
+			"Outside": "patchwork:blocks/furnace_top",
+			"Inside": "patchwork:blocks/furnace_inside"
+		}
 	},
 	"variants": {
 		"inventory": [
@@ -25,8 +30,14 @@
 		},
 		"active": {
 			"true": {
+				"textures": {
+					"Inside": "patchwork:blocks/furnace_inside_lit"
+				}
 			},
 			"false": {
+				"textures": {
+					"Inside": "patchwork:blocks/furnace_inside"
+				}
 			}
 		}
 	}
