@@ -22,11 +22,9 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.common.block.render;
+package org.orecruncher.patchwork.common.block.furnace3d;
 
 import javax.annotation.Nonnull;
-
-import org.orecruncher.patchwork.common.block.entity.TileEntityFurnace3D;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -41,11 +39,11 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 
 	private enum SlotHelper {
 		//
-		INPUT(TileEntityFurnace3D.INPUT_SLOT, 0.4F, 0.35F, 0.3F),
+		INPUT(Furnace3DStackHandler.INPUT_SLOT, 0.4F, 0.35F, 0.3F),
 		//
-		OUTPUT(TileEntityFurnace3D.OUTPUT_SLOT, 0.4F, 0.35F, 0.7F),
+		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.4F, 0.35F, 0.7F),
 		//
-		FUEL(TileEntityFurnace3D.FUEL_SLOT, 0.4F, 0.05F, 0.5F);
+		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.4F, 0.0F, 0.5F);
 
 		private final int slot;
 		private final float xOffset;

@@ -24,6 +24,8 @@
 
 package org.orecruncher.patchwork.common.block;
 
+import org.orecruncher.patchwork.common.block.furnace3d.BlockFurnace3D;
+
 public class ModBlocks {
 	
 	public final static BlockContainerBase FURNACE = new BlockFurnace3D();

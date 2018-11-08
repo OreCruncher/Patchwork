@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.common.block;
+package org.orecruncher.patchwork.common.block.furnace3d;
 
 import java.util.Random;
 
@@ -30,8 +30,9 @@ import javax.annotation.Nonnull;
 
 import org.orecruncher.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
-import org.orecruncher.patchwork.common.block.entity.TileEntityFurnace3D;
-import org.orecruncher.patchwork.common.block.render.TESRFurnace3D;
+import org.orecruncher.patchwork.common.block.BlockContainerBase;
+import org.orecruncher.patchwork.common.block.ITileEntityRegistration;
+import org.orecruncher.patchwork.common.block.ITileEntityTESR;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -51,6 +52,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -62,7 +64,7 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-	protected BlockFurnace3D() {
+	public BlockFurnace3D() {
 		super("furnace", Material.ROCK);
 		setCreativeTab(ModCreativeTab.tab);
 		setDefaultState(
@@ -73,7 +75,7 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 	public void registerTileEntity() {
 		GameRegistry.registerTileEntity(TileEntityFurnace3D.class, new ResourceLocation(ModInfo.MOD_ID, "furnace3d"));
 	}
-	
+
 	@Override
 	public void registerTESR() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace3D.class, new TESRFurnace3D());
@@ -116,6 +118,15 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 		return getDefaultState().withProperty(FACING, enumfacing).withProperty(ACTIVE, activeBits != 0);
 	}
 
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		final int activeBits = state.getValue(ACTIVE).booleanValue() ? 1 : 0;
+		return activeBits | ((state.getValue(FACING).getHorizontalIndex()) << 1);
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(@Nonnull final IBlockState state, @Nonnull final World world,
@@ -156,13 +167,9 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 		}
 	}
 
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
 	@Override
-	public int getMetaFromState(IBlockState state) {
-		final int activeBits = state.getValue(ACTIVE).booleanValue() ? 1 : 0;
-		return activeBits | ((state.getValue(FACING).getHorizontalIndex()) << 1);
+	public int getLightValue(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
+			@Nonnull final BlockPos pos) {
+		return state.getValue(ACTIVE).booleanValue() ? 7 : 0;
 	}
-
 }
