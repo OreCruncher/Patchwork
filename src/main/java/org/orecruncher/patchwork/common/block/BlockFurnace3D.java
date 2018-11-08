@@ -31,6 +31,7 @@ import javax.annotation.Nonnull;
 import org.orecruncher.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
 import org.orecruncher.patchwork.common.block.entity.TileEntityFurnace3D;
+import org.orecruncher.patchwork.common.block.render.TESRFurnace3D;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -51,11 +52,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFurnace3D extends BlockContainerBase implements ITileEntityRegistration {
+public class BlockFurnace3D extends BlockContainerBase implements ITileEntityRegistration, ITileEntityTESR {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -72,6 +74,11 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 		GameRegistry.registerTileEntity(TileEntityFurnace3D.class, new ResourceLocation(ModInfo.MOD_ID, "furnace3d"));
 	}
 	
+	@Override
+	public void registerTESR() {
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace3D.class, new TESRFurnace3D());
+	}
+
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityFurnace3D();

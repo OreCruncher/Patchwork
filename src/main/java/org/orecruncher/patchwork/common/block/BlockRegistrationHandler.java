@@ -89,6 +89,10 @@ public class BlockRegistrationHandler {
 				final IBlockRegistration reg = (IBlockRegistration) block;
 				reg.registerBlockModel();
 			}
+			if (block instanceof ITileEntityTESR) {
+				final ITileEntityTESR reg = (ITileEntityTESR) block;
+				reg.registerTESR();
+			}
 		}
 	}
 

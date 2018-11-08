@@ -27,6 +27,7 @@ package org.orecruncher.patchwork.common.block.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.ModInfo;
 import org.orecruncher.patchwork.common.block.BlockFurnace3D;
 
 import net.minecraft.block.state.IBlockState;
@@ -50,15 +51,20 @@ import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityFurnace3D extends TileEntityLockable implements ITickable, ISidedInventory {
 
-	private static final int[] SLOTS_TOP = new int[] { 0 };
-	private static final int[] SLOTS_BOTTOM = new int[] { 2, 1 };
-	private static final int[] SLOTS_SIDES = new int[] { 1 };
+	public static final int INPUT_SLOT = 0;
+	public static final int FUEL_SLOT = 1;
+	public static final int OUTPUT_SLOT = 2;
+
+	private static final int[] SLOTS_TOP = new int[] { INPUT_SLOT };
+	private static final int[] SLOTS_BOTTOM = new int[] { OUTPUT_SLOT, FUEL_SLOT };
+	private static final int[] SLOTS_SIDES = new int[] { FUEL_SLOT };
 
 	/** The ItemStacks that hold the items currently being used in the furnace */
 	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
@@ -163,7 +169,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		this.furnaceBurnTime = nbt.getInteger(NBT.BURN_TIME);
 		this.cookTime = nbt.getInteger(NBT.COOK_TIME);
 		this.totalCookTime = nbt.getInteger(NBT.COOK_TIME_TOTAL);
-		this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks.get(1));
+		this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks.get(FUEL_SLOT));
 		if (nbt.hasKey(NBT.CUSTOM_NAME, 8))
 			this.customName = nbt.getString(NBT.CUSTOM_NAME);
 	}
@@ -216,22 +222,22 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		}
 
 		if (!this.world.isRemote) {
-			final ItemStack itemstack = this.furnaceItemStacks.get(1);
+			final ItemStack fuelStack = this.furnaceItemStacks.get(FUEL_SLOT);
 
-			if (this.isBurning() || !itemstack.isEmpty() && !this.furnaceItemStacks.get(0).isEmpty()) {
+			if (this.isBurning() || !fuelStack.isEmpty() && !this.furnaceItemStacks.get(INPUT_SLOT).isEmpty()) {
 				if (!this.isBurning() && canSmelt()) {
-					this.furnaceBurnTime = getItemBurnTime(itemstack);
+					this.furnaceBurnTime = getItemBurnTime(fuelStack);
 					this.currentItemBurnTime = this.furnaceBurnTime;
 
 					if (this.isBurning()) {
 						newBurnState = true;
 
-						if (!itemstack.isEmpty()) {
-							final Item item = itemstack.getItem();
-							itemstack.shrink(1);
+						if (!fuelStack.isEmpty()) {
+							final Item item = fuelStack.getItem();
+							fuelStack.shrink(1);
 
-							if (itemstack.isEmpty()) {
-								final ItemStack item1 = item.getContainerItem(itemstack);
+							if (fuelStack.isEmpty()) {
+								final ItemStack item1 = item.getContainerItem(fuelStack);
 								this.furnaceItemStacks.set(1, item1);
 							}
 						}
@@ -243,7 +249,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 
 					if (this.cookTime == this.totalCookTime) {
 						this.cookTime = 0;
-						this.totalCookTime = getCookTime(this.furnaceItemStacks.get(0));
+						this.totalCookTime = getCookTime(this.furnaceItemStacks.get(INPUT_SLOT));
 						smeltItem();
 						newBurnState = true;
 					}
@@ -274,25 +280,26 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * destination stack isn't full, etc.
 	 */
 	private boolean canSmelt() {
-		if (this.furnaceItemStacks.get(0).isEmpty()) {
+		if (this.furnaceItemStacks.get(INPUT_SLOT).isEmpty()) {
 			return false;
 		} else {
-			final ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
+			final ItemStack smeltResult = FurnaceRecipes.instance()
+					.getSmeltingResult(this.furnaceItemStacks.get(INPUT_SLOT));
 
-			if (itemstack.isEmpty()) {
+			if (smeltResult.isEmpty()) {
 				return false;
 			} else {
-				final ItemStack itemstack1 = this.furnaceItemStacks.get(2);
+				final ItemStack outputStack = this.furnaceItemStacks.get(OUTPUT_SLOT);
 
-				if (itemstack1.isEmpty()) {
+				if (outputStack.isEmpty()) {
 					return true;
-				} else if (!itemstack1.isItemEqual(itemstack)) {
+				} else if (!outputStack.isItemEqual(smeltResult)) {
 					return false;
-				} else if (itemstack1.getCount() + itemstack.getCount() <= getInventoryStackLimit()
-						&& itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) {
+				} else if (outputStack.getCount() + smeltResult.getCount() <= getInventoryStackLimit()
+						&& outputStack.getCount() + smeltResult.getCount() <= outputStack.getMaxStackSize()) {
 					return true;
 				} else {
-					return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize();
+					return outputStack.getCount() + smeltResult.getCount() <= smeltResult.getMaxStackSize();
 				}
 			}
 		}
@@ -304,23 +311,23 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 */
 	public void smeltItem() {
 		if (canSmelt()) {
-			final ItemStack itemstack = this.furnaceItemStacks.get(0);
-			final ItemStack itemstack1 = FurnaceRecipes.instance().getSmeltingResult(itemstack);
-			final ItemStack itemstack2 = this.furnaceItemStacks.get(2);
+			final ItemStack inputStack = this.furnaceItemStacks.get(INPUT_SLOT);
+			final ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(inputStack);
+			final ItemStack outputStack = this.furnaceItemStacks.get(OUTPUT_SLOT);
 
-			if (itemstack2.isEmpty()) {
-				this.furnaceItemStacks.set(2, itemstack1.copy());
-			} else if (itemstack2.getItem() == itemstack1.getItem()) {
-				itemstack2.grow(itemstack1.getCount());
+			if (outputStack.isEmpty()) {
+				this.furnaceItemStacks.set(OUTPUT_SLOT, smeltResult.copy());
+			} else if (outputStack.getItem() == smeltResult.getItem()) {
+				outputStack.grow(smeltResult.getCount());
 			}
 
-			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 1
-					&& !this.furnaceItemStacks.get(1).isEmpty()
-					&& this.furnaceItemStacks.get(1).getItem() == Items.BUCKET) {
+			if (inputStack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && inputStack.getMetadata() == 1
+					&& !this.furnaceItemStacks.get(FUEL_SLOT).isEmpty()
+					&& this.furnaceItemStacks.get(FUEL_SLOT).getItem() == Items.BUCKET) {
 				this.furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
 			}
 
-			itemstack.shrink(1);
+			inputStack.shrink(1);
 		}
 	}
 
@@ -368,8 +375,8 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		} else if (index != 1) {
 			return true;
 		} else {
-			final ItemStack itemstack = this.furnaceItemStacks.get(1);
-			return isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && itemstack.getItem() != Items.BUCKET;
+			final ItemStack fuelStack = this.furnaceItemStacks.get(FUEL_SLOT);
+			return isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && fuelStack.getItem() != Items.BUCKET;
 		}
 	}
 
@@ -410,7 +417,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 
 	@Override
 	public String getGuiID() {
-		return "minecraft:furnace";
+		return new ResourceLocation(ModInfo.MOD_ID, "furnace3d").toString();
 	}
 
 	@Override
@@ -466,21 +473,21 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	}
 
 	private void sendUpdates() {
-		this.world.markBlockRangeForRenderUpdate(pos, pos);
-		this.world.notifyBlockUpdate(pos, getState(), getState(), 3);
-		this.world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+		this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
+		this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
+		this.world.scheduleBlockUpdate(this.pos, getBlockType(), 0, 0);
 		markDirty();
 	}
 
 	@Override
 	@Nullable
 	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 3, this.getUpdateTag());
+		return new SPacketUpdateTileEntity(this.pos, 3, getUpdateTag());
 	}
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
+		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
