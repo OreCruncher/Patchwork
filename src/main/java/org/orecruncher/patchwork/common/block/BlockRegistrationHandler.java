@@ -75,6 +75,10 @@ public class BlockRegistrationHandler {
 				final IBlockRegistration reg = (IBlockRegistration) block;
 				r.register(reg.createItemBlock());
 			}
+			if (block instanceof ITileEntityRegistration) {
+				final ITileEntityRegistration reg = (ITileEntityRegistration) block;
+				reg.registerTileEntity();
+			}
 		}
 	}
 

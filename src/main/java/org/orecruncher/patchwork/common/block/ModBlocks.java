@@ -26,7 +26,7 @@ package org.orecruncher.patchwork.common.block;
 
 public class ModBlocks {
 	
-	public final static BlockContainerBase FURNACE = new BlockFurnace();
+	public final static BlockContainerBase FURNACE = new BlockFurnace3D();
 
 	public static void initialize() {
 		// Currently a do nothing function. By calling this it triggers the

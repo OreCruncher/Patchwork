@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.orecruncher.patchwork.common.block;
 
-package org.orecruncher.patchwork.common.block.entity;
+public interface ITileEntityRegistration {
 
-import net.minecraft.tileentity.TileEntity;
-
-public class TileEntityFurnace extends TileEntity {
-
+	void registerTileEntity();
+	
 }

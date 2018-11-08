@@ -24,7 +24,13 @@
 
 package org.orecruncher.patchwork.common.block;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import org.orecruncher.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
+import org.orecruncher.patchwork.common.block.entity.TileEntityFurnace3D;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -34,17 +40,27 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFurnace extends BlockContainerBase {
+public class BlockFurnace3D extends BlockContainerBase implements ITileEntityRegistration {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-	protected BlockFurnace() {
+	protected BlockFurnace3D() {
 		super("furnace", Material.ROCK);
 		setCreativeTab(ModCreativeTab.tab);
 		setDefaultState(
@@ -52,9 +68,13 @@ public class BlockFurnace extends BlockContainerBase {
 	}
 
 	@Override
+	public void registerTileEntity() {
+		GameRegistry.registerTileEntity(TileEntityFurnace3D.class, new ResourceLocation(ModInfo.MOD_ID, "furnace3d"));
+	}
+	
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TileEntityFurnace3D();
 	}
 
 	@Override
@@ -87,6 +107,46 @@ public class BlockFurnace extends BlockContainerBase {
 		}
 
 		return getDefaultState().withProperty(FACING, enumfacing).withProperty(ACTIVE, activeBits != 0);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(@Nonnull final IBlockState state, @Nonnull final World world,
+			@Nonnull final BlockPos pos, @Nonnull final Random rand) {
+		if (state.getValue(ACTIVE).booleanValue()) {
+			final double d0 = pos.getX() + rand.nextDouble() * 0.7 + 0.1;
+			final double d2 = pos.getZ() + rand.nextDouble() * 0.7 + 0.1;
+			final double d1 = pos.getY() + rand.nextDouble() * 6.0D / 16.0D + 0.18D;
+
+			if (rand.nextDouble() < 0.1D) {
+				world.playSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
+						SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+			}
+
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		}
+	}
+
+	/**
+	 * Called when the block is right clicked by a player.
+	 */
+	@Override
+	public boolean onBlockActivated(@Nonnull final World world, @Nonnull final BlockPos pos,
+			@Nonnull final IBlockState state, @Nonnull final EntityPlayer player, @Nonnull final EnumHand hand,
+			@Nonnull final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+		if (world.isRemote) {
+			return true;
+		} else {
+			final TileEntity tileentity = world.getTileEntity(pos);
+
+			if (tileentity instanceof TileEntityFurnace3D) {
+				player.displayGUIChest((TileEntityFurnace3D) tileentity);
+				player.addStat(StatList.FURNACE_INTERACTION);
+			}
+
+			return true;
+		}
 	}
 
 	/**
