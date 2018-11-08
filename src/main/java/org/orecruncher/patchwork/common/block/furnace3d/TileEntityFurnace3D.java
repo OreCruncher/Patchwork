@@ -22,7 +22,12 @@
  * THE SOFTWARE.
  */
 
+// Portions copyright Shadows-of-fire.  Essentially used his optimizations for the furnace code
+// https://github.com/Shadows-of-Fire/FastFurnace/blob/master/src/main/java/shadows/fastfurnace/block/TileFastFurnace.java
+
 package org.orecruncher.patchwork.common.block.furnace3d;
+
+import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,7 +35,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
@@ -46,8 +50,10 @@ import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TileEntityFurnace3D extends TileEntityLockable implements ITickable, ISidedInventory {
 
@@ -55,6 +61,13 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	private static final int[] SLOTS_BOTTOM = new int[] { Furnace3DStackHandler.OUTPUT_SLOT,
 			Furnace3DStackHandler.FUEL_SLOT };
 	private static final int[] SLOTS_SIDES = new int[] { Furnace3DStackHandler.FUEL_SLOT };
+
+	@ItemStackHolder(value = "minecraft:sponge", meta = 1)
+	public static final ItemStack WET_SPONGE = ItemStack.EMPTY;
+
+	protected ItemStack recipeKey = ItemStack.EMPTY;
+	protected ItemStack recipeOutput = ItemStack.EMPTY;
+	protected ItemStack failedMatch = ItemStack.EMPTY;
 
 	/**
 	 * Our inventory for the furnace
@@ -73,6 +86,10 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	private int totalCookTime;
 
 	private String customName;
+
+	public TileEntityFurnace3D() {
+		this.totalCookTime = 200;
+	}
 
 	@Override
 	public String getName() {
@@ -195,54 +212,36 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 */
 	@Override
 	public void update() {
-		final boolean currentBurnState = isBurning();
-		boolean burnStateChanged = false;
+		if (this.world.isRemote && isBurning()) {
+			this.furnaceBurnTime--;
+			return;
+		} else if (this.world.isRemote)
+			return;
+
+		ItemStack fuel = ItemStack.EMPTY;
+		final boolean canSmelt = canSmelt();
+
+		if (!isBurning() && !(fuel = this.inventory.getFuelStack()).isEmpty()) {
+			if (canSmelt)
+				burnFuel(fuel, false);
+		}
+
+		final boolean wasBurning = isBurning();
 
 		if (isBurning()) {
-			--this.furnaceBurnTime;
+			this.furnaceBurnTime--;
+			if (canSmelt)
+				smelt();
+			else
+				this.cookTime = 0;
 		}
 
-		if (!this.world.isRemote) {
-			final ItemStack fuelStack = this.inventory.getFuelStack();
-			final ItemStack inputStack = this.inventory.getInputStack();
-
-			if (isBurning() || !fuelStack.isEmpty() && !inputStack.isEmpty()) {
-				if (!isBurning() && canSmelt()) {
-					this.furnaceBurnTime = getItemBurnTime(fuelStack);
-					this.currentItemBurnTime = this.furnaceBurnTime;
-
-					if (isBurning()) {
-						burnStateChanged = true;
-						if (!fuelStack.isEmpty()) {
-							fuelStack.shrink(1);
-							this.inventory.setFuelStack(fuelStack);
-						}
-					}
-				}
-
-				if (isBurning() && canSmelt()) {
-					++this.cookTime;
-
-					if (this.cookTime == this.totalCookTime) {
-						this.cookTime = 0;
-						this.totalCookTime = getCookTime(inputStack);
-						smeltItem();
-						burnStateChanged = true;
-					}
-				} else {
-					this.cookTime = 0;
-				}
-			} else if (!isBurning() && this.cookTime > 0) {
-				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
-			}
-
-			if (currentBurnState != isBurning()) {
-				burnStateChanged = true;
-				updateBlockState();
-			}
-
-			sendUpdates(burnStateChanged);
+		if (!isBurning() && !(fuel = this.inventory.getFuelStack()).isEmpty()) {
+			if (canSmelt())
+				burnFuel(fuel, wasBurning);
 		}
+
+		sendUpdates(wasBurning && !isBurning());
 	}
 
 	protected void updateBlockState() {
@@ -267,26 +266,51 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * destination stack isn't full, etc.
 	 */
 	private boolean canSmelt() {
-		final ItemStack inputStack = this.inventory.getInputStack();
-		if (inputStack.isEmpty())
+		final ItemStack input = this.inventory.getInputStack();
+		final ItemStack output = this.inventory.getOutputStack();
+		if (input.isEmpty() || input == this.failedMatch)
 			return false;
 
-		final ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(inputStack);
+		if (this.recipeKey.isEmpty() || !OreDictionary.itemMatches(this.recipeKey, input, false)) {
+			boolean matched = false;
+			for (final Entry<ItemStack, ItemStack> e : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
+				if (OreDictionary.itemMatches(e.getKey(), input, false)) {
+					this.recipeKey = e.getKey();
+					this.recipeOutput = e.getValue();
+					matched = true;
+					this.failedMatch = ItemStack.EMPTY;
+					break;
+				}
+			}
+			if (!matched) {
+				this.recipeKey = ItemStack.EMPTY;
+				this.recipeOutput = ItemStack.EMPTY;
+				this.failedMatch = input;
+				return false;
+			}
+		}
 
-		if (smeltResult.isEmpty())
-			return false;
+		return !this.recipeOutput.isEmpty()
+				&& (output.isEmpty() || (ItemHandlerHelper.canItemStacksStack(this.recipeOutput, output)
+						&& (this.recipeOutput.getCount() + output.getCount() <= output.getMaxStackSize())));
 
-		final ItemStack outputStack = this.inventory.getOutputStack();
+	}
 
-		if (outputStack.isEmpty()) {
-			return true;
-		} else if (!outputStack.isItemEqual(smeltResult)) {
-			return false;
-		} else if (outputStack.getCount() + smeltResult.getCount() <= getInventoryStackLimit()
-				&& outputStack.getCount() + smeltResult.getCount() <= outputStack.getMaxStackSize()) {
-			return true;
-		} else {
-			return outputStack.getCount() + smeltResult.getCount() <= smeltResult.getMaxStackSize();
+	protected void smelt() {
+		this.cookTime++;
+		if (this.cookTime == this.totalCookTime) {
+			this.cookTime = 0;
+			this.totalCookTime = getCookTime(this.inventory.getInputStack());
+			smeltItem();
+		}
+	}
+
+	protected void burnFuel(ItemStack fuel, boolean burnedThisTick) {
+		this.currentItemBurnTime = (this.furnaceBurnTime = getItemBurnTime(fuel));
+		if (isBurning()) {
+			fuel.shrink(1);
+			this.inventory.setFuelStack(fuel);
+			sendUpdates(!burnedThisTick);
 		}
 	}
 
@@ -295,27 +319,22 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * in the furnace result stack
 	 */
 	public void smeltItem() {
-		if (canSmelt()) {
-			final ItemStack inputStack = this.inventory.getInputStack();
-			final ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(inputStack);
-			final ItemStack outputStack = this.inventory.getOutputStack();
+		final ItemStack input = this.inventory.getInputStack();
+		final ItemStack recipeOutput = FurnaceRecipes.instance().getSmeltingList().get(this.recipeKey);
+		final ItemStack output = this.inventory.getOutputStack();
 
-			if (outputStack.isEmpty()) {
-				this.inventory.setOutputStack(smeltResult.copy());
-			} else if (outputStack.getItem() == smeltResult.getItem()) {
-				outputStack.grow(smeltResult.getCount());
-				this.inventory.setOutputStack(outputStack);
-			}
-
-			if (inputStack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && inputStack.getMetadata() == 1
-					&& !this.inventory.getFuelStack().isEmpty()
-					&& this.inventory.getFuelStack().getItem() == Items.BUCKET) {
-				this.inventory.setOutputStack(new ItemStack(Items.WATER_BUCKET));
-			}
-
-			inputStack.shrink(1);
-			this.inventory.setInputStack(inputStack);
+		if (output.isEmpty()) {
+			this.inventory.setOutputStack(recipeOutput.copy());
+		} else if (ItemHandlerHelper.canItemStacksStack(output, recipeOutput)) {
+			output.grow(recipeOutput.getCount());
+			this.inventory.setOutputStack(output);
 		}
+
+		if (input.isItemEqual(WET_SPONGE) && this.inventory.getFuelStack().getItem() == Items.BUCKET)
+			this.inventory.setFuelStack(new ItemStack(Items.WATER_BUCKET));
+
+		input.shrink(1);
+		this.inventory.setInputStack(input);
 	}
 
 	/**
@@ -408,7 +427,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	@Override
 	@Nonnull
 	public String getGuiID() {
-		return "minecraft:furnace"; // new ResourceLocation(ModInfo.MOD_ID, "furnace3d").toString();
+		return "minecraft:furnace";
 	}
 
 	@Override
@@ -466,6 +485,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	}
 
 	private void sendUpdates(final boolean dirty) {
+		updateBlockState();
 		if (this.inventory.isDirty()) {
 			this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
 			this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
