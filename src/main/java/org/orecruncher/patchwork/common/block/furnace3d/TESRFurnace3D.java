@@ -35,15 +35,15 @@ import net.minecraft.item.ItemStack;
 
 public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D> {
 
-	private static final float SCALE = 0.75F;
+	private static final float SCALE = 0.7F;
 
 	private enum SlotHelper {
 		//
-		INPUT(Furnace3DStackHandler.INPUT_SLOT, 0.4F, 0.35F, 0.3F),
+		INPUT(Furnace3DStackHandler.INPUT_SLOT, 0.4F, 0.4F, 0.3F),
 		//
-		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.4F, 0.35F, 0.7F),
+		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.4F, 0.4F, 0.7F),
 		//
-		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.4F, 0.0F, 0.5F);
+		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.4F, -0.1F, 0.5F);
 
 		private final int slot;
 		private final float xOffset;

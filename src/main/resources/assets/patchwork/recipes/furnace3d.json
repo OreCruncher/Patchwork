@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"ccc",
+		"cgc",
+		"ccc"
+	],
+	"key": {
+		"c": {
+			"type": "forge:ore_dict",
+			"ore": "cobblestone"
+		},
+		"g": {
+			"item": "minecraft:glass"
+		}
+	},
+	"result": {
+		"item": "patchwork:furnace",
+		"count": 1
+	}
+}

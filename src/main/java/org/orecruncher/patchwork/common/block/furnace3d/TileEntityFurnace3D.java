@@ -76,7 +76,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 
 	@Override
 	public String getName() {
-		return hasCustomName() ? this.customName : "container.furnace3d";
+		return hasCustomName() ? this.customName : "container.furnace";
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		if (index == 0 && !flag) {
 			this.totalCookTime = getCookTime(stack);
 			this.cookTime = 0;
-			markDirty();
+			sendUpdates(true);
 		}
 	}
 
@@ -213,11 +213,9 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 
 					if (isBurning()) {
 						burnStateChanged = true;
-
 						if (!fuelStack.isEmpty()) {
-							final Item item = fuelStack.getItem();
 							fuelStack.shrink(1);
-							this.inventory.setFuelStack(item.getContainerItem(fuelStack));
+							this.inventory.setFuelStack(fuelStack);
 						}
 					}
 				}
@@ -241,13 +239,9 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 			if (currentBurnState != isBurning()) {
 				burnStateChanged = true;
 				updateBlockState();
-				// this.world.setBlockState(this.pos,
-				// getState().withProperty(BlockFurnace3D.ACTIVE, isBurning()));
 			}
 
-			if (burnStateChanged) {
-				sendUpdates();
-			}
+			sendUpdates(burnStateChanged);
 		}
 	}
 
@@ -273,27 +267,26 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * destination stack isn't full, etc.
 	 */
 	private boolean canSmelt() {
-		if (this.inventory.getInputStack().isEmpty()) {
+		final ItemStack inputStack = this.inventory.getInputStack();
+		if (inputStack.isEmpty())
 			return false;
+
+		final ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(inputStack);
+
+		if (smeltResult.isEmpty())
+			return false;
+
+		final ItemStack outputStack = this.inventory.getOutputStack();
+
+		if (outputStack.isEmpty()) {
+			return true;
+		} else if (!outputStack.isItemEqual(smeltResult)) {
+			return false;
+		} else if (outputStack.getCount() + smeltResult.getCount() <= getInventoryStackLimit()
+				&& outputStack.getCount() + smeltResult.getCount() <= outputStack.getMaxStackSize()) {
+			return true;
 		} else {
-			final ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(this.inventory.getInputStack());
-
-			if (smeltResult.isEmpty()) {
-				return false;
-			} else {
-				final ItemStack outputStack = this.inventory.getOutputStack();
-
-				if (outputStack.isEmpty()) {
-					return true;
-				} else if (!outputStack.isItemEqual(smeltResult)) {
-					return false;
-				} else if (outputStack.getCount() + smeltResult.getCount() <= getInventoryStackLimit()
-						&& outputStack.getCount() + smeltResult.getCount() <= outputStack.getMaxStackSize()) {
-					return true;
-				} else {
-					return outputStack.getCount() + smeltResult.getCount() <= smeltResult.getMaxStackSize();
-				}
-			}
+			return outputStack.getCount() + smeltResult.getCount() <= smeltResult.getMaxStackSize();
 		}
 	}
 
@@ -311,6 +304,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 				this.inventory.setOutputStack(smeltResult.copy());
 			} else if (outputStack.getItem() == smeltResult.getItem()) {
 				outputStack.grow(smeltResult.getCount());
+				this.inventory.setOutputStack(outputStack);
 			}
 
 			if (inputStack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && inputStack.getMetadata() == 1
@@ -320,6 +314,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 			}
 
 			inputStack.shrink(1);
+			this.inventory.setInputStack(inputStack);
 		}
 	}
 
@@ -470,13 +465,15 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		return this.world.getBlockState(this.pos);
 	}
 
-	private void sendUpdates() {
+	private void sendUpdates(final boolean dirty) {
 		if (this.inventory.isDirty()) {
 			this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
 			this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
 			this.world.scheduleBlockUpdate(this.pos, getBlockType(), 0, 0);
+			this.inventory.clearDirty();
 		}
-		markDirty();
+		if (dirty)
+			markDirty();
 	}
 
 	@Override

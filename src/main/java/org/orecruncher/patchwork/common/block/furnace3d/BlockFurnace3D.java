@@ -35,6 +35,7 @@ import org.orecruncher.patchwork.common.block.ITileEntityRegistration;
 import org.orecruncher.patchwork.common.block.ITileEntityTESR;
 
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -44,6 +45,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -66,6 +69,9 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 
 	public BlockFurnace3D() {
 		super("furnace", Material.ROCK);
+
+		setHardness(3.5F);
+		setSoundType(SoundType.STONE);
 		setCreativeTab(ModCreativeTab.tab);
 		setDefaultState(
 				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
@@ -134,7 +140,7 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 		if (state.getValue(ACTIVE).booleanValue()) {
 			final double d0 = pos.getX() + rand.nextDouble() * 0.7 + 0.1;
 			final double d2 = pos.getZ() + rand.nextDouble() * 0.7 + 0.1;
-			final double d1 = pos.getY() + rand.nextDouble() * 6.0D / 16.0D + 0.18D;
+			final double d1 = pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
 
 			if (rand.nextDouble() < 0.1D) {
 				world.playSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
@@ -165,6 +171,27 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 
 			return true;
 		}
+	}
+
+	@Override
+	public void breakBlock(@Nonnull final World world, @Nonnull final BlockPos pos, @Nonnull final IBlockState state) {
+		final TileEntity tileentity = world.getTileEntity(pos);
+		if (tileentity instanceof TileEntityFurnace3D) {
+			InventoryHelper.dropInventoryItems(world, pos, (TileEntityFurnace3D) tileentity);
+			world.updateComparatorOutputLevel(pos, this);
+		}
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(@Nonnull final IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(@Nonnull final IBlockState blockState, @Nonnull final World world,
+			@Nonnull final BlockPos pos) {
+		return Container.calcRedstone(world.getTileEntity(pos));
 	}
 
 	@Override
