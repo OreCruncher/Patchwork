@@ -42,7 +42,14 @@ import net.minecraft.util.text.TextFormatting;
 
 public class AbilityPotion extends AbilityHandler {
 
-	private static final int POWER_COST = ItemMagicDevice.BASE_CONSUMPTION_UNIT;
+	// Consumption calculated at the rate of per minute, so it would be
+	// 120 energy per minute of effect.  (Figuring base unit consume per 5
+	// seconds.)
+	private static final int POWER_COST = ItemMagicDevice.BASE_CONSUMPTION_UNIT * 12;
+	// Magic number to get it to show infinite in the GUI
+	private static final int MAX_DURATION = 32767;
+	// Trigger update on a minute interval.  Attempt to minimize processing as much as possible
+	private static final int UPDATE_DURATION = MAX_DURATION - (20 * 60); // Every 1 mins
 
 	private final Potion potion;
 	private int amplifier;
@@ -77,12 +84,25 @@ public class AbilityPotion extends AbilityHandler {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 
 		final PotionEffect effect = player.getActivePotionEffect(this.potion);
-		if (effect == null || effect.getDuration() < 5) {
-			final PotionEffect update = new PotionEffect(this.potion, 5 * 20, this.amplifier, true, true);
+		if (effect == null || effect.getDuration() < UPDATE_DURATION) {
+			final PotionEffect update = new PotionEffect(this.potion, MAX_DURATION, this.amplifier, true, true);
 			player.addPotionEffect(update);
 			final IMagicDeviceSettable c = (IMagicDeviceSettable) caps;
 			c.consumeEnergy(POWER_COST);
 		}
+	}
+
+	/**
+	 * Called when a player unequips an item from a slot
+	 *
+	 * @param player
+	 * @param device
+	 */
+	@Override
+	public void unequip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase entity,
+			@Nonnull final ItemStack device) {
+		final EntityPlayerMP player = (EntityPlayerMP) entity;
+		player.removePotionEffect(this.potion);
 	}
 
 }
