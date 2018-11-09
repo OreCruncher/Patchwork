@@ -87,6 +87,7 @@ patchwork.magicdevice.basicname=%1$s %2$s
 patchwork.magicdevice.powerremaining=§2Essence: %1$.1f%%§r
 patchwork.magicdevice.powerlevels=§2%1$d / %2$d§r
 patchwork.magicdevice.quality=§aQuality: %1$s§r
+patchwork.magicdevice.potion_tooltip=Potion Effect: %1$s
 
 patchwork.deviceability.format=§aAbility:§r §e%1$s§r
 patchwork.deviceability.flight.name=§eFlight§r

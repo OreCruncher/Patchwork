@@ -112,5 +112,10 @@ public class MagicDevice {
 		device = new MagicDevice("hoover").setType(ItemMagicDevice.Type.RING)
 				.setQuality(ItemMagicDevice.Quality.MUNDANE).addAbility(MagicAbilities.ABILITY_VACUUM);
 		DEVICES.put(device.getName(), device);
+		
+		
+		device = new MagicDevice("strength").setType(ItemMagicDevice.Type.BELT).setQuality(ItemMagicDevice.Quality.NORMAL)
+				.addAbility(MagicAbilities.ABILITY_POTION_STRENGTH);
+		DEVICES.put(device.getName(), device);
 	}
 }

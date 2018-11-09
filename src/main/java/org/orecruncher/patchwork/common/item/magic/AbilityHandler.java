@@ -60,28 +60,30 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 
 	private static final int TOOLTIP_WIDTH = 40;
 
-	private final String name;
-	private final String[] tipText;
+	protected String name;
+	protected String[] tipText;
 
 	private int priority = 10000;
 
 	public AbilityHandler(@Nonnull final String name) {
 		this.setRegistryName(name);
 		this.name = Localization.loadString(ModInfo.MOD_ID + ".deviceability." + name + ".name");
-		this.tipText = WordUtils.wrap(Localization.loadString(ModInfo.MOD_ID + ".deviceability." + name + ".tooltip"), TOOLTIP_WIDTH).split("\\r?\\n");
+		this.tipText = WordUtils
+				.wrap(Localization.loadString(ModInfo.MOD_ID + ".deviceability." + name + ".tooltip"), TOOLTIP_WIDTH)
+				.split("\\r?\\n");
 	}
 
 	@Nonnull
 	public String getName() {
 		return this.name;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Nullable
 	public String[] getToolTip() {
 		return this.tipText;
 	}
-	
+
 	/**
 	 * Indicates if the Ability can be applied to the type of device specified.
 	 *
@@ -132,7 +134,8 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param player
 	 * @param device
 	 */
-	public void equip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
+	public void equip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player,
+			@Nonnull final ItemStack device) {
 		// Override in a sub-class to provide functionality
 	}
 
@@ -142,7 +145,8 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param player
 	 * @param device
 	 */
-	public void unequip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
+	public void unequip(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player,
+			@Nonnull final ItemStack device) {
 		// Override to provide functionality
 	}
 
@@ -152,24 +156,26 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param player
 	 * @param device
 	 */
-	public void doTick(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player, @Nonnull final ItemStack device) {
+	public void doTick(@Nonnull final IMagicDevice caps, @Nonnull final EntityLivingBase player,
+			@Nonnull final ItemStack device) {
 		// Override in a sub-class to provide functionality
 	}
 
 	/**
 	 * Called when a Block is right-clicked with this Item
 	 */
-	public void onItemUse(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack, @Nonnull final EntityPlayer player,
-			@Nonnull final World worldIn, @Nonnull final BlockPos pos, @Nonnull final EnumHand hand,
-			@Nonnull final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public void onItemUse(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack,
+			@Nonnull final EntityPlayer player, @Nonnull final World worldIn, @Nonnull final BlockPos pos,
+			@Nonnull final EnumHand hand, @Nonnull final EnumFacing facing, final float hitX, final float hitY,
+			final float hitZ) {
 		// Override in a sub-class to provide functionality
 	}
 
 	/**
 	 * Called when the equipped item is right clicked.
 	 */
-	public void onItemRightClick(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack, @Nonnull final World worldIn,
-			@Nonnull final EntityPlayer playerIn, @Nonnull final EnumHand handIn) {
+	public void onItemRightClick(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack,
+			@Nonnull final World worldIn, @Nonnull final EntityPlayer playerIn, @Nonnull final EnumHand handIn) {
 		// Override in a sub-class to provide functionality
 	}
 
@@ -179,8 +185,8 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	 * @param entity
 	 * @param player
 	 */
-	public boolean hitEntity(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack, @Nonnull final EntityLivingBase target,
-			@Nonnull final EntityLivingBase attacker) {
+	public boolean hitEntity(@Nonnull final IMagicDevice caps, @Nonnull final ItemStack stack,
+			@Nonnull final EntityLivingBase target, @Nonnull final EntityLivingBase attacker) {
 		// Override in a sub-class to provide functionality
 		return false;
 	}
@@ -191,7 +197,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	protected void setCooldown(@Nonnull final EntityPlayer player, final int cooldownTicks) {
 		player.getCooldownTracker().setCooldown(ModItems.MAGIC_DEVICE, cooldownTicks);
 	}
-	
+
 	/**
 	 * Play a sound by the player indicating no charge available on the device
 	 *
@@ -204,7 +210,7 @@ public abstract class AbilityHandler extends IForgeRegistryEntry.Impl<AbilityHan
 	/**
 	 * Play a sound at the player location. The player will also recieve the sound.
 	 * Don't forget processing in an AbilityHandler is always on the server thread.
-	 * 
+	 *
 	 * @param player
 	 * @param event
 	 * @param v
