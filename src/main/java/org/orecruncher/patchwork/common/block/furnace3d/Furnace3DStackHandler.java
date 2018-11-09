@@ -50,14 +50,17 @@ public class Furnace3DStackHandler extends ItemStackHandler {
 		this.isDirty = false;
 	}
 
+	@Nonnull
 	public ItemStack getInputStack() {
 		return getStackInSlot(INPUT_SLOT);
 	}
 
+	@Nonnull
 	public ItemStack getOutputStack() {
 		return getStackInSlot(OUTPUT_SLOT);
 	}
 
+	@Nonnull
 	public ItemStack getFuelStack() {
 		return getStackInSlot(FUEL_SLOT);
 	}
@@ -78,29 +81,41 @@ public class Furnace3DStackHandler extends ItemStackHandler {
 		return this.stacks.size();
 	}
 
+	// TODO: Base class?
 	public boolean isEmpty() {
-		for (final ItemStack itemstack : this.stacks) {
-			if (!itemstack.isEmpty()) {
+		for (final ItemStack itemstack : this.stacks)
+			if (!itemstack.isEmpty())
 				return false;
-			}
-		}
-
 		return true;
 	}
 
+	// TODO: Base class?
 	public void clear() {
 		for (int i = 0; i < size(); i++)
 			setStackInSlot(i, ItemStack.EMPTY);
 	}
 
-	public ItemStack getAndSplit(int index, int amount) {
-		return index >= 0 && index < this.stacks.size() && !this.stacks.get(index).isEmpty() && amount > 0
-				? this.stacks.get(index).splitStack(amount)
-				: ItemStack.EMPTY;
+	// TODO: Base class?
+	@Nonnull
+	public ItemStack getAndSplit(final int index, final int amount) {
+		ItemStack result = ItemStack.EMPTY;
+		if (amount > 0) {
+			final ItemStack original = getStackInSlot(index);
+			if (!original.isEmpty()) {
+				result = original.splitStack(amount);
+				onContentsChanged(index);
+			}
+		}
+		return result;
 	}
 
-	public ItemStack getAndRemove(int index) {
-		return index >= 0 && index < this.stacks.size() ? this.stacks.set(index, ItemStack.EMPTY) : ItemStack.EMPTY;
+	// TODO: Base class?
+	@Nonnull
+	public ItemStack getAndRemove(final int index) {
+		final ItemStack result = getStackInSlot(index);
+		if (!result.isEmpty())
+			setStackInSlot(index, ItemStack.EMPTY);
+		return result;
 	}
 
 	@Override

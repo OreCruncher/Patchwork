@@ -69,6 +69,10 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	@ItemStackHolder(value = "minecraft:sponge", meta = 1)
 	public static final ItemStack WET_SPONGE = ItemStack.EMPTY;
 
+	private final IItemHandler handlerTop = new SidedInvWrapper(this, EnumFacing.UP);
+	private final IItemHandler handlerBottom = new SidedInvWrapper(this, EnumFacing.DOWN);
+	private final IItemHandler handlerSide = new SidedInvWrapper(this, EnumFacing.WEST);
+
 	protected ItemStack recipeKey = ItemStack.EMPTY;
 	protected ItemStack recipeOutput = ItemStack.EMPTY;
 	protected ItemStack failedMatch = ItemStack.EMPTY;
@@ -126,7 +130,8 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * Returns the stack in the given slot.
 	 */
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	@Nonnull
+	public ItemStack getStackInSlot(final int index) {
 		return this.inventory.getStackInSlot(index);
 	}
 
@@ -135,7 +140,8 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * them in a new stack.
 	 */
 	@Override
-	public ItemStack decrStackSize(int index, int count) {
+	@Nonnull
+	public ItemStack decrStackSize(final int index, final int count) {
 		return this.inventory.getAndSplit(index, count);
 	}
 
@@ -203,11 +209,19 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	public int getInventoryStackLimit() {
 		return 64;
 	}
+	
+	/**
+	 * Helper method for the TESR
+	 */
+	@Nonnull
+	public EnumFacing getFacing() {
+		return getState().getValue(BlockFurnace3D.FACING);
+	}
 
 	/**
 	 * Furnace isBurning
 	 */
-	public boolean isBurning() {
+	private boolean isBurning() {
 		return this.furnaceBurnTime > 0;
 	}
 
@@ -244,7 +258,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		sendUpdates(wasBurning && !isBurning());
 	}
 
-	protected void updateBlockState() {
+	private void updateBlockState() {
 		final IBlockState state = getState();
 		if (state.getValue(BlockFurnace3D.ACTIVE) != isBurning()) {
 			this.world.setBlockState(this.pos, state.withProperty(BlockFurnace3D.ACTIVE, isBurning()));
@@ -257,7 +271,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		return oldState.getBlock() != newState.getBlock();
 	}
 
-	public int getCookTime(ItemStack stack) {
+	private int getCookTime(@Nonnull final ItemStack stack) {
 		return 200;
 	}
 
@@ -296,7 +310,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 
 	}
 
-	protected void smelt() {
+	private void smelt() {
 		this.cookTime++;
 		if (this.cookTime == this.totalCookTime) {
 			this.cookTime = 0;
@@ -305,7 +319,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		}
 	}
 
-	protected void burnFuel(ItemStack fuel, boolean burnedThisTick) {
+	private void burnFuel(ItemStack fuel, boolean burnedThisTick) {
 		this.currentItemBurnTime = (this.furnaceBurnTime = getItemBurnTime(fuel));
 		if (isBurning()) {
 			fuel.shrink(1);
@@ -318,7 +332,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * Turn one item from the furnace source stack into the appropriate smelted item
 	 * in the furnace result stack
 	 */
-	public void smeltItem() {
+	private void smeltItem() {
 		final ItemStack input = this.inventory.getInputStack();
 		final ItemStack recipeOutput = FurnaceRecipes.instance().getSmeltingList().get(this.recipeKey);
 		final ItemStack output = this.inventory.getOutputStack();
@@ -341,7 +355,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	 * Returns the number of ticks that the supplied fuel item will keep the furnace
 	 * burning, or 0 if the item isn't fuel
 	 */
-	public static int getItemBurnTime(@Nonnull final ItemStack stack) {
+	private static int getItemBurnTime(@Nonnull final ItemStack stack) {
 		return TileEntityFurnace.getItemBurnTime(stack);
 	}
 
@@ -440,7 +454,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	}
 
 	@Override
-	public int getField(int id) {
+	public int getField(final int id) {
 		switch (id) {
 		case 0:
 			return this.furnaceBurnTime;
@@ -456,7 +470,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	}
 
 	@Override
-	public void setField(int id, int value) {
+	public void setField(final int id, final int value) {
 		switch (id) {
 		case 0:
 			this.furnaceBurnTime = value;
@@ -485,6 +499,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		this.inventory.clear();
 	}
 
+	@Nonnull
 	private IBlockState getState() {
 		return this.world.getBlockState(this.pos);
 	}
@@ -517,10 +532,6 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		super.onDataPacket(net, pkt);
 		handleUpdateTag(pkt.getNbtCompound());
 	}
-
-	private final IItemHandler handlerTop = new SidedInvWrapper(this, EnumFacing.UP);
-	private final IItemHandler handlerBottom = new SidedInvWrapper(this, EnumFacing.DOWN);
-	private final IItemHandler handlerSide = new SidedInvWrapper(this, EnumFacing.WEST);
 
 	@SuppressWarnings("unchecked")
 	@Override
