@@ -78,11 +78,6 @@ patchwork.devicequality.normal.name=Normal
 patchwork.devicequality.prized.name=Prized
 patchwork.devicequality.legendary.name=Legendary
 
-patchwork.magicdevice.flight.moniker=Amulet of Agile Flight
-patchwork.magicdevice.fireball.moniker=Wand of Blasting
-patchwork.magicdevice.tome.moniker=Tome of Agonizing Magic
-patchwork.magicdevice.hoover.moniker=Ring Gentle Hoovering
-
 patchwork.magicdevice.basicname=%1$s %2$s
 patchwork.magicdevice.powerremaining=§2Essence: %1$.1f%%§r
 patchwork.magicdevice.powerlevels=§2%1$d / %2$d§r

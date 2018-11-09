@@ -32,7 +32,6 @@ import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDeviceSettable;
 
-import baubles.api.BaubleType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -58,7 +57,7 @@ public class AbilityPotion extends AbilityHandler {
 
 	@Override
 	public boolean canBeAppliedTo(@Nonnull final ItemMagicDevice.Type type) {
-		return type.getBaubleType() == BaubleType.BELT || type.getBaubleType() == BaubleType.BODY;
+		return type.getBaubleType() != null;
 	}
 
 	/**
@@ -78,12 +77,12 @@ public class AbilityPotion extends AbilityHandler {
 		final EntityPlayerMP player = (EntityPlayerMP) entity;
 
 		final PotionEffect effect = player.getActivePotionEffect(this.potion);
-		if (effect == null || effect.getDuration() < 20) {
+		if (effect == null || effect.getDuration() < 5) {
 			final PotionEffect update = new PotionEffect(this.potion, 5 * 20, this.amplifier, true, true);
 			player.addPotionEffect(update);
+			final IMagicDeviceSettable c = (IMagicDeviceSettable) caps;
+			c.consumeEnergy(POWER_COST);
 		}
-		final IMagicDeviceSettable c = (IMagicDeviceSettable) caps;
-		c.consumeEnergy(POWER_COST);
 	}
 
 }

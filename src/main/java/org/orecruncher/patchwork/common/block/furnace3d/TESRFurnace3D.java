@@ -50,22 +50,24 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 	 */
 	private enum SlotHelper {
 		//
-		INPUT(Furnace3DStackHandler.INPUT_SLOT, -0.2F, -0.05F, 0.185F),
+		INPUT(Furnace3DStackHandler.INPUT_SLOT, -0.2F, -0.05F, 0.185F, SCALE),
 		//
-		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.2F, -0.05F, 0.185F),
+		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.2F, -0.05F, 0.185F, SCALE),
 		//
-		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.0F, -0.55F, 0.185F);
+		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.0F, -0.55F, 0.185F, SCALE - 0.1F);
 
 		private final int slot;
 		private final float xOffset;
 		private final float yOffset;
 		private final float zOffset;
+		private final float scale;
 
-		private SlotHelper(final int slot, final float dX, final float dY, final float dZ) {
+		private SlotHelper(final int slot, final float dX, final float dY, final float dZ, final float scale) {
 			this.slot = slot;
 			this.xOffset = dX;
 			this.yOffset = dY;
 			this.zOffset = dZ;
+			this.scale = scale;
 		}
 
 		public ItemStack getStack(@Nonnull final TileEntityFurnace3D te) {
@@ -82,6 +84,10 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 
 		public float offsetZ() {
 			return this.zOffset;
+		}
+		
+		public float scale() {
+			return this.scale;
 		}
 	}
 
@@ -134,12 +140,15 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 				// translation is relative to the center of the block, and that a rotation
 				// has already been applied to take into account block facing.
 				GlStateManager.translate(slot.offsetX(), slot.offsetY(), slot.offsetZ());
-				GlStateManager.scale(SCALE, SCALE, SCALE);
+				GlStateManager.scale(slot.scale(), slot.scale(), slot.scale());
 				Minecraft.getMinecraft().getRenderManager().renderEntity(this.mock, 0, 0, 0, 0F, 0, false);
 				GlStateManager.popMatrix();
 			}
 		}
 		GlStateManager.popMatrix();
+		
+		// Clear the mock to avoid holding a reference to an ItemStack
+		this.mock.setItem(ItemStack.EMPTY);
 	}
 
 }

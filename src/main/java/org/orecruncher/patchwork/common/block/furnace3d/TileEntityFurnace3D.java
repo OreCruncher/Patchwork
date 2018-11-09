@@ -209,7 +209,7 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	public int getInventoryStackLimit() {
 		return 64;
 	}
-	
+
 	/**
 	 * Helper method for the TESR
 	 */
@@ -322,7 +322,11 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 	private void burnFuel(ItemStack fuel, boolean burnedThisTick) {
 		this.currentItemBurnTime = (this.furnaceBurnTime = getItemBurnTime(fuel));
 		if (isBurning()) {
+			// Have to take into account things like lava buckets
+            final Item item = fuel.getItem();
 			fuel.shrink(1);
+			if (fuel.isEmpty())
+				fuel = item.getContainerItem(fuel);
 			this.inventory.setFuelStack(fuel);
 			sendUpdates(!burnedThisTick);
 		}

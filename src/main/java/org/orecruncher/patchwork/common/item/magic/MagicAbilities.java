@@ -23,6 +23,8 @@
  */
 package org.orecruncher.patchwork.common.item.magic;
 
+import java.util.Set;
+
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilityCharging;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilityFireball;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilityFlight;
@@ -30,6 +32,7 @@ import org.orecruncher.patchwork.common.item.magic.abilities.AbilityPotion;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilitySymbiotic;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilityVacuum;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.util.ResourceLocation;
 
 public class MagicAbilities {
@@ -52,6 +55,7 @@ public class MagicAbilities {
 	public static final ResourceLocation ABILITY_POTION_HEALTH_BOOST = new AbilityPotion("health_boost").register();
 	public static final ResourceLocation ABILITY_POTION_ABSORPTION = new AbilityPotion("absorption").register();
 	public static final ResourceLocation ABILITY_POTION_LUCK = new AbilityPotion("luck").register();
+	public static final ResourceLocation ABILITY_POTION_SATURATION = new AbilityPotion("saturation").register();
 
 	// Curses
 	public static final ResourceLocation ABILITY_POTION_SLOWNESS = new AbilityPotion("slowness").register();
@@ -61,6 +65,17 @@ public class MagicAbilities {
 	public static final ResourceLocation ABILITY_POTION_POISON = new AbilityPotion("poison").register();
 	public static final ResourceLocation ABILITY_POTION_UNLUCK = new AbilityPotion("unluck").register();
 
+	public static final Set<ResourceLocation> CURSES = new ObjectOpenHashSet<>();
+	
+	static {
+		CURSES.add(ABILITY_POTION_SLOWNESS);
+		CURSES.add(ABILITY_POTION_FATIGUE);
+		CURSES.add(ABILITY_POTION_HUNGER);
+		CURSES.add(ABILITY_POTION_WEAKNESS);
+		CURSES.add(ABILITY_POTION_POISON);
+		CURSES.add(ABILITY_POTION_UNLUCK);
+	}
+	
 	public static void initialize() {
 		// Nothing here.  Called to tickle the static CTORs
 	}

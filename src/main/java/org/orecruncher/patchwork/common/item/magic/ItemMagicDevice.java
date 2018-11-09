@@ -122,11 +122,12 @@ public class ItemMagicDevice extends ItemBase {
 				items.add(stack);
 			}
 
-			for (final MagicDevice device : MagicDevice.DEVICES.values()) {
+			for (final MagicDevice device : MagicDevice.getBuiltDevices()) {
 				final ItemStack stack = new ItemStack(this, 1, device.getType().getSubTypeId());
 				final IMagicDeviceSettable xface = (IMagicDeviceSettable) stack
 						.getCapability(CapabilityMagicDevice.MAGIC_DEVICE, CapabilityMagicDevice.DEFAULT_FACING);
-				xface.setMoniker(device.getUnlocalizedName());
+				xface.setMoniker(device.getName());
+				xface.setVariant(device.getVariant());
 				xface.setQuality(device.getQuality());
 				xface.setCurrentEnergy(xface.getMaxEnergy());
 				for (final ResourceLocation r : device.getAbilities())

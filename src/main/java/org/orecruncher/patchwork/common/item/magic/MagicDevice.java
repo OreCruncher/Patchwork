@@ -25,41 +25,33 @@
 package org.orecruncher.patchwork.common.item.magic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.ModInfo;
+import org.apache.commons.lang3.StringUtils;
+import org.orecruncher.ModBase;
+import org.orecruncher.lib.JsonUtils;
+import org.orecruncher.lib.math.MathStuff;
+import org.orecruncher.patchwork.common.item.magic.Devices.DeviceEntry;
 
 import net.minecraft.util.ResourceLocation;
 
 public class MagicDevice {
 
-	// Pre-built fancy devices
-	public static final Map<String, MagicDevice> DEVICES = new HashMap<>();
-
-	private final String name;
 	private final List<ResourceLocation> abilities = new ArrayList<>();
-
-	private final String unlocalizedName;
+	private final String name;
 	private ItemMagicDevice.Quality quality = ItemMagicDevice.Quality.NORMAL;
 	private ItemMagicDevice.Type type = ItemMagicDevice.Type.AMULET;
+	private int variant;
 
 	public MagicDevice(@Nonnull final String name) {
 		this.name = name;
-		this.unlocalizedName = ModInfo.MOD_ID + ".magicdevice." + name + ".moniker";
 	}
 
 	@Nonnull
 	public String getName() {
 		return this.name;
-	}
-
-	@Nonnull
-	public String getUnlocalizedName() {
-		return this.unlocalizedName;
 	}
 
 	@Nonnull
@@ -79,10 +71,18 @@ public class MagicDevice {
 		return this.type;
 	}
 
+	public int getVariant() {
+		return MathStuff.clamp(this.variant, 0, this.type.getVariants() - 1);
+	}
+
 	@Nonnull
 	public MagicDevice setType(@Nonnull final ItemMagicDevice.Type type) {
 		this.type = type;
 		return this;
+	}
+
+	public void setVariant(final int variant) {
+		this.variant = variant;
 	}
 
 	@Nonnull
@@ -96,26 +96,54 @@ public class MagicDevice {
 		return this;
 	}
 
-	static {
-		MagicDevice device = new MagicDevice("flight").setType(ItemMagicDevice.Type.AMULET)
-				.setQuality(ItemMagicDevice.Quality.NORMAL).addAbility(MagicAbilities.ABILITY_FLIGHT);
-		DEVICES.put(device.getName(), device);
+	public static List<MagicDevice> getBuiltDevices() {
+		final List<MagicDevice> result = new ArrayList<>();
+		// Load up some prebuilt items from the JAR configuration
+		try {
+			final Devices devices = JsonUtils.loadFromJar(Devices.class, "/assets/patchwork/data/magic_devices.json");
+			for (final DeviceEntry entry : devices.entries) {
+				if (StringUtils.isEmpty(entry.name)) {
+					ModBase.log().warn("A magic device must have a name; entry will be ignored");
+					continue;
+				}
+				final MagicDevice md = new MagicDevice(entry.name);
+				if (entry.quality != null)
+					md.setQuality(entry.quality);
+				if (entry.type != null)
+					md.setType(entry.type);
+				if (entry.variant != null)
+					md.setVariant(entry.variant);
+				if (entry.abilities != null)
+					for (final String s : entry.abilities) {
+						final int maxAbilities = md.getQuality().getMaxAbilities();
+						final ResourceLocation ability = new ResourceLocation(s);
+						final AbilityHandler handler = AbilityHandler.REGISTRY.getValue(ability);
+						if (handler != null) {
+							if (md.getAbilities().size() >= maxAbilities) {
+								ModBase.log().warn(
+										"Unable to add ability [%s] to [%s] - max abilities would be exceeded (%d)", s,
+										md.getName(), maxAbilities);
+							} else if (handler.canBeAppliedTo(md.getType())) {
+								md.addAbility(ability);
+							} else {
+								ModBase.log().warn(
+										"Ability [%s] cannot be applied to device [%s] because it is the wrong type [%s]",
+										s, md.getName(), md.getType().toString());
+							}
+						} else {
+							ModBase.log().warn("Unknown magic ability [%s] for device [%s]- ignored", s, md.getName());
+						}
+					}
 
-		device = new MagicDevice("fireball").setType(ItemMagicDevice.Type.WAND)
-				.setQuality(ItemMagicDevice.Quality.PRIZED).addAbility(MagicAbilities.ABILITY_FIREBALL);
-		DEVICES.put(device.getName(), device);
-
-		device = new MagicDevice("tome").setType(ItemMagicDevice.Type.TOME).setQuality(ItemMagicDevice.Quality.MUNDANE)
-				.addAbility(MagicAbilities.ABILITY_CHARGING).addAbility(MagicAbilities.ABILITY_SYMBIOTIC);
-		DEVICES.put(device.getName(), device);
-
-		device = new MagicDevice("hoover").setType(ItemMagicDevice.Type.RING)
-				.setQuality(ItemMagicDevice.Quality.MUNDANE).addAbility(MagicAbilities.ABILITY_VACUUM);
-		DEVICES.put(device.getName(), device);
-		
-		
-		device = new MagicDevice("strength").setType(ItemMagicDevice.Type.BELT).setQuality(ItemMagicDevice.Quality.NORMAL)
-				.addAbility(MagicAbilities.ABILITY_POTION_STRENGTH);
-		DEVICES.put(device.getName(), device);
+				if (md.getAbilities().size() == 0) {
+					ModBase.log().warn("No abilities were added to device [%s]; was this intended?", md.getName());
+				}
+				result.add(md);
+			}
+		} catch (@Nonnull final Throwable t) {
+			ModBase.log().error("Unable to load device info from JAR", t);
+		}
+		return result;
 	}
+
 }

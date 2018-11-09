@@ -1,0 +1,105 @@
+{
+	"devices": [
+		{
+			"name": "Amulet of Agile Flight",
+			"type": "AMULET",
+			"variant": 3,
+			"quality": "NORMAL",
+			"abilities": [
+				"patchwork:flight"
+			]
+		},
+		{
+			"name": "Wand of Blasting",
+			"type": "WAND",
+			"variant": 1,
+			"quality": "PRIZED",
+			"abilities": [
+				"patchwork:fireball"
+			]
+		},
+		{
+			"name": "Tome of Agonizing Magic",
+			"type": "TOME",
+			"variant": 1,
+			"quality": "NORMAL",
+			"abilities": [
+				"patchwork:charging",
+				"patchwork:symbiotic"
+			]
+		},
+		{
+			"name": "Ring of Gentle Hoovering",
+			"type": "RING",
+			"variant": 4,
+			"quality": "MUNDANE",
+			"abilities": [
+				"patchwork:vacuum"
+			]
+		},
+		{
+			"name": "Belt of Zombie Strength",
+			"type": "BELT",
+			"quality": "MUNDANE",
+			"abilities": [
+				"patchwork:potion_strength"
+			]
+		},
+		{
+			"name": "Cirlet of Keen Sight",
+			"type": "HEAD",
+			"variant": 2,
+			"quality": "NORMAL",
+			"abilities": [
+				"patchwork:potion_night_vision"
+			]
+		},
+		{
+			"name": "Trinket of Piscean Wonder",
+			"type": "TRINKET",
+			"variant": 3,
+			"quality": "NORMAL",
+			"abilities": [
+				"patchwork:potion_water_breathing"
+			]
+		},
+		{
+			"name": "Sprinter's Bane",
+			"type": "RING",
+			"variant": 4,
+			"quality": "NORMAL",
+			"abilities": [
+				"patchwork:potion_haste",
+				"patchwork:potion_hunger"
+			]
+		},
+		{
+			"name": "Salamander Hide",
+			"type": "BODY",
+			"variant": 1,
+			"quality": "MUNDANE",
+			"abilities": [
+				"patchwork:potion_fire_resistance"
+			]
+		},
+		{
+			"name": "Ring of The Guardian",
+			"type": "RING",
+			"variant": 6,
+			"quality": "LEGENDARY",
+			"abilities": [
+				"patchwork:potion_speed",
+				"patchwork:potion_absorption",
+				"patchwork:potion_resistance"
+			]
+		},
+		{
+			"name": "Girdle of Sustenance",
+			"type": "BELT",
+			"quality": "MUNDANE",
+			"abilities": [
+				"patchwork:potion_saturation"
+			]
+		}
+	]
+}
