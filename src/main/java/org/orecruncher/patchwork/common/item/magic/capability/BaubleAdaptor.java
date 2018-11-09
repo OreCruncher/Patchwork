@@ -27,8 +27,8 @@ package org.orecruncher.patchwork.common.item.magic.capability;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.ModItems;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;

@@ -24,6 +24,7 @@
 
 package org.orecruncher.patchwork.common.item;
 
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.MagicAbilities;
 
 import net.minecraft.item.Item;

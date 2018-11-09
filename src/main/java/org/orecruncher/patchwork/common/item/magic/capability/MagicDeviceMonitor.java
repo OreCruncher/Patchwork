@@ -31,8 +31,8 @@ import javax.annotation.Nonnull;
 
 import org.orecruncher.lib.capability.CapabilityUtils;
 import org.orecruncher.patchwork.ModInfo;
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.ModItems;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 import org.orecruncher.patchwork.network.MagicDeviceDataPacket;
 import org.orecruncher.patchwork.network.NetworkHandler;
 

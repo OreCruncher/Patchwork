@@ -26,8 +26,8 @@ package org.orecruncher.patchwork.common.item.magic.abilities;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.AbilityHandler;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDeviceSettable;
 

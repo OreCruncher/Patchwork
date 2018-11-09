@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
-
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.player.EntityPlayer;

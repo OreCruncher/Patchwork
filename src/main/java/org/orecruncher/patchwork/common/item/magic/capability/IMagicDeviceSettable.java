@@ -26,7 +26,7 @@ package org.orecruncher.patchwork.common.item.magic.capability;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 
 import net.minecraft.util.ResourceLocation;
 

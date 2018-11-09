@@ -35,8 +35,8 @@ import javax.annotation.Nonnull;
 import org.orecruncher.lib.collections.EmptyList;
 import org.orecruncher.lib.math.MathStuff;
 import org.orecruncher.lib.simpledata.SimpleDataRegistry;
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.AbilityHandler;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

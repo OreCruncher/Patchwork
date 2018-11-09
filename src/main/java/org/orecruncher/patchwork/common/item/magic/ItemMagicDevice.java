@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.common.item;
+package org.orecruncher.patchwork.common.item.magic;
 
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -43,8 +43,7 @@ import org.orecruncher.lib.math.MathStuff;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.client.ModCreativeTab;
-import org.orecruncher.patchwork.common.item.magic.AbilityHandler;
-import org.orecruncher.patchwork.common.item.magic.MagicDevice;
+import org.orecruncher.patchwork.common.item.ItemBase;
 import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDeviceSettable;

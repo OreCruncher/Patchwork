@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;

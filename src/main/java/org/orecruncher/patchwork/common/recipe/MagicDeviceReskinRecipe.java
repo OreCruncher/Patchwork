@@ -27,7 +27,7 @@ package org.orecruncher.patchwork.common.recipe;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
+import org.orecruncher.patchwork.common.item.magic.ItemMagicDevice;
 import org.orecruncher.patchwork.common.item.magic.capability.IMagicDeviceSettable;
 
 import com.google.gson.JsonObject;

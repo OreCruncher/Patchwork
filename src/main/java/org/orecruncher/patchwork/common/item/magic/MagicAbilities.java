@@ -27,6 +27,7 @@ import org.orecruncher.patchwork.common.item.magic.abilities.AbilityCharging;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilityFireball;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilityFlight;
 import org.orecruncher.patchwork.common.item.magic.abilities.AbilitySymbiotic;
+import org.orecruncher.patchwork.common.item.magic.abilities.AbilityVacuum;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -36,6 +37,7 @@ public class MagicAbilities {
 	public static final ResourceLocation ABILITY_FIREBALL = new AbilityFireball().register();
 	public static final ResourceLocation ABILITY_SYMBIOTIC = new AbilitySymbiotic().register();
 	public static final ResourceLocation ABILITY_CHARGING = new AbilityCharging().register();
+	public static final ResourceLocation ABILITY_VACUUM = new AbilityVacuum().register();
 
 	public static void initialize() {
 		// Nothing here.  Called to tickle the static CTORs

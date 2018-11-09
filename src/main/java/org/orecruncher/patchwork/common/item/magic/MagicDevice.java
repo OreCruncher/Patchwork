@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModInfo;
-import org.orecruncher.patchwork.common.item.ItemMagicDevice;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -108,6 +107,10 @@ public class MagicDevice {
 
 		device = new MagicDevice("tome").setType(ItemMagicDevice.Type.TOME).setQuality(ItemMagicDevice.Quality.MUNDANE)
 				.addAbility(MagicAbilities.ABILITY_CHARGING).addAbility(MagicAbilities.ABILITY_SYMBIOTIC);
+		DEVICES.put(device.getName(), device);
+
+		device = new MagicDevice("hoover").setType(ItemMagicDevice.Type.RING)
+				.setQuality(ItemMagicDevice.Quality.MUNDANE).addAbility(MagicAbilities.ABILITY_VACUUM);
 		DEVICES.put(device.getName(), device);
 	}
 }
