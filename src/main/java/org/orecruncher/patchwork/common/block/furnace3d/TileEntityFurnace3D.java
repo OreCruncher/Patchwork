@@ -51,8 +51,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class TileEntityFurnace3D extends TileEntityLockable implements ITickable, ISidedInventory {
@@ -221,10 +225,8 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		ItemStack fuel = ItemStack.EMPTY;
 		final boolean canSmelt = canSmelt();
 
-		if (!isBurning() && !(fuel = this.inventory.getFuelStack()).isEmpty()) {
-			if (canSmelt)
-				burnFuel(fuel, false);
-		}
+		if (!isBurning() && canSmelt && !(fuel = this.inventory.getFuelStack()).isEmpty())
+			burnFuel(fuel, false);
 
 		final boolean wasBurning = isBurning();
 
@@ -236,10 +238,8 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 				this.cookTime = 0;
 		}
 
-		if (!isBurning() && !(fuel = this.inventory.getFuelStack()).isEmpty()) {
-			if (canSmelt())
-				burnFuel(fuel, wasBurning);
-		}
+		if (!isBurning() && canSmelt() && !(fuel = this.inventory.getFuelStack()).isEmpty())
+			burnFuel(fuel, wasBurning);
 
 		sendUpdates(wasBurning && !isBurning());
 	}
@@ -364,10 +364,12 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 
 	@Override
 	public void openInventory(@Nonnull final EntityPlayer player) {
+		// Intentionally blank
 	}
 
 	@Override
 	public void closeInventory(@Nonnull final EntityPlayer player) {
+		// Intentionally blank
 	}
 
 	/**
@@ -467,6 +469,9 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 			break;
 		case 3:
 			this.totalCookTime = value;
+			break;
+		default:
+			// fall thru
 		}
 	}
 
@@ -513,19 +518,15 @@ public class TileEntityFurnace3D extends TileEntityLockable implements ITickable
 		handleUpdateTag(pkt.getNbtCompound());
 	}
 
-	net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this,
-			net.minecraft.util.EnumFacing.UP);
-	net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this,
-			net.minecraft.util.EnumFacing.DOWN);
-	net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this,
-			net.minecraft.util.EnumFacing.WEST);
+	private final IItemHandler handlerTop = new SidedInvWrapper(this, EnumFacing.UP);
+	private final IItemHandler handlerBottom = new SidedInvWrapper(this, EnumFacing.DOWN);
+	private final IItemHandler handlerSide = new SidedInvWrapper(this, EnumFacing.WEST);
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@javax.annotation.Nullable
-	public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability,
-			@javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
-		if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+	@Nullable
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			if (facing == EnumFacing.DOWN)
 				return (T) this.handlerBottom;
 			else if (facing == EnumFacing.UP)
