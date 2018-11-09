@@ -82,6 +82,7 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 		GameRegistry.registerTileEntity(TileEntityFurnace3D.class, new ResourceLocation(ModInfo.MOD_ID, "furnace3d"));
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerTESR() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace3D.class, new TESRFurnace3D());

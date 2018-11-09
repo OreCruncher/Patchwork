@@ -39,6 +39,8 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 
 @EventBusSubscriber(modid = ModInfo.MOD_ID)
@@ -73,6 +75,7 @@ public class ItemRegistrationHandler {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void registerColorizers(@Nonnull final ColorHandlerEvent.Item event) {
 		for (final ItemBase item : items) {
