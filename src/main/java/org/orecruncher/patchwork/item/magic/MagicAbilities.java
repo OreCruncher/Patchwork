@@ -37,6 +37,7 @@ import org.orecruncher.patchwork.item.magic.MagicAbilities.AbilityConfig.ConfigE
 import org.orecruncher.patchwork.item.magic.abilities.AbilityCharging;
 import org.orecruncher.patchwork.item.magic.abilities.AbilityFireball;
 import org.orecruncher.patchwork.item.magic.abilities.AbilityFlight;
+import org.orecruncher.patchwork.item.magic.abilities.AbilityMissile;
 import org.orecruncher.patchwork.item.magic.abilities.AbilityPotion;
 import org.orecruncher.patchwork.item.magic.abilities.AbilitySymbiotic;
 import org.orecruncher.patchwork.item.magic.abilities.AbilityVacuum;
@@ -52,6 +53,7 @@ public class MagicAbilities {
 
 	public static final ResourceLocation ABILITY_FLIGHT = new AbilityFlight().register();
 	public static final ResourceLocation ABILITY_FIREBALL = new AbilityFireball().register();
+	public static final ResourceLocation ABILITY_MISSILE = new AbilityMissile().register();
 	public static final ResourceLocation ABILITY_SYMBIOTIC = new AbilitySymbiotic().register();
 	public static final ResourceLocation ABILITY_CHARGING = new AbilityCharging().register();
 	public static final ResourceLocation ABILITY_VACUUM = new AbilityVacuum().register();

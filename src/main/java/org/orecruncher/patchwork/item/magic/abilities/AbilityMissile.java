@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package org.orecruncher.patchwork.item.magic.abilities;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.entity.EntityMagicFireball;
+import org.orecruncher.patchwork.entity.EntityMagicMissile;
 import org.orecruncher.patchwork.item.ModItems;
 import org.orecruncher.patchwork.item.magic.AbilityHandler;
 import org.orecruncher.patchwork.item.magic.ItemMagicDevice;
@@ -36,17 +35,16 @@ import org.orecruncher.patchwork.item.magic.capability.IMagicDeviceSettable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AbilityFireball extends AbilityHandler {
+public class AbilityMissile extends AbilityHandler {
 
-	// Figure 20 shots with a normal wand
-	private static final int ACTIVATION_COST = ItemMagicDevice.Quality.NORMAL.getMaxPower() / 20;
-	private static final int COOLDOWN_TICKS = 4 * 20;
+	// Figure 40 shots with a normal wand
+	private static final int ACTIVATION_COST = ItemMagicDevice.Quality.NORMAL.getMaxPower() / 40;
+	private static final int COOLDOWN_TICKS = 1 * 20;
 
-	public AbilityFireball() {
-		super("fireball");
+	public AbilityMissile() {
+		super("missile");
 	}
 
 	@Override
@@ -60,15 +58,11 @@ public class AbilityFireball extends AbilityHandler {
 
 		final IMagicDeviceSettable c = (IMagicDeviceSettable) caps;
 		if (c.consumeEnergy(ACTIVATION_COST)) {
-			
-			final EntityMagicFireball fireball = new EntityMagicFireball(player);
+
+			final EntityMagicMissile missile = new EntityMagicMissile(player);
 
 			// Spawn the sucker
-			world.spawnEntity(fireball);
-
-			// Play the sound
-			final BlockPos soundPos = new BlockPos(player);
-			player.world.playEvent((EntityPlayer) null, 1018, soundPos, 0);
+			world.spawnEntity(missile);
 
 			success = true;
 
@@ -77,7 +71,7 @@ public class AbilityFireball extends AbilityHandler {
 			playNoChargeSound(player);
 		}
 
-		setCooldown(player, success ? COOLDOWN_TICKS : 20);
+		setCooldown(player, success ? COOLDOWN_TICKS : 10);
 	}
 
 }

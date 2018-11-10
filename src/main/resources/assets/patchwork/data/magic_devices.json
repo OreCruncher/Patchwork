@@ -19,6 +19,15 @@
 			]
 		},
 		{
+			"name": "Staff of Slinging",
+			"type": "STAFF",
+			"variant": 3,
+			"quality": "NORMAL",
+			"abilities": [
+				"patchwork:missile"
+			]
+		},
+		{
 			"name": "Tome of Agonizing Magic",
 			"type": "TOME",
 			"variant": 1,

@@ -14,6 +14,18 @@
 			"isCursed": false,
 			"appliesTo": [
 				"WAND",
+				"ROD",
+				"STAFF",
+				"SCROLL"
+			]
+		},
+		"patchwork:missile": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"WAND",
+				"ROD",
+				"STAFF",
 				"SCROLL"
 			]
 		},
