@@ -1,0 +1,14 @@
+{
+	"pools": [
+		{
+			"name": "patchwork",
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "loot_table",
+					"name": "patchwork:chests/simple_dungeon"
+				}
+			]
+		}
+	]
+}

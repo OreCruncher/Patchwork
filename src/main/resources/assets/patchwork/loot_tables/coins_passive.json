@@ -1,0 +1,31 @@
+{
+	"pools": [
+		{
+			"name": "coins_passive",
+			"rolls": {
+				"min": 0,
+				"max": 1
+			},
+			"entries": [
+				{
+					"entryName": "Copper Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 0
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

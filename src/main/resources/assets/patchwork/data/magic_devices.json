@@ -96,6 +96,7 @@
 		{
 			"name": "Girdle of Sustenance",
 			"type": "BELT",
+			"variant": 0,
 			"quality": "MUNDANE",
 			"abilities": [
 				"patchwork:potion_saturation"

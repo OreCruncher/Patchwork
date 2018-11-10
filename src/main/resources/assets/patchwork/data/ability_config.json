@@ -1,0 +1,189 @@
+{
+	"abilities": {
+		"patchwork:flight": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"AMULET",
+				"BODY",
+				"RING"
+			]
+		},
+		"patchwork:fireball": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"WAND",
+				"SCROLL"
+			]
+		},
+		"patchwork:symbiotic": {
+			"priority": 100000,
+			"isCursed": false,
+			"appliesTo": [
+				"TOME",
+				"BODY"
+			]
+		},
+		"patchwork:charging": {
+			"priority": 0,
+			"isCursed": false,
+			"appliesTo": [
+				"TOME",
+				"BODY"
+			]
+		},
+		"patchwork:vacuum": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"RING",
+				"AMULET"
+			]
+		},
+		"patchwork:potion_speed": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BELT",
+				"RING"
+			]
+		},
+		"patchwork:potion_haste": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"AMULET",
+				"TRINKET",
+				"RING"
+			]
+		},
+		"patchwork:potion_strength": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BELT",
+				"BODY"
+			]
+		},
+		"patchwork:potion_jump_boost": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BELT",
+				"BODY"
+			]
+		},
+		"patchwork:potion_resistance": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BODY",
+				"RING"
+			]
+		},
+		"patchwork:potion_fire_resistance": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BODY",
+				"AMULET"
+			]
+		},
+		"patchwork:potion_water_breathing": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"AMULET",
+				"HEAD",
+				"CHARM",
+				"TRINKET"
+			]
+		},
+		"patchwork:potion_night_vision": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"HEAD",
+				"AMULET",
+				"RING"
+			]
+		},
+		"patchwork:potion_health_boost": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BELT",
+				"TRINKET"
+			]
+		},
+		"patchwork:potion_absorption": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"BELT",
+				"BODY",
+				"RING"
+			]
+		},
+		"patchwork:potion_luck": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"CHARM",
+				"TRINKET"
+			]
+		},
+		"patchwork:potion_saturation": {
+			"priority": 10000,
+			"isCursed": false,
+			"appliesTo": [
+				"RING",
+				"CHARM",
+				"BELT"
+			]
+		},
+		"patchwork:potion_slowness": {
+			"priority": 10000,
+			"weight": 20,
+			"isCursed": true,
+			"appliesTo": [
+			]
+		},
+		"patchwork:potion_mining_fatigue": {
+			"priority": 10000,
+			"weight": 20,
+			"isCursed": true,
+			"appliesTo": [
+			]
+		},
+		"patchwork:potion_hunger": {
+			"priority": 10000,
+			"weight": 20,
+			"isCursed": true,
+			"appliesTo": [
+			]
+		},
+		"patchwork:potion_weakness": {
+			"priority": 10000,
+			"weight": 20,
+			"isCursed": true,
+			"appliesTo": [
+			]
+		},
+		"patchwork:potion_poison": {
+			"priority": 10000,
+			"weight": 20,
+			"isCursed": true,
+			"appliesTo": [
+			]
+		},
+		"patchwork:potion_unluck": {
+			"priority": 10000,
+			"weight": 20,
+			"isCursed": true,
+			"appliesTo": [
+			]
+		}
+	}
+}

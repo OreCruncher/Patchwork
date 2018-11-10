@@ -22,32 +22,16 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.compat.jei;
+package org.orecruncher.patchwork.block;
 
-import javax.annotation.Nonnull;
+import org.orecruncher.patchwork.block.furnace3d.BlockFurnace3D;
 
-import org.orecruncher.patchwork.block.ModBlocks;
+public class ModBlocks {
+	
+	public final static BlockContainerBase FURNACE = new BlockFurnace3D();
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-@JEIPlugin
-public class ModJEIPlugin implements IModPlugin {
-
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.FURNACE)),
-				VanillaRecipeCategoryUid.SMELTING);
+	public static void initialize() {
+		// Currently a do nothing function. By calling this it triggers the
+		// classes static initializers to run.
 	}
-
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		// May need this hook...
-	}
-
 }

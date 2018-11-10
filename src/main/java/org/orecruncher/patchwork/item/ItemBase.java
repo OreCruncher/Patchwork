@@ -22,32 +22,41 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.compat.jei;
+package org.orecruncher.patchwork.item;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.block.ModBlocks;
+import org.orecruncher.patchwork.ModBase;
+import org.orecruncher.patchwork.ModInfo;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
-@JEIPlugin
-public class ModJEIPlugin implements IModPlugin {
+public class ItemBase extends Item {
 
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.FURNACE)),
-				VanillaRecipeCategoryUid.SMELTING);
+	protected final String name;
+
+	public ItemBase(@Nonnull final String name) {
+		this.name = name;
+		setRegistryName(this.name);
+		setTranslationKey(ModInfo.MOD_ID + "." + this.name);
+
+		// Let the registration handler know about this
+		// new item.
+		ItemRegistrationHandler.add(this);
+	}
+
+	public void registerItemModel() {
+		ModBase.proxy().registerItemRenderer(this, 0,
+				new ModelResourceLocation(ModInfo.MOD_ID + ":" + this.name, "inventory"));
 	}
 
 	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		// May need this hook...
+	@Nonnull
+	public ItemBase setCreativeTab(@Nonnull final CreativeTabs tab) {
+		super.setCreativeTab(tab);
+		return this;
 	}
 
 }

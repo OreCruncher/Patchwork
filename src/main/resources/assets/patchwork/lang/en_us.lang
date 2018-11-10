@@ -85,15 +85,15 @@ patchwork.magicdevice.quality=§aQuality: %1$s§r
 patchwork.magicdevice.potion_tooltip=Potion Effect: %1$s
 
 patchwork.deviceability.format=§aAbility:§r §e%1$s§r
-patchwork.deviceability.flight.name=§eFlight§r
+patchwork.deviceability.flight.name=Flight
 patchwork.deviceability.flight.tooltip=Provides creative flight as long as the item is worn and has essence. Essence is only consumed when the player is flying.  Don't run out of essence when flying...
-patchwork.deviceability.fireball.name=§eFireball§r
+patchwork.deviceability.fireball.name=Fireball
 patchwork.deviceability.fireball.tooltip=Shoots a firey ball at your target causing flame and other sorts of agony.  Becareful using the magic device around wooden structures.  No warranties are given or implied. 
-patchwork.deviceability.symbiotic.name=§eSymbiotic§r
+patchwork.deviceability.symbiotic.name=Symbiotic
 patchwork.deviceability.symbiotic.tooltip=Consumes player experience in order to recharge the magic device.  The amount of transfer per tick is limited so be cautious. 
-patchwork.deviceability.charging.name=§eCharging§r
+patchwork.deviceability.charging.name=Charging
 patchwork.deviceability.charging.tooltip=The device shares it's magic essence with other devices that are being worn or in the player inventory.  The amount shared per tick is limited.  The first device in the player inventory will be recharged before going on to the second.  Bauble inventory is given priority.
-patchwork.deviceability.vacuum.name=§eVacuum§r
+patchwork.deviceability.vacuum.name=Vacuum
 patchwork.deviceability.vacuum.tooltip=Attracts nearby items and XP orbs toward the player.  This attraction will drain essence from the magical device.  Useful when mining, farming, or any activity that generates drops.
 
 # Blocks

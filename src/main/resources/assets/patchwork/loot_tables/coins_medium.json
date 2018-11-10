@@ -1,0 +1,74 @@
+{
+	"pools": [
+		{
+			"name": "coins_medium",
+			"rolls": {
+				"min": 1,
+				"max": 2
+			},
+			"entries": [
+				{
+					"entryName": "Copper Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 0
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"entryName": "Bronze Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "Silver Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 1
+							}
+						}
+					]
+				},
+				{
+					"type": "empty",
+					"weight": 40
+				}
+			]
+		}
+	]
+}

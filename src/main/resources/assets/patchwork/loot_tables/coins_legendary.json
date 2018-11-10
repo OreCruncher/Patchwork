@@ -1,0 +1,89 @@
+{
+	"pools": [
+		{
+			"name": "coins_legendary",
+			"rolls": {
+				"min": 2,
+				"max": 5
+			},
+			"entries": [
+				{
+					"entryName": "Bronze Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"entryName": "Silver Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 30,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 3
+							}
+						}
+					]
+				},
+				{
+					"entryName": "Gold Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 30,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 3
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "Platinum Coins",
+					"type": "item",
+					"name": "patchwork:coin",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 4
+						},
+						{
+							"function": "set_count",
+							"count": {
+								"min": 0,
+								"max": 1
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

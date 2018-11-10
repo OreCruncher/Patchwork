@@ -28,8 +28,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.orecruncher.patchwork.ModBase;
-import org.orecruncher.patchwork.common.item.magic.capability.CapabilityMagicDevice;
-import org.orecruncher.patchwork.common.loot.LootRegistrationHandler;
+import org.orecruncher.patchwork.item.magic.capability.CapabilityMagicDevice;
+import org.orecruncher.patchwork.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

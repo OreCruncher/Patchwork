@@ -22,32 +22,39 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.compat.jei;
+package org.orecruncher.patchwork.item.magic.capability;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import org.orecruncher.patchwork.block.ModBlocks;
+import org.orecruncher.patchwork.item.magic.ItemMagicDevice;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
-@JEIPlugin
-public class ModJEIPlugin implements IModPlugin {
+public interface IMagicDeviceSettable extends IMagicDevice {
 
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.FURNACE)),
-				VanillaRecipeCategoryUid.SMELTING);
-	}
+	void setVariant(final int v);
 
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		// May need this hook...
-	}
+	void addAbilities(@Nonnull final ResourceLocation... ability);
 
+	void setCurrentEnergy(final int energy);
+	
+	void addCurrentEnergy(final int energy);
+
+	void setQuality(@Nonnull final ItemMagicDevice.Quality q);
+
+	void setMoniker(@Nullable final String moniker);
+
+	/**
+	 * Consumes the specified amount of energy from the device
+	 *
+	 * @param amount
+	 *                   The amount of energy to be consumed
+	 * @return true if the operation completed; false if there isn't enough energy
+	 */
+	boolean consumeEnergy(final int amount);
+
+	boolean isDirty();
+
+	void clearDirty();
 }

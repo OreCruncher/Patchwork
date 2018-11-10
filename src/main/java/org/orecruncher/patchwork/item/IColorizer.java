@@ -22,32 +22,16 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.compat.jei;
+package org.orecruncher.patchwork.item;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.block.ModBlocks;
-
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-@JEIPlugin
-public class ModJEIPlugin implements IModPlugin {
+public interface IColorizer {
 
-	@Override
-	public void register(@Nonnull final IModRegistry registry) {
-		registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.FURNACE)),
-				VanillaRecipeCategoryUid.SMELTING);
-	}
-
-	@Override
-	public void registerItemSubtypes(@Nonnull final ISubtypeRegistry subtypeRegistry) {
-		// May need this hook...
-	}
-
+	@SideOnly(Side.CLIENT)
+	public int getColor(@Nonnull final ItemStack stack);
 }

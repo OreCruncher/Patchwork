@@ -24,15 +24,15 @@
 
 package org.orecruncher.patchwork.world.event;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.patchwork.ModInfo;
-import org.orecruncher.patchwork.common.loot.Loot;
+import org.orecruncher.patchwork.ModOptions;
+import org.orecruncher.patchwork.loot.Loot;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
@@ -44,10 +44,11 @@ import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -57,30 +58,25 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CoinDrop {
 
 	private static enum Quality {
-		//
-		NONE(""),
-		//
-		SPAWNER("spawner"),
-		//
-		PASSIVE("passive"),
-		//
-		SMALL("small"),
-		//
-		MEDIUM("medium"),
-		//
-		LARGE("large"),
-		//
-		LEGENDARY("legendary");
+		//@formatter:off
+		NONE(null),
+		SPAWNER(Loot.COIN_SPAWNER),
+		PASSIVE(Loot.COIN_PASSIVE),
+		SMALL(Loot.COIN_SMALL),
+		MEDIUM(Loot.COIN_MEDIUM),
+		LARGE(Loot.COIN_LARGE),
+		LEGENDARY(Loot.COIN_LEGENDARY);
+		//@formatter:on
 
-		private final String poolName;
+		private final ResourceLocation pool;
 
-		private Quality(@Nonnull final String pool) {
-			this.poolName = pool;
+		private Quality(@Nullable final ResourceLocation table) {
+			this.pool = table;
 		}
 
-		@Nonnull
-		public String getPool() {
-			return this.poolName;
+		@Nullable
+		public ResourceLocation getTable() {
+			return this.pool;
 		}
 	}
 
@@ -112,12 +108,11 @@ public class CoinDrop {
 				final Quality q = assess(entity);
 				if (q != Quality.NONE) {
 					final World world = entity.getEntityWorld();
-					final LootPool pool = Loot.getPool(world, Loot.COIN_LOOT_TABLE, q.getPool());
-					if (pool != null) {
+					final LootTable table = Loot.getTable(world, q.getTable());
+					if (table != null) {
 						final LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(entity)
 								.withPlayer(player).build();
-						final List<ItemStack> drops = new ArrayList<>();
-						pool.generateLoot(drops, RAND, ctx);
+						final List<ItemStack> drops = table.generateLootForPools(RAND, ctx);
 						for (final ItemStack stack : drops) {
 							final EntityItem item = new EntityItem(world, entity.posX, entity.posY, entity.posZ, stack);
 							event.getDrops().add(item);
