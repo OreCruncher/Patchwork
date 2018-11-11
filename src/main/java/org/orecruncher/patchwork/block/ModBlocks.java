@@ -25,10 +25,12 @@
 package org.orecruncher.patchwork.block;
 
 import org.orecruncher.patchwork.block.furnace3d.BlockFurnace3D;
+import org.orecruncher.patchwork.block.shopshelf.BlockShopShelf;
 
 public class ModBlocks {
 	
 	public final static BlockContainerBase FURNACE = new BlockFurnace3D();
+	public final static BlockContainerBase SHOPSHELF = new BlockShopShelf();
 
 	public static void initialize() {
 		// Currently a do nothing function. By calling this it triggers the
