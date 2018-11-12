@@ -21,51 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package org.orecruncher.patchwork.block.furnace3d;
+package org.orecruncher.patchwork.lib;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.lib.StackHandlerBase;
-
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class Furnace3DStackHandler extends StackHandlerBase {
+/*
+ * Simple Slot that blocks all manipulation.  Intended for display or is locked
+ * because of non-access.
+ */
+public class SlotLocked extends Slot {
 
-	public static final int INPUT_SLOT = 0;
-	public static final int FUEL_SLOT = 1;
-	public static final int OUTPUT_SLOT = 2;
-	public static final int TOTAL_SLOTS = 3;
-
-	public Furnace3DStackHandler() {
-		super(TOTAL_SLOTS);
+	public SlotLocked(@Nonnull final IInventory inventory, final int index, final int x, final int y) {
+		super(inventory, index, x, y);
 	}
 
-	@Nonnull
-	public ItemStack getInputStack() {
-		return getStackInSlot(INPUT_SLOT);
+	@Override
+	public boolean canTakeStack(@Nonnull final EntityPlayer player) {
+		return false;
 	}
 
-	@Nonnull
-	public ItemStack getOutputStack() {
-		return getStackInSlot(OUTPUT_SLOT);
-	}
-
-	@Nonnull
-	public ItemStack getFuelStack() {
-		return getStackInSlot(FUEL_SLOT);
-	}
-
-	public void setInputStack(@Nonnull final ItemStack stack) {
-		setStackInSlot(INPUT_SLOT, stack);
-	}
-
-	public void setOutputStack(@Nonnull final ItemStack stack) {
-		setStackInSlot(OUTPUT_SLOT, stack);
-	}
-
-	public void setFuelStack(@Nonnull final ItemStack stack) {
-		setStackInSlot(FUEL_SLOT, stack);
+	@Override
+	public boolean isItemValid(@Nonnull final ItemStack stack) {
+		return false;
 	}
 
 }

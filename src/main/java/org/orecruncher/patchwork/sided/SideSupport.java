@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.loot.LootRegistrationHandler;
+import org.orecruncher.patchwork.network.GuiHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -42,6 +43,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public abstract class SideSupport {
@@ -73,6 +75,7 @@ public abstract class SideSupport {
 	 */
 	public void init(@Nonnull final FMLInitializationEvent event) {
 		NetworkHandler.init();
+		NetworkRegistry.INSTANCE.registerGuiHandler(ModBase.instance(), new GuiHandler());
 	}
 
 	/**

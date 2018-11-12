@@ -22,50 +22,20 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.block.furnace3d;
-
-import javax.annotation.Nonnull;
+package org.orecruncher.patchwork.block.shopshelf;
 
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 
-import net.minecraft.item.ItemStack;
+public class ShopShelfStackHandler extends StackHandlerBase {
+	
+	public static final int CONFIG_SLOT_COUNT = 6 * 3;
+	public static final int INVENTORY_SLOT_COUNT = 9 * 3;
+	public static final int TOTAL_SLOTS = CONFIG_SLOT_COUNT + INVENTORY_SLOT_COUNT;
+	public static final int CONFIG_SLOT_OFFSET = 0;
+	public static final int INVENTORY_SLOT_OFFSET = CONFIG_SLOT_COUNT;
 
-public class Furnace3DStackHandler extends StackHandlerBase {
-
-	public static final int INPUT_SLOT = 0;
-	public static final int FUEL_SLOT = 1;
-	public static final int OUTPUT_SLOT = 2;
-	public static final int TOTAL_SLOTS = 3;
-
-	public Furnace3DStackHandler() {
+	public ShopShelfStackHandler() {
 		super(TOTAL_SLOTS);
-	}
-
-	@Nonnull
-	public ItemStack getInputStack() {
-		return getStackInSlot(INPUT_SLOT);
-	}
-
-	@Nonnull
-	public ItemStack getOutputStack() {
-		return getStackInSlot(OUTPUT_SLOT);
-	}
-
-	@Nonnull
-	public ItemStack getFuelStack() {
-		return getStackInSlot(FUEL_SLOT);
-	}
-
-	public void setInputStack(@Nonnull final ItemStack stack) {
-		setStackInSlot(INPUT_SLOT, stack);
-	}
-
-	public void setOutputStack(@Nonnull final ItemStack stack) {
-		setStackInSlot(OUTPUT_SLOT, stack);
-	}
-
-	public void setFuelStack(@Nonnull final ItemStack stack) {
-		setStackInSlot(FUEL_SLOT, stack);
 	}
 
 }

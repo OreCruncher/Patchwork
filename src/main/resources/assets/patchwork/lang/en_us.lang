@@ -100,4 +100,6 @@ patchwork.deviceability.missile.tooltip=Launches an earthen missile at your targ
 
 # Blocks
 tile.patchwork.furnace.name=Furnace
-
+tile.patchwork.shopshelf.name=Shop Shelf
+tile.patchwork.shopshelf.name.format=%1$s's Shop
+tile.patchwork.shopshelf.admin.name=Server
