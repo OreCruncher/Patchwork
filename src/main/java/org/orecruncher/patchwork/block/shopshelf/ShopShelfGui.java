@@ -27,20 +27,13 @@ package org.orecruncher.patchwork.block.shopshelf;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.lib.GuiContainerBase;
-import org.orecruncher.patchwork.lib.TradeSlot;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 
 public final class ShopShelfGui extends GuiContainerBase {
 
 	private static final ResourceLocation BACKGROUND = new ResourceLocation(ModInfo.MOD_ID,
 			"textures/gui/shopshelf.png");
-	private static final ResourceLocation RESOURCE_AVAILABLE = new ResourceLocation(ModInfo.MOD_ID,
-			"textures/gui/slot_resource_available.png");
-	private static final ResourceLocation RESOURCE_NOT_AVAILABLE = new ResourceLocation(ModInfo.MOD_ID,
-			"textures/gui/slot_resource_not_available.png");
 
 	protected final TileEntityShopShelf tile;
 	
@@ -55,23 +48,5 @@ public final class ShopShelfGui extends GuiContainerBase {
 	@Override
 	public String getTitle() {
 		return Localization.loadString(tile.getName());
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(final float partialTick, final int mouseX, final int mouseY) {
-		super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
-
-		// Loop through the slots looking for TradeSlots so we can
-		// render the resource available background colors
-		for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); i1++) {
-			final Slot slot = this.inventorySlots.inventorySlots.get(i1);
-			if (slot instanceof TradeSlot && slot.getHasStack()) {
-				final TradeSlot ts = (TradeSlot) slot;
-				final int x = this.guiLeft + ts.xPos;
-				final int y = this.guiTop + ts.yPos;
-				this.mc.renderEngine.bindTexture(ts.isAvailable() ? RESOURCE_AVAILABLE : RESOURCE_NOT_AVAILABLE);
-				this.drawTexturedModalRect(x, y, 0, 0, 16, 16);
-			}
-		}
 	}
 }

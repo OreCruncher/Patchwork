@@ -75,7 +75,7 @@ public class ContainerBase<T extends TileEntityContainerBase> extends Container 
 		}
 	}
 
-	public boolean mergeToPlayerInventory(final ItemStack stack) {
+	public boolean mergeToPlayerInventory(@Nonnull final ItemStack stack) {
 		final int sizeInventory = this.tile.getSizeInventory();
 		return mergeItemStack(stack, sizeInventory, sizeInventory + PLAYER_INVENTORY_SIZE, false);
 	}
@@ -83,25 +83,20 @@ public class ContainerBase<T extends TileEntityContainerBase> extends Container 
 	@Override
 	public ItemStack slotClick(final int slotIndex, final int button, final ClickType modifier,
 			final EntityPlayer player) {
-		if (player == null) {
-			return null;
-		}
-
-		final Slot slot = slotIndex < 0 ? null : (Slot) this.inventorySlots.get(slotIndex);
-		if (slot instanceof TradeSlot) {
-			if (((TradeSlot) slot).isPhantom()) {
-				return slotClickMultiSlot(slot, button, modifier, player);
-			}
+		final Slot slot = slotIndex < 0 ? null : this.inventorySlots.get(slotIndex);
+		if (slot instanceof SlotPhantom) {
+			final SlotPhantom ts = (SlotPhantom) slot;
+			return slotClickMultiSlot(ts, button, modifier, player);
 		}
 		return super.slotClick(slotIndex, button, modifier, player);
 	}
 
-	private ItemStack slotClickMultiSlot(final Slot slot, final int mouseButton, final ClickType modifier,
+	private ItemStack slotClickMultiSlot(final SlotPhantom slot, final int mouseButton, final ClickType modifier,
 			final EntityPlayer player) {
-		ItemStack stack = null;
+		ItemStack stack = ItemStack.EMPTY;
 
 		final ItemStack stackSlot = slot.getStack();
-		if (stackSlot != null) {
+		if (!stackSlot.isEmpty()) {
 			stack = stackSlot.copy();
 		}
 
@@ -112,11 +107,11 @@ public class ContainerBase<T extends TileEntityContainerBase> extends Container 
 
 			final ItemStack stackHeld = playerInv.getItemStack();
 
-			if (stackSlot == null) {
-				if (stackHeld != null && slot.isItemValid(stackHeld)) {
+			if (stackSlot.isEmpty()) {
+				if (!stackHeld.isEmpty() && slot.isItemValid(stackHeld)) {
 					fillPhantomSlot(slot, stackHeld, mouseButton, modifier);
 				}
-			} else if (stackHeld == null) {
+			} else if (stackHeld.isEmpty()) {
 				adjustPhantomSlot(slot, mouseButton, modifier);
 			} else if (slot.isItemValid(stackHeld)) {
 				if (ItemStack.areItemStacksEqual(stackSlot, stackHeld)) {
@@ -135,13 +130,15 @@ public class ContainerBase<T extends TileEntityContainerBase> extends Container 
 		return stack;
 	}
 
-	protected void adjustPhantomSlot(final Slot slot, final int mouseButton, final ClickType modifier) {
-		if (!((TradeSlot) slot).canAdjustPhantom()) {
+	protected void adjustPhantomSlot(final SlotPhantom slot, final int mouseButton, final ClickType modifier) {
+		if (slot.isLocked()) {
 			return;
 		}
+		
 		ItemStack stackSlot = slot.getStack();
 		int stackSize;
-		// TODO: Used to be "1" - need to figure out the mousing.  Maybe it means shift is being held?
+		// TODO: Used to be "1" - need to figure out the mousing. Maybe it means shift
+		// is being held?
 		if (modifier == ClickType.QUICK_MOVE) {
 			stackSize = mouseButton == 0 ? (stackSlot.getCount() + 1) / 2 : stackSlot.getCount() * 2;
 		} else {
@@ -160,13 +157,13 @@ public class ContainerBase<T extends TileEntityContainerBase> extends Container 
 		slot.putStack(stackSlot);
 	}
 
-	protected void fillPhantomSlot(final Slot slot, final ItemStack stackHeld, final int mouseButton,
-			final ClickType modifier) {
-		if (!((TradeSlot) slot).canAdjustPhantom()) {
+	protected void fillPhantomSlot(@Nonnull final SlotPhantom slot, @Nonnull final ItemStack stackHeld,
+			final int mouseButton, final ClickType modifier) {
+		if (slot.isLocked()) {
 			return;
 		}
 
-		if (stackHeld == null || stackHeld.isEmpty()) {
+		if (stackHeld.isEmpty()) {
 			slot.putStack(ItemStack.EMPTY);
 			return;
 		}

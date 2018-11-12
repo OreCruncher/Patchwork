@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.block.furnace3d;
+package org.orecruncher.patchwork.block.shopshelf;
 
 import javax.annotation.Nonnull;
 
@@ -34,10 +34,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D> {
+public class TESRShopShelf extends TileEntitySpecialRenderer<TileEntityShopShelf> {
 
-	private static final float SCALE = 0.7F;
-
+	private static final float SCALE = 0.5F;
+	
 	/*
 	 * Helper class used for cracking the slots in the furnace. The axis offsets are
 	 * based on a block facing south, which means the player would be looking
@@ -50,9 +50,12 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 	 */
 	private enum SlotHelper {
 		//@formatter:off
-		INPUT(Furnace3DStackHandler.INPUT_SLOT, -0.2F, -0.05F, 0.185F, SCALE),
-		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.2F, -0.05F, 0.185F, SCALE),
-		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.0F, -0.55F, 0.185F, SCALE - 0.1F);
+		SLOT1(ShopShelfStackHandler.TRADE_SLOT_1, -0.2F, 0.1F, -0.25F, SCALE),
+		SLOT2(ShopShelfStackHandler.TRADE_SLOT_2, -0.2F, -0.2F, -0.25F, SCALE),
+		SLOT3(ShopShelfStackHandler.TRADE_SLOT_3, -0.2F, -0.55F, -0.25F, SCALE),
+		SLOT4(ShopShelfStackHandler.TRADE_SLOT_4, 0.2F, 0.1F, -0.25F, SCALE),
+		SLOT5(ShopShelfStackHandler.TRADE_SLOT_5, 0.2F, -0.2F, -0.25F, SCALE),
+		SLOT6(ShopShelfStackHandler.TRADE_SLOT_6, 0.2F, -0.55F, -0.25F, SCALE);
 		//@formatter:on
 
 		private final int slot;
@@ -69,7 +72,7 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 			this.scale = scale;
 		}
 
-		public ItemStack getStack(@Nonnull final TileEntityFurnace3D te) {
+		public ItemStack getStack(@Nonnull final TileEntityShopShelf te) {
 			return te.getStackInSlot(this.slot);
 		}
 
@@ -101,13 +104,13 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 	 */
 	private final EntityItem mock;
 
-	public TESRFurnace3D() {
+	public TESRShopShelf() {
 		this.mock = new EntityItem(null);
 		this.mock.hoverStart = 0;
 	}
 
 	@Override
-	public void render(@Nonnull final TileEntityFurnace3D te, final double x, final double y, final double z,
+	public void render(@Nonnull final TileEntityShopShelf te, final double x, final double y, final double z,
 			final float partialTicks, final int destroyStage, final float alpha) {
 
 		// Need this to get the proper ambient lighting on the items within. Without it

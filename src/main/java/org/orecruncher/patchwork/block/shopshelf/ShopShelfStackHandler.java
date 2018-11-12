@@ -27,12 +27,21 @@ package org.orecruncher.patchwork.block.shopshelf;
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 
 public class ShopShelfStackHandler extends StackHandlerBase {
-	
+
 	public static final int CONFIG_SLOT_COUNT = 6 * 3;
 	public static final int INVENTORY_SLOT_COUNT = 9 * 3;
 	public static final int TOTAL_SLOTS = CONFIG_SLOT_COUNT + INVENTORY_SLOT_COUNT;
-	public static final int CONFIG_SLOT_OFFSET = 0;
-	public static final int INVENTORY_SLOT_OFFSET = CONFIG_SLOT_COUNT;
+	public static final int CONFIG_SLOT_START = 0;
+	public static final int CONFIG_SLOT_END = CONFIG_SLOT_COUNT - 1;
+	public static final int INVENTORY_SLOT_START = CONFIG_SLOT_COUNT;
+	public static final int INVENTORY_SLOT_END = (INVENTORY_SLOT_START + INVENTORY_SLOT_COUNT) - 1;
+	
+	public static final int TRADE_SLOT_1 = 2;
+	public static final int TRADE_SLOT_2 = 5;
+	public static final int TRADE_SLOT_3 = 8;
+	public static final int TRADE_SLOT_4 = 11;
+	public static final int TRADE_SLOT_5 = 14;
+	public static final int TRADE_SLOT_6 = 17;
 
 	public ShopShelfStackHandler() {
 		super(TOTAL_SLOTS);

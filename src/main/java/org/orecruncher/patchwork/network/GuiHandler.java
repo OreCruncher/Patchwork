@@ -26,7 +26,6 @@ package org.orecruncher.patchwork.network;
 
 import org.orecruncher.patchwork.block.shopshelf.ShopShelfContainer;
 import org.orecruncher.patchwork.block.shopshelf.ShopShelfGui;
-import org.orecruncher.patchwork.block.shopshelf.ShopShelfOwnerContainer;
 import org.orecruncher.patchwork.block.shopshelf.ShopShelfOwnerGui;
 import org.orecruncher.patchwork.block.shopshelf.TileEntityShopShelf;
 
@@ -54,7 +53,7 @@ public class GuiHandler implements IGuiHandler {
 			}
 
 			if (id == ID.SHOP_SHELF_OWNER.ordinal()) {
-				return new ShopShelfOwnerContainer((TileEntityShopShelf) tileEntity, player);
+				return new ShopShelfContainer((TileEntityShopShelf) tileEntity, player, true);
 			}
 		}
 		return null;

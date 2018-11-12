@@ -27,6 +27,7 @@ package org.orecruncher.patchwork.block.shopshelf;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
@@ -96,6 +97,10 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		return ModInfo.MOD_ID + ".shopshelf";
 	}
 
+	public boolean okToBreak(@Nonnull final EntityPlayer player) {
+		return player.capabilities.isCreativeMode || isOwner(player) || !(isAdminShop() || isOwned());
+	}
+
 	public boolean canConfigure(@Nonnull final EntityPlayer player) {
 		return player.capabilities.isCreativeMode || isOwner(player);
 	}
@@ -115,12 +120,14 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		return !UNOWNED.equals(this.owner);
 	}
 
-	public boolean isOwner(@Nonnull final EntityPlayer player) {
+	public boolean isOwner(@Nullable final EntityPlayer player) {
+		if (player == null)
+			return false;
 		return this.owner.equals(player.getPersistentID()) || (this.adminShop && player.capabilities.isCreativeMode);
 	}
 
-	public void setOwner(@Nonnull final EntityPlayer player) {
-		if (!this.adminShop && !isOwner(player)) {
+	public void setOwner(@Nullable final EntityPlayer player) {
+		if (player != null && !this.adminShop && !isOwner(player)) {
 			this.owner = player.getPersistentID();
 			this.ownerName = player.getName();
 			sendUpdates(true, true);

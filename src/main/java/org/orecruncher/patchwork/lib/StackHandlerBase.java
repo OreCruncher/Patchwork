@@ -68,34 +68,7 @@ public class StackHandlerBase extends ItemStackHandler {
 	 */
 	public boolean contains(@Nonnull final ItemStack stack1, @Nonnull final ItemStack stack2, final int slotStart,
 			final int slotEnd) {
-		if (stack1.isEmpty() && stack2.isEmpty())
-			return true;
-
-		if (ItemStack.areItemStacksEqual(stack1, stack2)) {
-			int count = stack1.getCount() + stack2.getCount();
-			for (int i = slotStart; i <= slotEnd && count > 0; i++) {
-				final ItemStack item = getStackInSlot(i);
-				if (ItemStack.areItemStacksEqual(stack1, item)) {
-					count -= item.getCount();
-				}
-			}
-			return count < 1;
-		} else {
-			// Two different types of stacks. Have to handle nulls.
-			int count1 = !stack1.isEmpty() ? stack1.getCount() : 0;
-			int count2 = !stack2.isEmpty() ? stack2.getCount() : 0;
-			for (int i = slotStart; i <= slotEnd && (count1 > 0 || count2 > 0); i++) {
-				final ItemStack item = getStackInSlot(i);
-				if (item.isEmpty())
-					continue;
-				if (ItemStack.areItemsEqual(item, stack1)) {
-					count1 -= item.getCount();
-				} else if (ItemStack.areItemsEqual(item, stack2)) {
-					count2 -= item.getCount();
-				}
-			}
-			return count1 < 1 && count2 < 1;
-		}
+		return InventoryUtils.contains(this.stacks, stack1, stack2, slotStart, slotEnd);
 	}
 
 	/**
@@ -104,41 +77,7 @@ public class StackHandlerBase extends ItemStackHandler {
 	 */
 	public boolean canAccept(@Nonnull final ItemStack stack1, @Nonnull final ItemStack stack2, final int slotStart,
 			final int slotEnd) {
-
-		if (stack1.isEmpty() && stack2.isEmpty())
-			return true;
-
-		if (ItemStack.areItemsEqual(stack1, stack2)) {
-			int count = stack1.getCount() + stack2.getCount();
-			for (int i = slotStart; i <= slotEnd && count > 0; i++) {
-				final ItemStack item = getStackInSlot(i);
-				if (item.isEmpty()) {
-					count -= stack1.getMaxStackSize();
-				} else if (ItemStack.areItemsEqual(stack1, item)) {
-					count -= item.getMaxStackSize() - item.getCount();
-				}
-			}
-			return count < 1;
-		} else {
-			// Two different types of stacks.
-			int count1 = !stack1.isEmpty() ? stack1.getCount() : 0;
-			int count2 = !stack2.isEmpty() ? stack2.getCount() : 0;
-			for (int i = slotStart; i <= slotEnd && (count1 > 0 || count2 > 0); i++) {
-				final ItemStack item = getStackInSlot(i);
-				if (item.isEmpty()) {
-					if (count1 > 0) {
-						count1 -= stack1.getMaxStackSize();
-					} else if (count2 > 0) {
-						count2 -= stack2.getMaxStackSize();
-					}
-				} else if (ItemStack.areItemsEqual(item, stack1)) {
-					count1 -= item.getMaxStackSize() - item.getCount();
-				} else if (ItemStack.areItemsEqual(item, stack2)) {
-					count2 -= item.getMaxStackSize() - item.getCount();
-				}
-			}
-			return count1 < 1 && count2 < 1;
-		}
+		return InventoryUtils.canAccept(this.stacks, stack1, stack2, slotStart, slotEnd);
 	}
 
 	/**
@@ -147,77 +86,18 @@ public class StackHandlerBase extends ItemStackHandler {
 	 * original one passed in. The range is [slotStart, slotEnd].
 	 */
 	public void compact(final int startSlot, final int endSlot) {
-		for (int i = startSlot + 1; i <= endSlot; i++) {
-			final ItemStack stack = getStackInSlot(i);
-			if (stack.isEmpty())
-				continue;
-			for (int j = startSlot; j < i; j++) {
-				final ItemStack target = getStackInSlot(j);
-				if (target.isEmpty()) {
-					setStackInSlot(j, stack);
-					setStackInSlot(i, ItemStack.EMPTY);
-					break;
-				} else if (ItemStack.areItemsEqual(stack, target)) {
-					final int hold = target.getMaxStackSize() - target.getCount();
-					if (hold >= stack.getCount()) {
-						target.grow(stack.getCount());
-						onContentsChanged(j);
-						setStackInSlot(i, ItemStack.EMPTY);
-						break;
-					} else if (hold != 0) {
-						stack.shrink(hold);
-						onContentsChanged(i);
-						target.grow(hold);
-						onContentsChanged(j);
-					}
-				}
-			}
-		}
+		InventoryUtils.compact(this.stacks, startSlot, endSlot,
+				(@Nonnull final Integer t) -> StackHandlerBase.this.onContentsChanged(t));
 	}
 
 	public boolean addItemStackToInventory(final ItemStack stack, final int startSlot, final int endSlot) {
-		if (stack.isEmpty())
-			return true;
-		for (int slot = startSlot; slot <= endSlot; slot++) {
-			final ItemStack invStack = getStackInSlot(slot);
-			// Quick and easy - if the slot is empty its the target
-			if (invStack.isEmpty()) {
-				setStackInSlot(slot, stack);
-				return true;
-			}
-			// If the stack can fit into this slot do the merge
-			final int remainingSpace = invStack.getMaxStackSize() - invStack.getCount();
-			if (remainingSpace > 0 && ItemStack.areItemsEqual(stack, invStack)) {
-				if (remainingSpace >= stack.getCount()) {
-					invStack.grow(stack.getCount());
-					onContentsChanged(slot);
-					return true;
-				}
-				stack.shrink(remainingSpace);
-				invStack.grow(remainingSpace);
-				onContentsChanged(slot);
-			}
-		}
-		return false;
+		return InventoryUtils.addItemStackToInventory(this.stacks, stack, startSlot, endSlot,
+				(@Nonnull final Integer t) -> StackHandlerBase.this.onContentsChanged(t));
 	}
 
 	public boolean removeItemStackFromInventory(final ItemStack stack, final int startSlot, final int endSlot) {
-		if (stack.isEmpty())
-			return true;
-		for (int slot = startSlot; slot <= endSlot && !stack.isEmpty(); slot++) {
-			final ItemStack invStack = getStackInSlot(slot);
-			if (!invStack.isEmpty() && ItemStack.areItemsEqual(invStack, stack)) {
-				if (invStack.getCount() > stack.getCount()) {
-					invStack.shrink(stack.getCount());
-					onContentsChanged(slot);
-					stack.setCount(0);
-				} else {
-					stack.shrink(invStack.getCount());
-					setStackInSlot(slot, ItemStack.EMPTY);
-				}
-			}
-		}
-		return stack.isEmpty();
+		return InventoryUtils.removeItemStackFromInventory(this.stacks, stack, startSlot, endSlot,
+				(@Nonnull final Integer t) -> StackHandlerBase.this.onContentsChanged(t));
 	}
 
 	@Nonnull

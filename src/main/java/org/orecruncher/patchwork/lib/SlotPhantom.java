@@ -21,31 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.orecruncher.patchwork.block.shopshelf;
+package org.orecruncher.patchwork.lib;
 
-import org.orecruncher.lib.Localization;
-import org.orecruncher.patchwork.ModInfo;
-import org.orecruncher.patchwork.lib.GuiContainerBase;
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
-public class ShopShelfOwnerGui  extends GuiContainerBase {
+public class SlotPhantom extends Slot {
 
-	private static final ResourceLocation BACKGROUND = new ResourceLocation(ModInfo.MOD_ID,
-			"textures/gui/shopshelf_owner.png");
+	protected int slotIndex = 0;
+	protected boolean locked = true;
+	protected boolean canShift = false;
 
-	protected final TileEntityShopShelf tile;
-	
-	public ShopShelfOwnerGui(final TileEntityShopShelf tile, final EntityPlayer player) {
-		super(BACKGROUND, new ShopShelfContainer(tile, player, true));
-
-		this.tile = tile;
-		this.xSize = 175;
-		this.ySize = 231;
+	public SlotPhantom(@Nonnull final IInventory inventory, int index, int x, int y) {
+		super(inventory, index, x, y);
+		this.slotIndex = index;
 	}
-	
+
 	@Override
-	public String getTitle() {
-		return Localization.loadString(tile.getName());
+	public boolean canTakeStack(@Nonnull final EntityPlayer player) {
+		return false;
 	}
+
+	@Override
+	public boolean isItemValid(@Nonnull final ItemStack stack) {
+		return true;
+	}
+
+	public boolean isLocked() {
+		return this.locked;
+	}
+
+	public boolean canShift() {
+		return this.canShift;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends SlotPhantom> T setLocked(final boolean f) {
+		this.locked = f;
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends SlotPhantom> T setCanShift(final boolean f) {
+		this.canShift = f;
+		return (T) this;
+	}
+
+	@Override
+	public void putStack(@Nonnull final ItemStack stack) {
+		this.inventory.setInventorySlotContents(this.slotIndex, stack);
+		onSlotChanged();
+	}
+
 }

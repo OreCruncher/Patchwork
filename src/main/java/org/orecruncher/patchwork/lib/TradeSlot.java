@@ -26,22 +26,28 @@ package org.orecruncher.patchwork.lib;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import org.orecruncher.patchwork.ModInfo;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TradeSlot extends Slot {
+public class TradeSlot extends SlotPhantom {
+
+	private static final ResourceLocation RESOURCE_AVAILABLE = new ResourceLocation(ModInfo.MOD_ID,
+			"textures/gui/slot_resource_available.png");
+	private static final ResourceLocation RESOURCE_NOT_AVAILABLE = new ResourceLocation(ModInfo.MOD_ID,
+			"textures/gui/slot_resource_not_available.png");
 
 	public static interface IResourceAvailableCheck {
 		boolean isAvailable(final Slot slot);
 	}
 
 	protected IResourceAvailableCheck available = null;
-	protected boolean isPhantom;
 	protected boolean isInfinite;
-	protected boolean canAdjustPhantom = true;
-	protected boolean canShift = true;
 	protected int stackLimit;
 
 	public TradeSlot(final IInventory inventory, final int slotIndex, final int xPos, final int yPos) {
@@ -54,36 +60,16 @@ public class TradeSlot extends Slot {
 		return this;
 	}
 
-	public TradeSlot setPhantom() {
-		this.isPhantom = true;
-		return this;
-	}
-
-	public TradeSlot setResourceAvaialbleCheck(final IResourceAvailableCheck check) {
+	public TradeSlot setResourceCheck(final IResourceAvailableCheck check) {
 		this.available = check;
-		return this;
-	}
-
-	public TradeSlot blockShift() {
-		this.canShift = false;
 		return this;
 	}
 
 	@Override
 	public void putStack(final ItemStack itemStack) {
-		if (!isPhantom() || canAdjustPhantom()) {
+		if (!isLocked()) {
 			super.putStack(itemStack);
 		}
-	}
-
-	public TradeSlot setCanAdjustPhantom(final boolean canAdjust) {
-		this.canAdjustPhantom = canAdjust;
-		return this;
-	}
-
-	public TradeSlot setCanShift(final boolean canShift) {
-		this.canShift = canShift;
-		return this;
 	}
 
 	public TradeSlot setStackLimit(final int limit) {
@@ -91,25 +77,8 @@ public class TradeSlot extends Slot {
 		return this;
 	}
 
-	public boolean isPhantom() {
-		return this.isPhantom;
-	}
-
-	public boolean canAdjustPhantom() {
-		return this.canAdjustPhantom;
-	}
-
 	public boolean isAvailable() {
 		return this.available == null || this.available.isAvailable(this);
-	}
-
-	@Override
-	public boolean canTakeStack(@Nonnull final EntityPlayer stack) {
-		return !isPhantom();
-	}
-
-	public boolean canShift() {
-		return this.canShift;
 	}
 
 	@Override
@@ -119,6 +88,12 @@ public class TradeSlot extends Slot {
 		} else {
 			return this.stackLimit;
 		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Nonnull
+	public ResourceLocation getBackgroundLocation() {
+		return isAvailable() ? RESOURCE_AVAILABLE : RESOURCE_NOT_AVAILABLE;
 	}
 
 	@Override
