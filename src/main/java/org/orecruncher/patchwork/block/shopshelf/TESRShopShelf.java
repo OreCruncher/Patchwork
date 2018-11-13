@@ -46,16 +46,16 @@ public class TESRShopShelf extends TileEntitySpecialRenderer<TileEntityShopShelf
 	 *
 	 * The values can be determined as:
 	 *
-	 * LEFT < xOffset < RIGHT DOWN < yOffset < UP BACK < zOffset < FRONT
+	 * RIGHT < xOffset < LEFT DOWN < yOffset < UP FRONT < zOffset < BACK
 	 */
 	private enum SlotHelper {
 		//@formatter:off
-		SLOT1(ShopShelfStackHandler.TRADE_SLOT_1, -0.2F, 0.1F, -0.25F, SCALE),
-		SLOT2(ShopShelfStackHandler.TRADE_SLOT_2, -0.2F, -0.2F, -0.25F, SCALE),
-		SLOT3(ShopShelfStackHandler.TRADE_SLOT_3, -0.2F, -0.55F, -0.25F, SCALE),
-		SLOT4(ShopShelfStackHandler.TRADE_SLOT_4, 0.2F, 0.1F, -0.25F, SCALE),
-		SLOT5(ShopShelfStackHandler.TRADE_SLOT_5, 0.2F, -0.2F, -0.25F, SCALE),
-		SLOT6(ShopShelfStackHandler.TRADE_SLOT_6, 0.2F, -0.55F, -0.25F, SCALE);
+		SLOT1(ShopShelfStackHandler.TRADE_SLOT_1, 0.2F, 0.1F, 0.25F, SCALE),
+		SLOT2(ShopShelfStackHandler.TRADE_SLOT_2, 0.2F, -0.3F, 0.25F, SCALE),
+		SLOT3(ShopShelfStackHandler.TRADE_SLOT_3, 0.2F, -0.55F, 0.25F, SCALE),
+		SLOT4(ShopShelfStackHandler.TRADE_SLOT_4, -0.2F, 0.1F, 0.25F, SCALE),
+		SLOT5(ShopShelfStackHandler.TRADE_SLOT_5, -0.2F, -0.3F, 0.25F, SCALE),
+		SLOT6(ShopShelfStackHandler.TRADE_SLOT_6, -0.2F, -0.55F, 0.25F, SCALE);
 		//@formatter:on
 
 		private final int slot;
@@ -126,7 +126,7 @@ public class TESRShopShelf extends TileEntitySpecialRenderer<TileEntityShopShelf
 		// easier.
 		GlStateManager.translate(x + 0.5F, y + 0.5F, z + 0.5F);
 		// Rotate so that further translations are relative to the front facing.
-		GlStateManager.rotate(-facing.getHorizontalAngle(), 0, 1F, 0);
+		GlStateManager.rotate(180 - facing.getHorizontalAngle(), 0, 1F, 0);
 
 		for (final SlotHelper slot : SlotHelper.values()) {
 			final ItemStack stack = slot.getStack(te);

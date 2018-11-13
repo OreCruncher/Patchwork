@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.block.BlockContainerBase;
+import org.orecruncher.patchwork.block.IRotateable;
 import org.orecruncher.patchwork.block.ITileEntityRegistration;
 import org.orecruncher.patchwork.block.ITileEntityTESR;
 import org.orecruncher.patchwork.block.ModBlocks;
@@ -63,7 +64,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockShopShelf extends BlockContainerBase implements ITileEntityRegistration, ITileEntityTESR {
+public class BlockShopShelf extends BlockContainerBase
+		implements ITileEntityRegistration, ITileEntityTESR, IRotateable {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	protected static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
@@ -94,7 +96,6 @@ public class BlockShopShelf extends BlockContainerBase implements ITileEntityReg
 	public void registerTESR() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShopShelf.class, new TESRShopShelf());
 	}
-
 
 	@Override
 	@Nonnull
@@ -146,6 +147,12 @@ public class BlockShopShelf extends BlockContainerBase implements ITileEntityReg
 	}
 
 	@Override
+	public int getLightOpacity(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
+			@Nonnull final BlockPos pos) {
+		return 0;
+	}
+
+	@Override
 	public boolean doesSideBlockRendering(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
 			@Nonnull final BlockPos pos, @Nonnull final EnumFacing face) {
 		return false;
@@ -177,7 +184,7 @@ public class BlockShopShelf extends BlockContainerBase implements ITileEntityReg
 	}
 
 	/*
-	 * Keep inventory of the block when the block is harvested.  From BlockFlowerPot.
+	 * Keep inventory of the block when the block is harvested. From BlockFlowerPot.
 	 */
 	@Override
 	public void getDrops(@Nonnull final NonNullList<ItemStack> drops, @Nonnull final IBlockAccess world,
@@ -185,18 +192,20 @@ public class BlockShopShelf extends BlockContainerBase implements ITileEntityReg
 		final TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileEntityShopShelf) {
 			final TileEntityShopShelf ss = (TileEntityShopShelf) te;
-			final NBTTagCompound nbt = ss.serializeNBT();
-			final ItemStack stack = new ItemStack(ModBlocks.SHOPSHELF, 1);
-			stack.setTagInfo("BlockEntityTag", nbt);
-			stack.setStackDisplayName(ss.getName());
-			drops.add(stack);
-		} else {
-			super.getDrops(drops, world, pos, state, fortune);
+			if (!ss.isEmpty()) {
+				final NBTTagCompound nbt = ss.serializeNBT();
+				final ItemStack stack = new ItemStack(ModBlocks.SHOPSHELF, 1);
+				stack.setTagInfo("BlockEntityTag", nbt);
+				stack.setStackDisplayName(ss.getName());
+				drops.add(stack);
+				return;
+			}
 		}
+		super.getDrops(drops, world, pos, state, fortune);
 	}
 
 	/*
-	 * Make sure the block position is wiped out.  From BlockFlowerPot.
+	 * Make sure the block position is wiped out. From BlockFlowerPot.
 	 */
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te,
@@ -207,7 +216,7 @@ public class BlockShopShelf extends BlockContainerBase implements ITileEntityReg
 
 	/*
 	 * Only remove the block if it is OK to remove. From BlockFlowerPot.
-	 * 
+	 *
 	 */
 	@Override
 	public boolean removedByPlayer(@Nonnull final IBlockState state, @Nonnull final World world,
@@ -269,4 +278,21 @@ public class BlockShopShelf extends BlockContainerBase implements ITileEntityReg
 
 		return true;
 	}
+
+	@Override
+	public boolean rotateBlock(@Nonnull final EntityPlayer player, @Nonnull final World world,
+			@Nonnull final BlockPos pos, @Nonnull final EnumFacing axis) {
+		final TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileEntityShopShelf) {
+			final TileEntityShopShelf ss = (TileEntityShopShelf) te;
+			if (!ss.canConfigure(player))
+				return false;
+			super.rotateBlock(world, pos, EnumFacing.UP);
+			final NBTTagCompound nbt = te.serializeNBT();
+			world.getTileEntity(pos).deserializeNBT(nbt);
+			return true;
+		}
+		return super.rotateBlock(world, pos, axis);
+	}
+
 }

@@ -46,13 +46,13 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 	 *
 	 * The values can be determined as:
 	 *
-	 * LEFT < xOffset < RIGHT DOWN < yOffset < UP BACK < zOffset < FRONT
+	 * RIGHT < xOffset < LEFT DOWN < yOffset < UP FRONT < zOffset < BACK
 	 */
 	private enum SlotHelper {
 		//@formatter:off
-		INPUT(Furnace3DStackHandler.INPUT_SLOT, -0.2F, -0.05F, 0.185F, SCALE),
-		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, 0.2F, -0.05F, 0.185F, SCALE),
-		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.0F, -0.55F, 0.185F, SCALE - 0.1F);
+		INPUT(Furnace3DStackHandler.INPUT_SLOT, 0.2F, -0.05F, -0.185F, SCALE),
+		OUTPUT(Furnace3DStackHandler.OUTPUT_SLOT, -0.2F, -0.05F, -0.185F, SCALE),
+		FUEL(Furnace3DStackHandler.FUEL_SLOT, 0.0F, -0.55F, -0.185F, SCALE - 0.1F);
 		//@formatter:on
 
 		private final int slot;
@@ -123,7 +123,7 @@ public class TESRFurnace3D extends TileEntitySpecialRenderer<TileEntityFurnace3D
 		// easier.
 		GlStateManager.translate(x + 0.5F, y + 0.5F, z + 0.5F);
 		// Rotate so that further translations are relative to the front facing.
-		GlStateManager.rotate(-facing.getHorizontalAngle(), 0, 1F, 0);
+		GlStateManager.rotate(180 - facing.getHorizontalAngle(), 0, 1F, 0);
 
 		for (final SlotHelper slot : SlotHelper.values()) {
 			final ItemStack stack = slot.getStack(te);

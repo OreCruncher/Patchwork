@@ -14,6 +14,11 @@
 				"textures": {
 					"layer0": "patchwork:items/magical_amalgam"
 				}
+			},
+			"tools": {
+				"textures": {
+					"layer0": "patchwork:items/tools"
+				}
 			}
 		}
 	}

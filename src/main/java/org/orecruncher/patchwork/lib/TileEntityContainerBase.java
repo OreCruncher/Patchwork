@@ -38,7 +38,7 @@ import net.minecraft.tileentity.TileEntityLockable;
 public abstract class TileEntityContainerBase extends TileEntityLockable {
 
 	protected abstract StackHandlerBase getInventory();
-	
+
 	@Override
 	public int getSizeInventory() {
 		return getInventory().size();
@@ -122,7 +122,6 @@ public abstract class TileEntityContainerBase extends TileEntityLockable {
 		return 0;
 	}
 
-
 	@Nonnull
 	protected IBlockState getState() {
 		return this.world.getBlockState(this.pos);
@@ -131,16 +130,18 @@ public abstract class TileEntityContainerBase extends TileEntityLockable {
 	protected void sendUpdates(final boolean dirty) {
 		sendUpdates(dirty, false);
 	}
-	
+
 	protected void sendUpdates(final boolean dirty, final boolean forced) {
-		if (forced || getInventory().isDirty()) {
-			this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
-			this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
-			this.world.scheduleBlockUpdate(this.pos, getBlockType(), 0, 0);
-			getInventory().clearDirty();
+		if (!this.world.isRemote) {
+			if (forced || getInventory().isDirty()) {
+				this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
+				this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
+				this.world.scheduleBlockUpdate(this.pos, getBlockType(), 0, 0);
+				getInventory().clearDirty();
+			}
+			if (forced || dirty)
+				markDirty();
 		}
-		if (forced || dirty)
-			markDirty();
 	}
 
 	@Override

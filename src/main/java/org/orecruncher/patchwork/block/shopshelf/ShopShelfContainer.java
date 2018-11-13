@@ -42,8 +42,11 @@ import net.minecraft.util.NonNullList;
 
 public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> implements IResourceAvailableCheck {
 
-	private static final int INVENTORY_SLOT_START = ShopShelfStackHandler.INVENTORY_SLOT_START;
-	private static final int INVENTORY_SLOT_END = ShopShelfStackHandler.INVENTORY_SLOT_END;
+	protected static final int CONFIG_SLOT_START = ShopShelfStackHandler.CONFIG_SLOT_START;
+	protected static final int CONFIG_SLOT_END = ShopShelfStackHandler.CONFIG_SLOT_END;
+	protected static final int INVENTORY_SLOT_START = ShopShelfStackHandler.INVENTORY_SLOT_START;
+	protected static final int INVENTORY_SLOT_END = ShopShelfStackHandler.INVENTORY_SLOT_END;
+	protected static final int TOTAL_SLOTS = ShopShelfStackHandler.TOTAL_SLOTS;
 
 	protected final boolean asOwner;
 
@@ -60,7 +63,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 		// Add configuration slots
 		for (int i = 0; i < 6; i++) {
 
-			final int slotBase = ShopShelfStackHandler.CONFIG_SLOT_START + (i * 3);
+			final int slotBase = CONFIG_SLOT_START + (i * 3);
 			final int x = (i < 3) ? 17 : 97;
 			final int y = (i < 3) ? i * GUI_INVENTORY_CELL_SIZE + 17 : (i - 3) * GUI_INVENTORY_CELL_SIZE + 17;
 
@@ -73,7 +76,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 				slot.setLocked(false).setCanShift(true);
 				addSlotToContainer(slot);
 
-				TradeSlot ts = new TradeSlot(tile, slotBase + 2, x + GUI_INVENTORY_CELL_SIZE * 2 + 9, y);
+				final TradeSlot ts = new TradeSlot(tile, slotBase + 2, x + GUI_INVENTORY_CELL_SIZE * 2 + 9, y);
 				ts.setResourceCheck(this).setLocked(false).setCanShift(true);
 				addSlotToContainer(ts);
 			} else {
@@ -93,7 +96,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 			final int yOffset = 84;
 			// Add vending machine inventory
 			for (int i = 0; i < PLAYER_CHEST_SIZE; ++i) {
-				final int slotBase = ShopShelfStackHandler.INVENTORY_SLOT_START + i;
+				final int slotBase = INVENTORY_SLOT_START + i;
 				// The constants are offsets from the left and top edge
 				// of the GUI
 				final int h = (i % PLAYER_HOTBAR_SIZE) * GUI_INVENTORY_CELL_SIZE + 8;
@@ -110,7 +113,6 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 	@Nonnull
 	public ItemStack slotClick(final int slotIndex, final int dragType, @Nonnull final ClickType clickTypeIn,
 			@Nonnull final EntityPlayer player) {
-
 		if (!this.asOwner) {
 			final Slot slot = slotIndex < 0 ? null : this.inventorySlots.get(slotIndex);
 			if (slot instanceof TradeSlot) {
@@ -145,32 +147,35 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 
 		// Get the input slots. We do some math on the slot index to
 		// figure out the right input slots.
-		final int index = slot.slotNumber / 3 + ShopShelfStackHandler.CONFIG_SLOT_START;
+		final int index = (slot.slotNumber / 3) * 3 + CONFIG_SLOT_START;
 		final ItemStack input1 = getSlot(index).getStack();
 		final ItemStack input2 = getSlot(index + 1).getStack();
 
-		// See if the vending inventory can accept the required items
-		if (normalMode && !chest.canAccept(input1, input2, INVENTORY_SLOT_START, INVENTORY_SLOT_END))
-			return ItemStack.EMPTY;
+		// If both are empty stacks then its free
+		if (!input1.isEmpty() || !input2.isEmpty()) {
+			// See if the vending inventory can accept the required items
+			if (normalMode && !chest.canAccept(input1, input2, INVENTORY_SLOT_START, INVENTORY_SLOT_END))
+				return ItemStack.EMPTY;
 
-		// See if the player can provide the payment
-		if (!InventoryUtils.contains(playerInv, input1, input2, 0, playerInv.size() - 1))
-			return ItemStack.EMPTY;
+			// See if the player can provide the payment
+			if (!InventoryUtils.contains(playerInv, input1, input2, 0, playerInv.size() - 1))
+				return ItemStack.EMPTY;
 
-		// OK - things should work. Do the transaction.
-		if (!input1.isEmpty()) {
-			if (normalMode) {
-				chest.addItemStackToInventory(input1.copy(), INVENTORY_SLOT_START, INVENTORY_SLOT_END);
+			// OK - things should work. Do the transaction.
+			if (!input1.isEmpty()) {
+				if (normalMode) {
+					chest.addItemStackToInventory(input1.copy(), INVENTORY_SLOT_START, INVENTORY_SLOT_END);
+				}
+				// Use a copy because we want the original intact
+				InventoryUtils.removeItemStackFromInventory(playerInv, input1.copy(), 0, playerInv.size() - 1);
 			}
-			// Use a copy because we want the original intact
-			InventoryUtils.removeItemStackFromInventory(playerInv, input1.copy(), 0, playerInv.size() - 1);
-		}
-		if (!input2.isEmpty()) {
-			if (normalMode) {
-				chest.addItemStackToInventory(input2.copy(), INVENTORY_SLOT_START, INVENTORY_SLOT_END);
+			if (!input2.isEmpty()) {
+				if (normalMode) {
+					chest.addItemStackToInventory(input2.copy(), INVENTORY_SLOT_START, INVENTORY_SLOT_END);
+				}
+				// Use a copy because we want the original intact
+				InventoryUtils.removeItemStackFromInventory(playerInv, input2.copy(), 0, playerInv.size() - 1);
 			}
-			// Use a copy because we want the original intact
-			InventoryUtils.removeItemStackFromInventory(playerInv, input2.copy(), 0, playerInv.size() - 1);
 		}
 
 		if (normalMode) {
@@ -179,12 +184,6 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 		}
 
 		player.inventory.addItemStackToInventory(result.copy());
-
-		/*
-		 * // play a tink sound to signal the trade if
-		 * (player.getEntityWorld().isRemote) player.playSound("random.orb", 0.5F, 5F);
-		 */
-
 		player.onUpdate();
 
 		return ItemStack.EMPTY;
@@ -208,15 +207,13 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 
 			// If it is one of the general container slots, move to player
 			// inventory.
-			if (slotIndex >= ShopShelfStackHandler.INVENTORY_SLOT_START
-					&& slotIndex < ShopShelfStackHandler.TOTAL_SLOTS) {
+			if (slotIndex >= INVENTORY_SLOT_START && slotIndex < ShopShelfStackHandler.TOTAL_SLOTS) {
 				if (!mergeToPlayerInventory(stackInSlot)) {
 					return null;
 				}
 			} else if (slotIndex >= ShopShelfStackHandler.TOTAL_SLOTS) {
 				// Try moving to the input slot
-				if (!mergeItemStack(stackInSlot, ShopShelfStackHandler.INVENTORY_SLOT_START,
-						ShopShelfStackHandler.TOTAL_SLOTS, false)) {
+				if (!mergeItemStack(stackInSlot, INVENTORY_SLOT_START, TOTAL_SLOTS, false)) {
 					return null;
 				}
 			}

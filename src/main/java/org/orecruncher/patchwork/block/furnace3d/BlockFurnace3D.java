@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.block.BlockContainerBase;
+import org.orecruncher.patchwork.block.IRotateable;
 import org.orecruncher.patchwork.block.ITileEntityRegistration;
 import org.orecruncher.patchwork.block.ITileEntityTESR;
 import org.orecruncher.patchwork.client.ModCreativeTab;
@@ -62,7 +63,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFurnace3D extends BlockContainerBase implements ITileEntityRegistration, ITileEntityTESR {
+public class BlockFurnace3D extends BlockContainerBase
+		implements ITileEntityRegistration, ITileEntityTESR, IRotateable {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -199,5 +201,11 @@ public class BlockFurnace3D extends BlockContainerBase implements ITileEntityReg
 	public int getLightValue(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
 			@Nonnull final BlockPos pos) {
 		return state.getValue(ACTIVE).booleanValue() ? 7 : 0;
+	}
+
+	@Override
+	public boolean rotateBlock(@Nonnull final EntityPlayer player, @Nonnull final World world,
+			@Nonnull final BlockPos pos, @Nonnull final EnumFacing axis) {
+		return super.rotateBlock(world, pos, axis);
 	}
 }

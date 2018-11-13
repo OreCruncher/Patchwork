@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" n ",
+		"lSn",
+		"ns "
+	],
+	"key": {
+		"n": {
+			"type": "forge:ore_dict",
+			"ore": "nuggetIron"
+		},
+		"s": {
+			"item": "minecraft:string"
+		},
+		"S": {
+			"type": "forge:ore_dict",
+			"ore": "stickWood"
+		},
+		"l": {
+			"item": "minecraft:leather"
+		}
+	},
+	"result": {
+		"item": "patchwork:material",
+		"data": 2,
+		"count": 1
+	}
+}
