@@ -37,6 +37,11 @@ config.patchwork.features.mobsdropcoins.tooltip=Enable/disable dropping of coins
 config.patchwork.features.nodropsfromspawnermobs=No Mob Drops from Spawner Mobs
 config.patchwork.features.nodropsfromspawnermobs.tooltip=Enable/disable scrubbing drops from mobs that come from spawners
 
+config.patchwork.furnace=Furnace
+config.patchwork.furnace.tooltip=3D Furnace options
+config.patchwork.furnace.enableImmersiveInteraction=Immersive Interaction
+config.patchwork.furnace.enableImmersiveInteraction.tooltip=Allow players to interact with the furnace in the world using held items
+
 # Format strings
 patchwork.msg.advanced_tooltip=Press <SHIFT> for more
 

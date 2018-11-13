@@ -28,8 +28,11 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 
 public class InventoryUtils {
 
@@ -44,6 +47,25 @@ public class InventoryUtils {
 		return (!stack1.isEmpty() && stack1.getItem() == stack2.getItem()
 				&& (!stack2.getHasSubtypes() || stack2.getMetadata() == stack1.getMetadata())
 				&& ItemStack.areItemStackTagsEqual(stack2, stack1));
+	}
+
+	/*
+	 * Combines the source stack into the target stack. The result is the target
+	 * stack count will be larger and the source stack will be reduced. It is
+	 * possible that the source stack will become empty as a result of the
+	 * operation. The routine returns false if the items weren't combined, such as
+	 * incompatible types or the targe stack being full.
+	 */
+	public static boolean combine(@Nonnull final ItemStack target, @Nonnull final ItemStack source) {
+		if (canCombine(target, source)) {
+			final int xferAmount = Math.min(target.getMaxStackSize() - target.getCount(), source.getCount());
+			if (xferAmount > 0) {
+				target.grow(xferAmount);
+				source.shrink(xferAmount);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/*
@@ -238,6 +260,15 @@ public class InventoryUtils {
 			}
 		}
 		return stack.isEmpty();
+	}
+
+	public static void spawnAtPlayersFeet(@Nonnull final EntityPlayer player, @Nonnull final ItemStack stack) {
+		final World world = player.getEntityWorld();
+		if (!world.isRemote) {
+			final EntityItem item = new EntityItem(world, player.posX, player.posY, player.posZ, stack);
+			item.setNoPickupDelay();
+			world.spawnEntity(item);
+		}
 	}
 
 }

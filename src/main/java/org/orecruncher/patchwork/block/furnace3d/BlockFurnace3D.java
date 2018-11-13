@@ -29,11 +29,13 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.patchwork.block.BlockContainerBase;
 import org.orecruncher.patchwork.block.IRotateable;
 import org.orecruncher.patchwork.block.ITileEntityRegistration;
 import org.orecruncher.patchwork.block.ITileEntityTESR;
 import org.orecruncher.patchwork.client.ModCreativeTab;
+import org.orecruncher.patchwork.lib.InventoryUtils;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -48,6 +50,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -164,16 +167,63 @@ public class BlockFurnace3D extends BlockContainerBase
 			@Nonnull final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (world.isRemote) {
 			return true;
-		} else {
-			final TileEntity tileentity = world.getTileEntity(pos);
+		}
+		final TileEntity tileentity = world.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityFurnace3D) {
-				player.displayGUIChest((TileEntityFurnace3D) tileentity);
-				player.addStat(StatList.FURNACE_INTERACTION);
+		if (tileentity instanceof TileEntityFurnace3D) {
+			final TileEntityFurnace3D te = (TileEntityFurnace3D) tileentity;
+
+			boolean openContainer = true;
+			if (ModOptions.furnace.immersiveInteraction) {
+				openContainer = player.isSneaking();
+				// If the player is sneaking we always open the container
+				if (!player.isSneaking()) {
+					final Furnace3DStackHandler chest = (Furnace3DStackHandler) te.getInventory();
+					final ItemStack heldStack = player.getHeldItem(hand);
+
+					ItemStack work = chest.getOutputStack();
+					if (!work.isEmpty()) {
+						InventoryUtils.spawnAtPlayersFeet(player, work);
+						chest.setOutputStack(ItemStack.EMPTY);
+					} else {
+						// Player is holding a stack. See if we can integrate it into the furnace
+						// somehow.
+						boolean merged = false;
+						if (TileEntityFurnace3D.isItemFuel(heldStack)) {
+							work = chest.getFuelStack();
+							if (work.isEmpty()) {
+								chest.setFuelStack(heldStack);
+								player.setHeldItem(hand, ItemStack.EMPTY);
+								merged = true;
+							} else if (InventoryUtils.combine(work, heldStack)) {
+								chest.setFuelStack(work);
+								merged = true;
+							}
+						}
+
+						if (!merged) {
+							// It's a regular item. Get it into input
+							work = chest.getInputStack();
+							if (work.isEmpty()) {
+								chest.setInputStack(heldStack);
+								player.setHeldItem(hand, ItemStack.EMPTY);
+							} else if (InventoryUtils.combine(work, heldStack)) {
+								chest.setInputStack(work);
+							} else {
+								openContainer = heldStack.isEmpty();
+							}
+						}
+					}
+				}
 			}
 
-			return true;
+			if (openContainer) {
+				player.displayGUIChest(te);
+				player.addStat(StatList.FURNACE_INTERACTION);
+			}
 		}
+
+		return true;
 	}
 
 	@Override

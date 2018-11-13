@@ -45,6 +45,9 @@ public class ModOptions {
 
 	@LangKey("config.patchwork.features")
 	public static Features features = new Features();
+	
+	@LangKey("config.patchwork.furnace")
+	public static Furnace furnace = new Furnace();
 
 	public static class Logging {
 		@LangKey("config.patchwork.logging.enableLogging")
@@ -68,6 +71,12 @@ public class ModOptions {
 		@LangKey("config.patchwork.mobnet.reusable")
 		@Comment({ "Enable/disable reuse of Mob Nets" })
 		public boolean reusable = true;
+	}
+	
+	public static class Furnace {
+		@LangKey("config.patchwork.furnace.enableImmersiveInteraction")
+		@Comment({ "Enable/disable immersive interaction with the 3D furnace" })
+		public boolean immersiveInteraction = true;
 	}
 
 	public static class Features {
