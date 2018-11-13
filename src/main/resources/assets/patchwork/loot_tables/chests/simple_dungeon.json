@@ -29,34 +29,6 @@
 							}
 						}
 					]
-				},
-				{
-					"entryName": "Mundane Device",
-					"type": "item",
-					"name": "patchwork:magic_device",
-					"weight": 10,
-					"functions": [
-						{
-							"function": "patchwork:create_magic_device",
-							"device": {
-								"quality": "MUNDANE"
-							}
-						}
-					]
-				},
-				{
-					"entryName": "Normal Device",
-					"type": "item",
-					"name": "patchwork:magic_device",
-					"weight": 5,
-					"functions": [
-						{
-							"function": "patchwork:create_magic_device",
-							"device": {
-								"quality": "NORMAL"
-							}
-						}
-					]
 				}
 			]
 		}

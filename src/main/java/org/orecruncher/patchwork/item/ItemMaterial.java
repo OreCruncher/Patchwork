@@ -72,9 +72,9 @@ public class ItemMaterial extends ItemBase {
 	public static enum Type implements IVariant {
 		//@formatter:off
 		REPAIR_PASTE(0, "repairpaste"),
-		MAGICAL_AMALGAM(1, "magicalamalgam"),
-		TOOLS(2, "tools");
+		TOOLS(1, "tools");
 		//@formatter:on
+		// MAGICAL_AMALGAM(1, "magicalamalgam"),
 
 		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values()).sorted(Comparator.comparing(Type::getSubTypeId))
 				.toArray(Type[]::new);

@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.orecruncher.patchwork.ModBase;
-import org.orecruncher.patchwork.item.magic.capability.CapabilityMagicDevice;
 import org.orecruncher.patchwork.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.GuiHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
@@ -64,7 +63,7 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		CapabilityMagicDevice.register();
+		// Intentionally blank
 	}
 
 	/**

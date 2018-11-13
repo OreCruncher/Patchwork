@@ -1,6 +1,5 @@
 {
 	"recipes": {
-		"toolrepair": "org.orecruncher.patchwork.recipe.ToolRepairRecipe$Factory",
-		"magicdevicereskin": "org.orecruncher.patchwork.recipe.MagicDeviceReskinRecipe$Factory"
+		"toolrepair": "org.orecruncher.patchwork.recipe.ToolRepairRecipe$Factory"
 	}
 }

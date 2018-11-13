@@ -24,9 +24,6 @@
 
 package org.orecruncher.patchwork.item;
 
-import org.orecruncher.patchwork.item.magic.ItemMagicDevice;
-import org.orecruncher.patchwork.item.magic.MagicAbilities;
-
 import net.minecraft.item.Item;
 
 public class ModItems {
@@ -34,12 +31,10 @@ public class ModItems {
 	public static final Item COIN = new ItemCoin();
 	public static final Item MATERIAL = new ItemMaterial();
 	public static final Item MOB_NET = new ItemMobNet();
-	public static final ItemMagicDevice MAGIC_DEVICE = new ItemMagicDevice("magic_device");
 
-	// Currently a do nothing function. By calling this it triggers the
-	// classes static initializers to run.
 	public static void initialize() {
-		MagicAbilities.initialize();
+		// Currently a do nothing function. By calling this it triggers the
+		// classes static initializers to run.
 	}
 
 }

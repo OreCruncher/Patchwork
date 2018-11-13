@@ -32,8 +32,6 @@ config.patchwork.mobnet.reusable.tooltip=Enable/disable reuse of Mob Nets
 
 config.patchwork.features=Features
 config.patchwork.features.tooltip=Options to control various features
-config.patchwork.features.mobsdropcoins=Mobs Drop Coins
-config.patchwork.features.mobsdropcoins.tooltip=Enable/disable dropping of coins from mobs
 config.patchwork.features.nodropsfromspawnermobs=No Mob Drops from Spawner Mobs
 config.patchwork.features.nodropsfromspawnermobs.tooltip=Enable/disable scrubbing drops from mobs that come from spawners
 
@@ -41,6 +39,13 @@ config.patchwork.furnace=Furnace
 config.patchwork.furnace.tooltip=3D Furnace options
 config.patchwork.furnace.enableImmersiveInteraction=Immersive Interaction
 config.patchwork.furnace.enableImmersiveInteraction.tooltip=Allow players to interact with the furnace in the world using held items
+
+config.patchwork.coins=Coins
+config.patchwork.coins.tooltip=Coin options
+config.patchwork.coins.spawnasloot=Chest Worldgen
+config.patchwork.coins.spawnasloot.tooltip=Enable/disable generation of coins as loot in dungeon chests
+config.patchwork.coins.mobsdropcoins=Mobs Drop Coins
+config.patchwork.coins.mobsdropcoins.tooltip=Enable/disable dropping of coins from mobs
 
 # Format strings
 patchwork.msg.advanced_tooltip=Press <SHIFT> for more
@@ -60,49 +65,7 @@ item.patchwork.mobnet.name=Mob Net
 
 # Material Items
 item.patchwork.material_repairpaste.name=Repair Paste
-item.patchwork.material_magicalamalgam.name=Magical Amalgam
 item.patchwork.material_tools.name=Set of Tools
-
-# Magical Items
-patchwork.magicdevice.amulet.name=Amulet
-patchwork.magicdevice.ring.name=Ring
-patchwork.magicdevice.belt.name=Belt
-patchwork.magicdevice.trinket.name=Trinket
-patchwork.magicdevice.head.name=Head Covering
-patchwork.magicdevice.body.name=Frock
-patchwork.magicdevice.charm.name=Charm
-patchwork.magicdevice.boots.name=Boots
-patchwork.magicdevice.rod.name=Rod
-patchwork.magicdevice.wand.name=Wand
-patchwork.magicdevice.scroll.name=Scroll
-patchwork.magicdevice.staff.name=Staff
-patchwork.magicdevice.tome.name=Tome
-
-patchwork.devicequality.plain.name=Plain
-patchwork.devicequality.mundane.name=Mundane
-patchwork.devicequality.normal.name=Normal
-patchwork.devicequality.prized.name=Prized
-patchwork.devicequality.legendary.name=Legendary
-
-patchwork.magicdevice.basicname=%1$s %2$s
-patchwork.magicdevice.powerremaining=§2Essence: %1$.1f%%§r
-patchwork.magicdevice.powerlevels=§2%1$d / %2$d§r
-patchwork.magicdevice.quality=§aQuality: %1$s§r
-patchwork.magicdevice.potion_tooltip=Potion Effect: %1$s
-
-patchwork.deviceability.format=§aAbility:§r §e%1$s§r
-patchwork.deviceability.flight.name=Flight
-patchwork.deviceability.flight.tooltip=Provides creative flight as long as the item is worn and has essence. Essence is only consumed when the player is flying.  Don't run out of essence when flying...
-patchwork.deviceability.fireball.name=Fireball
-patchwork.deviceability.fireball.tooltip=Shoots a firey ball at your target causing flame and other sorts of agony.  Be careful using the magic device around wooden structures.  No warranties are given or implied. 
-patchwork.deviceability.symbiotic.name=Symbiotic
-patchwork.deviceability.symbiotic.tooltip=Consumes player experience in order to recharge the magic device.  The amount of transfer per tick is limited so be cautious. 
-patchwork.deviceability.charging.name=Charging
-patchwork.deviceability.charging.tooltip=The device shares it's magic essence with other devices that are being worn or in the player inventory.  The amount shared per tick is limited.  The first device in the player inventory will be recharged before going on to the second.  Bauble inventory is given priority.
-patchwork.deviceability.vacuum.name=Vacuum
-patchwork.deviceability.vacuum.tooltip=Attracts nearby items and XP orbs toward the player.  This attraction will drain essence from the magical device.  Useful when mining, farming, or any activity that generates drops.
-patchwork.deviceability.missile.name=Missile
-patchwork.deviceability.missile.tooltip=Launches an earthen missile at your target causing blunt force trauma.  Cooldown time is pretty fast and does a good amount of damage.
 
 # Blocks
 tile.patchwork.furnace.name=Furnace

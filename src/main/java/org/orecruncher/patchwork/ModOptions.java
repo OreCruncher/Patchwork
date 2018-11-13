@@ -27,6 +27,7 @@ package org.orecruncher.patchwork;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -48,6 +49,9 @@ public class ModOptions {
 	
 	@LangKey("config.patchwork.furnace")
 	public static Furnace furnace = new Furnace();
+	
+	@LangKey("config.patchwork.coins")
+	public static Coins coins = new Coins();
 
 	public static class Logging {
 		@LangKey("config.patchwork.logging.enableLogging")
@@ -78,12 +82,18 @@ public class ModOptions {
 		@Comment({ "Enable/disable immersive interaction with the 3D furnace" })
 		public boolean immersiveInteraction = true;
 	}
-
-	public static class Features {
-		@LangKey("config.patchwork.features.mobsdropcoins")
+	
+	public static class Coins {
+		@LangKey("config.patchwork.coins.spawnasloot")
+		@Comment({ "Enable/disable generation of coins in dungeon chests" })
+		@RequiresMcRestart
+		public boolean spawnAsLoot = true;
+		@LangKey("config.patchwork.coins.mobsdropcoins")
 		@Comment({ "Enable/disable dropping of coins from mobs" })
 		public boolean mobsDropCoins = true;
+	}
 
+	public static class Features {
 		@LangKey("config.patchwork.features.nodropsfromspawnermobs")
 		@Comment({ "Enable/disable scrubbing drops from mobs that come from spawners" })
 		public boolean noDropsFromSpawnerMobs = true;

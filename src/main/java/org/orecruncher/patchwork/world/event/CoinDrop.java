@@ -98,7 +98,7 @@ public class CoinDrop {
 
 	@SubscribeEvent(receiveCanceled = false)
 	public static void onLivingDrops(@Nonnull final LivingDropsEvent event) {
-		if (!ModOptions.features.mobsDropCoins)
+		if (!ModOptions.coins.mobsDropCoins)
 			return;
 
 		if (event.getSource().getTrueSource() instanceof EntityPlayer) {

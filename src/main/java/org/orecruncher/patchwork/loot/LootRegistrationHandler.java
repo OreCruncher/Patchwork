@@ -28,12 +28,12 @@ import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.ModOptions;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -59,10 +59,6 @@ public class LootRegistrationHandler {
 	//@formatter:on
 
 	public static void initialize() {
-
-		// LootFunctions
-		LootFunctionManager.registerFunction(new CreateMagicDevice.Serializer());
-
 		// Tables
 		LootTableList.register(Loot.COIN_PASSIVE);
 		LootTableList.register(Loot.COIN_SPAWNER);
@@ -84,23 +80,26 @@ public class LootRegistrationHandler {
 
 	@SubscribeEvent
 	public static void onLootTableLoadEvent(@Nonnull final LootTableLoadEvent event) {
-		ModBase.log().info("Encountered pool [%s]", event.getName().toString());
-		for (final String location : LOOT_INJECTION_LOCATIONS) {
-			if (event.getName().toString().matches(location)) {
-				final ResourceLocation t = new ResourceLocation(location);
-				final ResourceLocation rl = new ResourceLocation(ModInfo.MOD_ID, t.getPath());
-				final LootTable table = event.getLootTableManager().getLootTableFromLocation(rl);
-				if (table != null) {
-					final LootPool pool = table.getPool(ModInfo.MOD_ID);
-					if (pool != null) {
-						event.getTable().addPool(pool);
-						ModBase.log().info("Added pool [%s] to loot table [%s]", rl.toString() + "#" + pool.getName(), location);
+		if (ModOptions.coins.spawnAsLoot) {
+			ModBase.log().info("Encountered pool [%s]", event.getName().toString());
+			for (final String location : LOOT_INJECTION_LOCATIONS) {
+				if (event.getName().toString().matches(location)) {
+					final ResourceLocation t = new ResourceLocation(location);
+					final ResourceLocation rl = new ResourceLocation(ModInfo.MOD_ID, t.getPath());
+					final LootTable table = event.getLootTableManager().getLootTableFromLocation(rl);
+					if (table != null) {
+						final LootPool pool = table.getPool(ModInfo.MOD_ID);
+						if (pool != null) {
+							event.getTable().addPool(pool);
+							ModBase.log().info("Added pool [%s] to loot table [%s]",
+									rl.toString() + "#" + pool.getName(), location);
+						} else {
+							ModBase.log().warn("Could not find pool [%s] in loot table [%s]", ModInfo.MOD_ID,
+									rl.toString());
+						}
 					} else {
-						ModBase.log().warn("Could not find pool [%s] in loot table [%s]", ModInfo.MOD_ID,
-								rl.toString());
+						ModBase.log().warn("Could not find loot table [%s]", rl.toString());
 					}
-				} else {
-					ModBase.log().warn("Could not find loot table [%s]", rl.toString());
 				}
 			}
 		}

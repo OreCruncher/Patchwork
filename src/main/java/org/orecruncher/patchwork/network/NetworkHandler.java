@@ -38,9 +38,10 @@ public class NetworkHandler {
 	private static int msgId = 1;
 
 	public static void init() {
-		registerMessage(MagicDeviceDataPacket.Handler.class, MagicDeviceDataPacket.class, Side.CLIENT);
+		// No messages, yet
 	}
 
+	@SuppressWarnings("unused")
 	private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(
 			Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType,
 			Side receivingSide) {
