@@ -51,6 +51,14 @@ public class GuiContainerBase extends GuiContainer {
 	}
 
 	@Override
+    public void drawScreen(final int mouseX, final int mouseY, final float partialTicks)
+    {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+	@Override
 	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 

@@ -56,6 +56,7 @@ item.patchwork.mobnet.name=Mob Net
 # Material Items
 item.patchwork.material_repairpaste.name=Repair Paste
 item.patchwork.material_magicalamalgam.name=Magical Amalgam
+item.patchwork.material_tools.name=Set of Tools
 
 # Magical Items
 patchwork.magicdevice.amulet.name=Amulet
