@@ -11,7 +11,8 @@
 			"ore": "cobblestone"
 		},
 		"g": {
-			"item": "minecraft:glass"
+			"type": "forge:ore_dict",
+			"ore": "blockGlass"
 		}
 	},
 	"result": {

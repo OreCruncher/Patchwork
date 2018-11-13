@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sss",
+		"sss",
+		"wcw"
+	],
+	"key": {
+		"s": {
+			"type": "forge:ore_dict",
+			"ore": "slabWood"
+		},
+		"w": {
+			"type": "forge:ore_dict",
+			"ore": "plankWood"
+		},
+		"c": {
+			"type": "forge:ore_dict",
+			"ore": "chestWood"
+		}
+	},
+	"result": {
+		"item": "patchwork:shopshelf",
+		"count": 1
+	}
+}
