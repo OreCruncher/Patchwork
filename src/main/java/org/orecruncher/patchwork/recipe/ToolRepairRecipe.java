@@ -26,9 +26,6 @@ package org.orecruncher.patchwork.recipe;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.item.ItemMaterial;
-import org.orecruncher.patchwork.item.ModItems;
-
 import com.google.gson.JsonObject;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -42,15 +39,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public class ToolRepairRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe>
 		implements IRecipe {
 
-	private static final ItemStack REPAIR_PASTE = new ItemStack(ModItems.MATERIAL, 1,
-			ItemMaterial.Type.REPAIR_PASTE.getSubTypeId());
+	@ItemStackHolder(value = "patchwork:repairpaste")
+	public static final ItemStack REPAIR_PASTE = ItemStack.EMPTY;
+	@ItemStackHolder(value = "patchwork:tools")
+	public static final ItemStack TOOLS = ItemStack.EMPTY;
+
 	private static final int REPAIR_AMOUNT = 50;
 
 	private static boolean isTypeAcceptable(@Nonnull final Item item) {
@@ -67,41 +70,112 @@ public class ToolRepairRecipe extends net.minecraftforge.registries.IForgeRegist
 	public boolean matches(@Nonnull final InventoryCrafting inv, @Nonnull final World worldIn) {
 		boolean foundPaste = false;
 		boolean foundBrokenItem = false;
+		boolean foundTools = false;
 		final int invSize = inv.getSizeInventory();
 		for (int i = 0; i < invSize; i++) {
 			final ItemStack ingredient = inv.getStackInSlot(i);
 			if (ingredient.isEmpty())
 				continue;
-			if (ItemStack.areItemsEqual(REPAIR_PASTE, ingredient)) {
+			if (REPAIR_PASTE.getItem() == ingredient.getItem()) {
 				foundPaste = true;
+			} else if (TOOLS.getItem() == ingredient.getItem()) {
+				if (foundTools)
+					return false;
+				foundTools = true;
 			} else if (isBrokenItem(ingredient)) {
 				if (foundBrokenItem)
 					return false;
 				foundBrokenItem = true;
 			}
 		}
-		return foundPaste && foundBrokenItem;
+		return foundPaste && foundBrokenItem && foundTools;
+	}
+
+	private static ItemStack findBrokenTool(@Nonnull final InventoryCrafting inv) {
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			final ItemStack stack = inv.getStackInSlot(i);
+			if (TOOLS.getItem() != stack.getItem() && isBrokenItem(stack))
+				return stack;
+		}
+		return ItemStack.EMPTY;
+	}
+
+	private static ItemStack findTools(@Nonnull final InventoryCrafting inv) {
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			final ItemStack stack = inv.getStackInSlot(i);
+			if (TOOLS.getItem() == stack.getItem())
+				return stack;
+		}
+		return ItemStack.EMPTY;
+	}
+
+	private static int countPaste(@Nonnull final InventoryCrafting inv) {
+		int result = 0;
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			final ItemStack stack = inv.getStackInSlot(i);
+			if (REPAIR_PASTE.getItem() == stack.getItem())
+				result += stack.getCount();
+		}
+		return result;
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack getCraftingResult(@Nonnull final InventoryCrafting inv) {
 		// Just need to locate the broken item
-		final int invSize = inv.getSizeInventory();
-		ItemStack result = null;
-		int pasteCount = 0;
-		for (int i = 0; i < invSize; i++) {
-			final ItemStack ingredient = inv.getStackInSlot(i);
-			if (ingredient.isEmpty())
-				continue;
-			if (isBrokenItem(ingredient)) {
-				result = ingredient.copy();
-			} else if (ItemStack.areItemsEqual(REPAIR_PASTE, ingredient)) {
-				pasteCount++;
+		final ItemStack broken = findBrokenTool(inv).copy();
+		final ItemStack tools = findTools(inv);
+		final int pasteAmount = countPaste(inv);
+
+		// How much paste is needed to fully repair item
+		final int pasteNeeded = (broken.getItemDamage() / REPAIR_AMOUNT) + 1;
+		// How much can be applied with the current tool
+		final int canBeApplied = tools.getMaxDamage() - tools.getItemDamage();
+		// Figure out how much paste can be applied
+		final int pasteToApply = Math.min(Math.min(pasteNeeded, canBeApplied), pasteAmount);
+
+		broken.setItemDamage(Math.max(0, broken.getItemDamage() - REPAIR_AMOUNT * pasteToApply));
+		return broken;
+	}
+
+	@Override
+	@Nonnull
+	public NonNullList<ItemStack> getRemainingItems(@Nonnull final InventoryCrafting inv) {
+		final ItemStack broken = findBrokenTool(inv).copy();
+		final ItemStack tools = findTools(inv).copy();
+		final int pasteAmount = countPaste(inv);
+
+		// How much paste is needed to fully repair item
+		final int pasteNeeded = (broken.getItemDamage() / REPAIR_AMOUNT) + 1;
+		// How much can be applied with the current tool
+		final int canBeApplied = tools.getMaxDamage() - tools.getItemDamage();
+		// Figure out how much paste can be applied
+		final int pasteToApply = Math.min(Math.min(pasteNeeded, canBeApplied), pasteAmount);
+
+		final NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		int pasteRemaining = pasteToApply;
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			final ItemStack stack = inv.getStackInSlot(i);
+			if (TOOLS.getItem() == stack.getItem()) {
+				tools.setItemDamage(tools.getItemDamage() + pasteToApply);
+				if (tools.getItemDamage() < tools.getMaxDamage())
+					ret.set(i, tools);
+			} else if (REPAIR_PASTE.getItem() == stack.getItem()) {
+				inv.setInventorySlotContents(i, ItemStack.EMPTY);
+				if (pasteRemaining < stack.getCount()) {
+					final ItemStack t = stack.copy();
+					t.shrink(pasteRemaining);
+					ret.set(i, t);
+					pasteRemaining = 0;
+				} else {
+					pasteRemaining -= stack.getCount();
+				}
+			} else {
+				ret.set(i, ForgeHooks.getContainerItem(stack));
 			}
 		}
-		result.setItemDamage(Math.max(0, result.getItemDamage() - REPAIR_AMOUNT * pasteCount));
-		return result;
+
+		return ret;
 	}
 
 	@Override

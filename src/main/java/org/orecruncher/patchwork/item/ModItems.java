@@ -29,8 +29,9 @@ import net.minecraft.item.Item;
 public class ModItems {
 
 	public static final Item COIN = new ItemCoin();
-	public static final Item MATERIAL = new ItemMaterial();
 	public static final Item MOB_NET = new ItemMobNet();
+	public static final Item REPAIR_PASTE = new ItemBase("repairpaste");
+	public static final Item TOOLS = new ItemBase("tools").setMaxStackSize(1).setMaxDamage(50);
 
 	public static void initialize() {
 		// Currently a do nothing function. By calling this it triggers the
