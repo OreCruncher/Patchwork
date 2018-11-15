@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.lib.ModelHelper;
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 import org.orecruncher.patchwork.lib.TileEntityContainerBase;
 
@@ -44,13 +45,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public class TileEntityShopShelf extends TileEntityContainerBase {
 
-	@ItemStackHolder(value = "minecraft:oak_planks", meta = 0)
+	@ItemStackHolder(value = "minecraft:planks", meta = 0)
 	public static final ItemStack DEFAULT_SKIN = ItemStack.EMPTY;
 	protected static final UUID UNOWNED = new UUID(0, 0);
 
 	protected UUID owner = UNOWNED;
 	protected String ownerName = "";
-	protected ItemStack skin = DEFAULT_SKIN;
+	protected String skin = ModelHelper.getBlockTexture(DEFAULT_SKIN).getIconName();
 	protected boolean adminShop = false;
 	protected ShopShelfStackHandler inventory = new ShopShelfStackHandler();
 
@@ -83,6 +84,10 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public String getSkin() {
+		return this.skin;
 	}
 
 	@Override
@@ -140,9 +145,7 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		this.owner = nbt.getUniqueId(NBT.OWNER);
 		this.ownerName = nbt.getString(NBT.OWNER_NAME);
 		this.adminShop = nbt.getBoolean(NBT.ADMIN_SHOP);
-		this.skin = new ItemStack(nbt.getCompoundTag(NBT.SKIN));
-		if (this.skin.isEmpty())
-			this.skin = DEFAULT_SKIN;
+		this.skin = nbt.getString(NBT.SKIN);
 	}
 
 	@Override
@@ -151,7 +154,7 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		nbt.setUniqueId(NBT.OWNER, this.owner);
 		nbt.setString(NBT.OWNER_NAME, this.ownerName);
 		nbt.setBoolean(NBT.ADMIN_SHOP, this.adminShop);
-		nbt.setTag(NBT.SKIN, this.skin.writeToNBT(new NBTTagCompound()));
+		nbt.setString(NBT.SKIN, this.skin);
 		return nbt;
 	}
 

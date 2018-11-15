@@ -35,12 +35,12 @@ import org.orecruncher.patchwork.block.ITileEntityRegistration;
 import org.orecruncher.patchwork.block.ITileEntityTESR;
 import org.orecruncher.patchwork.block.ModBlocks;
 import org.orecruncher.patchwork.client.ModCreativeTab;
+import org.orecruncher.patchwork.lib.property.PropertyString;
 import org.orecruncher.patchwork.network.GuiHandler;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -59,6 +59,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -72,6 +73,9 @@ public class BlockShopShelf extends BlockContainerBase
 	protected static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
 	protected static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D);
 	protected static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+
+	// Unlisted property for conveying texture
+	public static final PropertyString TEXTURE = new PropertyString("texture");
 
 	public BlockShopShelf() {
 		super("shopshelf", Material.WOOD);
@@ -105,7 +109,7 @@ public class BlockShopShelf extends BlockContainerBase
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer.Builder(this).add(FACING).add(TEXTURE).build();
 	}
 
 	/**
@@ -139,6 +143,21 @@ public class BlockShopShelf extends BlockContainerBase
 	@Override
 	public int getMetaFromState(@Nonnull final IBlockState state) {
 		return state.getValue(FACING).getHorizontalIndex();
+	}
+
+	@Nonnull
+	@Override
+	public IBlockState getExtendedState(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
+			@Nonnull final BlockPos pos) {
+		final IExtendedBlockState extendedState = (IExtendedBlockState) state;
+
+		final TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileEntityShopShelf) {
+			final TileEntityShopShelf s = (TileEntityShopShelf) te;
+			return extendedState.withProperty(TEXTURE, s.getSkin());
+		}
+
+		return super.getExtendedState(state, world, pos);
 	}
 
 	@Override
