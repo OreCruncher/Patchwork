@@ -245,7 +245,8 @@ public class BlockShopShelf extends BlockContainerBase
 			final TileEntityShopShelf ss = (TileEntityShopShelf) te;
 			if (!ss.okToBreak(player))
 				return false;
-			return willHarvest;
+			if (!player.capabilities.isCreativeMode)
+				return willHarvest;
 		}
 		return super.removedByPlayer(state, world, pos, player, willHarvest);
 	}

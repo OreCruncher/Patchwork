@@ -38,13 +38,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public abstract class BlockContainerBase extends BlockContainer implements IBlockRegistration {
 
-	@ItemStackHolder(value = "patchwork:material", meta = 2)
+	@ItemStackHolder(value = "patchwork:tools")
 	public static final ItemStack ROTATE_TOOL = ItemStack.EMPTY;
 
 	protected final String name;
@@ -74,7 +75,7 @@ public abstract class BlockContainerBase extends BlockContainer implements IBloc
 	@Override
 	public void registerBlockModel() {
 		ModBase.proxy().registerItemRenderer(Item.getItemFromBlock(this), 0,
-				new ModelResourceLocation(ModInfo.MOD_ID + ":" + this.name, "inventory"));
+				new ModelResourceLocation(new ResourceLocation(ModInfo.MOD_ID, this.name), "inventory"));
 	}
 
 	@Override

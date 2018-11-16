@@ -14,13 +14,9 @@
 				},
 				{
 					"type": "item",
-					"name": "patchwork:material",
+					"name": "patchwork:repairpaste",
 					"weight": 20,
 					"functions": [
-						{
-							"function": "set_data",
-							"data": 0
-						},
 						{
 							"function": "set_count",
 							"count": {

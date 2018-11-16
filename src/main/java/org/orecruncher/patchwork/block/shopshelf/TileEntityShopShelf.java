@@ -42,6 +42,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityShopShelf extends TileEntityContainerBase {
 
@@ -51,9 +53,11 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 
 	protected UUID owner = UNOWNED;
 	protected String ownerName = "";
-	protected String skin = ModelHelper.getBlockTexture(DEFAULT_SKIN).getIconName();
+	protected ItemStack mimic = DEFAULT_SKIN;
 	protected boolean adminShop = false;
 	protected ShopShelfStackHandler inventory = new ShopShelfStackHandler();
+	
+	protected String skin;
 
 	@Override
 	@Nonnull
@@ -86,7 +90,10 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		return false;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public String getSkin() {
+		if (this.skin == null)
+			this.skin = ModelHelper.getBlockTexture(this.mimic).getIconName();
 		return this.skin;
 	}
 
@@ -145,7 +152,8 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		this.owner = nbt.getUniqueId(NBT.OWNER);
 		this.ownerName = nbt.getString(NBT.OWNER_NAME);
 		this.adminShop = nbt.getBoolean(NBT.ADMIN_SHOP);
-		this.skin = nbt.getString(NBT.SKIN);
+		this.mimic = new ItemStack(nbt.getCompoundTag(NBT.SKIN));
+		this.skin = null;
 	}
 
 	@Override
@@ -154,7 +162,7 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		nbt.setUniqueId(NBT.OWNER, this.owner);
 		nbt.setString(NBT.OWNER_NAME, this.ownerName);
 		nbt.setBoolean(NBT.ADMIN_SHOP, this.adminShop);
-		nbt.setString(NBT.SKIN, this.skin);
+		nbt.setTag(NBT.SKIN, this.mimic.writeToNBT(new NBTTagCompound()));
 		return nbt;
 	}
 
