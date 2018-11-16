@@ -28,6 +28,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.random.XorShiftRandom;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.patchwork.block.BlockContainerBase;
@@ -46,11 +47,13 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -59,6 +62,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -158,6 +162,31 @@ public class BlockFurnace3D extends BlockContainerBase
 		}
 	}
 
+	protected void handleOutputExtract(@Nonnull final EntityPlayer player, @Nonnull final ItemStack stack) {
+		InventoryUtils.spawnAtPlayersFeet(player, stack);
+		int i = stack.getCount();
+		final float f = FurnaceRecipes.instance().getSmeltingExperience(stack);
+
+		if (f == 0.0F) {
+			i = 0;
+		} else if (f < 1.0F) {
+			int j = MathHelper.floor(i * f);
+
+			if (j < MathHelper.ceil(i * f) && XorShiftRandom.current().nextDouble() < i * f - j) {
+				++j;
+			}
+
+			i = j;
+		}
+
+		while (i > 0) {
+			final int k = EntityXPOrb.getXPSplit(i);
+			i -= k;
+			player.world
+					.spawnEntity(new EntityXPOrb(player.world, player.posX + 0.5D, player.posY, player.posZ + 0.5D, k));
+		}
+	}
+
 	/**
 	 * Called when the block is right clicked by a player.
 	 */
@@ -183,9 +212,9 @@ public class BlockFurnace3D extends BlockContainerBase
 
 					ItemStack work = chest.getOutputStack();
 					if (!work.isEmpty()) {
-						InventoryUtils.spawnAtPlayersFeet(player, work);
+						handleOutputExtract(player, work);
 						chest.setOutputStack(ItemStack.EMPTY);
-					} else {
+					} else if (!heldStack.isEmpty()) {
 						// Player is holding a stack. See if we can integrate it into the furnace
 						// somehow.
 						boolean merged = false;
@@ -213,6 +242,8 @@ public class BlockFurnace3D extends BlockContainerBase
 								openContainer = heldStack.isEmpty();
 							}
 						}
+					} else {
+						openContainer = true;
 					}
 				}
 			}

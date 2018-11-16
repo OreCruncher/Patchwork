@@ -39,23 +39,27 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityShopShelf extends TileEntityContainerBase {
+public class TileEntityShopShelf extends TileEntityContainerBase implements ISidedInventory {
 
 	@ItemStackHolder(value = "minecraft:planks", meta = 0)
 	public static final ItemStack DEFAULT_SKIN = ItemStack.EMPTY;
 	protected static final UUID UNOWNED = new UUID(0, 0);
 	protected static final int PLANKS_ID = OreDictionary.getOreID("plankWood");
+	protected static final int[] NO_SLOTS = {};
 
 	protected UUID owner = UNOWNED;
 	protected String ownerName = "";
@@ -83,6 +87,7 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 	/**
 	 * Helper method for the TESR
 	 */
+	@Override
 	@Nonnull
 	public EnumFacing getFacing() {
 		return getState().getValue(BlockShopShelf.FACING);
@@ -173,6 +178,42 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 	public boolean shouldRefresh(@Nonnull final World world, @Nonnull final BlockPos pos,
 			@Nonnull final IBlockState oldState, @Nonnull final IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
+	}
+
+	/*
+	 * No connection to automation!
+	 */
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return false;
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	@Nullable
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return null;
+		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	@Nonnull
+	public int[] getSlotsForFace(@Nonnull final EnumFacing side) {
+		return NO_SLOTS;
+	}
+
+	@Override
+	public boolean canInsertItem(final int index, @Nonnull final ItemStack itemStackIn,
+			@Nonnull final EnumFacing direction) {
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(final int index, @Nonnull final ItemStack stack,
+			@Nonnull final EnumFacing direction) {
+		return false;
 	}
 
 	@Override

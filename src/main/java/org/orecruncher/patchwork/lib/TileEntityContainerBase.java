@@ -29,16 +29,25 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 
-public abstract class TileEntityContainerBase extends TileEntityLockable {
+public abstract class TileEntityContainerBase extends TileEntity implements IInventory, IInteractionObject {
 
 	protected abstract StackHandlerBase getInventory();
+
+	@Nonnull
+	public abstract EnumFacing getFacing();
 
 	@Override
 	public int getSizeInventory() {
@@ -75,6 +84,13 @@ public abstract class TileEntityContainerBase extends TileEntityLockable {
 	@Override
 	public int getInventoryStackLimit() {
 		return 64;
+	}
+
+	@Override
+	@Nullable
+	public ITextComponent getDisplayName() {
+		return hasCustomName() ? new TextComponentString(getName())
+				: new TextComponentTranslation(getName(), new Object[0]);
 	}
 
 	@Override
