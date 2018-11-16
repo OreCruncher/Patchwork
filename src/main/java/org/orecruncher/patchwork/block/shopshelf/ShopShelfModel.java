@@ -66,6 +66,10 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(modid = ModInfo.MOD_ID, value = Side.CLIENT)
 public class ShopShelfModel extends BakedModelWrapper<IBakedModel> {
 
+	private static final Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> {
+		return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+	};
+
 	protected final Object2ObjectOpenHashMap<ItemStackKey, IBakedModel> cache = new Object2ObjectOpenHashMap<>();
 	protected final IModel proto;
 	protected final VertexFormat format;
@@ -76,10 +80,6 @@ public class ShopShelfModel extends BakedModelWrapper<IBakedModel> {
 		this.proto = proto;
 		this.format = format;
 	}
-
-	private static final Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> {
-		return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-	};
 
 	@Override
 	@Nonnull

@@ -42,10 +42,6 @@ public class TradeSlot extends SlotPhantom {
 	private static final ResourceLocation RESOURCE_NOT_AVAILABLE = new ResourceLocation(ModInfo.MOD_ID,
 			"textures/gui/slot_resource_not_available.png");
 
-	public static interface IResourceAvailableCheck {
-		boolean isAvailable(final Slot slot);
-	}
-
 	protected IResourceAvailableCheck available = null;
 	protected boolean isInfinite;
 	protected int stackLimit;
@@ -109,4 +105,9 @@ public class TradeSlot extends SlotPhantom {
 		}
 		return stack;
 	}
+	
+	public static interface IResourceAvailableCheck {
+		boolean isAvailable(final Slot slot);
+	}
+
 }
