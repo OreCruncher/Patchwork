@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.world.World;
 
 public abstract class TileEntityContainerBase extends TileEntityLockable {
 
@@ -122,26 +123,25 @@ public abstract class TileEntityContainerBase extends TileEntityLockable {
 		return 0;
 	}
 
+	@Override
+	protected void setWorldCreate(@Nonnull final World world) {
+		this.world = world;
+	}
+
 	@Nonnull
 	protected IBlockState getState() {
 		return this.world.getBlockState(this.pos);
 	}
 
 	protected void sendUpdates(final boolean dirty) {
-		sendUpdates(dirty, false);
-	}
-
-	protected void sendUpdates(final boolean dirty, final boolean forced) {
-		if (!this.world.isRemote) {
-			if (forced || getInventory().isDirty()) {
-				this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
-				this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
-				this.world.scheduleBlockUpdate(this.pos, getBlockType(), 0, 0);
-				getInventory().clearDirty();
-			}
-			if (forced || dirty)
-				markDirty();
+		if (this.world != null) {
+			this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
+			this.world.notifyBlockUpdate(this.pos, getState(), getState(), 3);
+			this.world.scheduleBlockUpdate(this.pos, getBlockType(), 0, 0);
+			getInventory().clearDirty();
 		}
+		if (dirty)
+			markDirty();
 	}
 
 	@Override

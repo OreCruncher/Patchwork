@@ -22,24 +22,31 @@
  * THE SOFTWARE.
  */
 
-package org.orecruncher.patchwork.item;
+package org.orecruncher.patchwork.lib.property;
 
-import org.orecruncher.patchwork.client.ModCreativeTab;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
-import net.minecraft.item.Item;
+public class PropertyItemStack implements IUnlistedProperty<ItemStack> {
 
-public class ModItems {
+	  @Override
+	  public boolean isValid(ItemStack value) {
+	    return !value.isEmpty();
+	  }
 
-	//@formatter:off
-	public static final Item COIN = new ItemCoin();
-	public static final Item MOB_NET = new ItemMobNet();
-	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(ModCreativeTab.tab);
-	public static final Item TOOLS = new ItemTools();
-	//@formatter:on
+	  @Override
+	  public Class<ItemStack> getType() {
+	    return ItemStack.class;
+	  }
 
-	public static void initialize() {
-		// Currently a do nothing function. By calling this it triggers the
-		// classes static initializers to run.
+	  @Override
+	  public String valueToString(ItemStack value) {
+	    return value.toString();
+	  }
+
+	@Override
+	public String getName() {
+		return "UnlistedItemStack";
 	}
 
 }

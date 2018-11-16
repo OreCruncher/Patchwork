@@ -31,33 +31,37 @@ import javax.annotation.Nullable;
 
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
-import org.orecruncher.patchwork.lib.ModelHelper;
+import org.orecruncher.patchwork.lib.InventoryUtils;
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 import org.orecruncher.patchwork.lib.TileEntityContainerBase;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TileEntityShopShelf extends TileEntityContainerBase {
 
 	@ItemStackHolder(value = "minecraft:planks", meta = 0)
 	public static final ItemStack DEFAULT_SKIN = ItemStack.EMPTY;
 	protected static final UUID UNOWNED = new UUID(0, 0);
+	protected static final int PLANKS_ID = OreDictionary.getOreID("plankWood");
 
 	protected UUID owner = UNOWNED;
 	protected String ownerName = "";
 	protected ItemStack mimic = DEFAULT_SKIN;
 	protected boolean adminShop = false;
 	protected ShopShelfStackHandler inventory = new ShopShelfStackHandler();
-	
-	protected String skin;
 
 	@Override
 	@Nonnull
@@ -89,13 +93,6 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	@SideOnly(Side.CLIENT)
-	public String getSkin() {
-		if (this.skin == null)
-			this.skin = ModelHelper.getBlockTexture(this.mimic).getIconName();
-		return this.skin;
-	}
 
 	@Override
 	public Container createContainer(@Nonnull final InventoryPlayer playerInventory,
@@ -107,6 +104,32 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 	@Override
 	public String getGuiID() {
 		return ModInfo.MOD_ID + ".shopshelf";
+	}
+
+	@SideOnly(Side.CLIENT)
+	public ItemStack getMimic() {
+		return this.mimic;
+	}
+
+	public boolean isValidMimic(@Nonnull final ItemStack stack) {
+		return stack.getItem() instanceof ItemBlock;
+		// final int[] dicts = OreDictionary.getOreIDs(stack);
+		// return dicts != null && IntStream.of(dicts).anyMatch(x -> x == PLANKS_ID);
+	}
+
+	public void setMimic(@Nonnull final ItemStack stack) {
+		setMimic(stack, false);
+	}
+
+	protected void setMimic(@Nonnull final ItemStack stack, final boolean loading) {
+		if (!InventoryUtils.canCombine(this.mimic, stack) && isValidMimic(stack)) {
+			this.mimic = stack.copy();
+			this.mimic.setCount(1);
+			if (this.world.isRemote)
+				this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
+			else if (!loading)
+				sendUpdates(false);
+		}
 	}
 
 	public boolean okToBreak(@Nonnull final EntityPlayer player) {
@@ -125,7 +148,7 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		this.adminShop = true;
 		this.owner = UNOWNED;
 		this.ownerName = "";
-		sendUpdates(true, true);
+		sendUpdates(true);
 	}
 
 	public boolean isOwned() {
@@ -142,8 +165,14 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		if (player != null && !this.adminShop && !isOwner(player)) {
 			this.owner = player.getPersistentID();
 			this.ownerName = player.getName();
-			sendUpdates(true, true);
+			sendUpdates(true);
 		}
+	}
+
+	@Override
+	public boolean shouldRefresh(@Nonnull final World world, @Nonnull final BlockPos pos,
+			@Nonnull final IBlockState oldState, @Nonnull final IBlockState newState) {
+		return oldState.getBlock() != newState.getBlock();
 	}
 
 	@Override
@@ -152,8 +181,10 @@ public class TileEntityShopShelf extends TileEntityContainerBase {
 		this.owner = nbt.getUniqueId(NBT.OWNER);
 		this.ownerName = nbt.getString(NBT.OWNER_NAME);
 		this.adminShop = nbt.getBoolean(NBT.ADMIN_SHOP);
-		this.mimic = new ItemStack(nbt.getCompoundTag(NBT.SKIN));
-		this.skin = null;
+		ItemStack newMimic = new ItemStack(nbt.getCompoundTag(NBT.SKIN));
+		if (newMimic == null || !isValidMimic(newMimic))
+			newMimic = DEFAULT_SKIN;
+		setMimic(newMimic, true);
 	}
 
 	@Override

@@ -51,10 +51,10 @@ public class TESRShopShelf extends TileEntitySpecialRenderer<TileEntityShopShelf
 	private enum SlotHelper {
 		//@formatter:off
 		SLOT1(ShopShelfStackHandler.TRADE_SLOT_1, 0.2F, 0.1F, 0.25F, SCALE),
-		SLOT2(ShopShelfStackHandler.TRADE_SLOT_2, 0.2F, -0.3F, 0.25F, SCALE),
+		SLOT2(ShopShelfStackHandler.TRADE_SLOT_2, 0.2F, -0.25F, 0.25F, SCALE),
 		SLOT3(ShopShelfStackHandler.TRADE_SLOT_3, 0.2F, -0.55F, 0.25F, SCALE),
 		SLOT4(ShopShelfStackHandler.TRADE_SLOT_4, -0.2F, 0.1F, 0.25F, SCALE),
-		SLOT5(ShopShelfStackHandler.TRADE_SLOT_5, -0.2F, -0.3F, 0.25F, SCALE),
+		SLOT5(ShopShelfStackHandler.TRADE_SLOT_5, -0.2F, -0.25F, 0.25F, SCALE),
 		SLOT6(ShopShelfStackHandler.TRADE_SLOT_6, -0.2F, -0.55F, 0.25F, SCALE);
 		//@formatter:on
 

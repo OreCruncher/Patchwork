@@ -35,7 +35,7 @@ import org.orecruncher.patchwork.block.ITileEntityRegistration;
 import org.orecruncher.patchwork.block.ITileEntityTESR;
 import org.orecruncher.patchwork.block.ModBlocks;
 import org.orecruncher.patchwork.client.ModCreativeTab;
-import org.orecruncher.patchwork.lib.property.PropertyString;
+import org.orecruncher.patchwork.lib.property.PropertyItemStack;
 import org.orecruncher.patchwork.network.GuiHandler;
 
 import net.minecraft.block.BlockHorizontal;
@@ -75,7 +75,7 @@ public class BlockShopShelf extends BlockContainerBase
 	protected static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
 	// Unlisted property for conveying texture
-	public static final PropertyString TEXTURE = new PropertyString("texture");
+	public static final PropertyItemStack MIMIC = new PropertyItemStack();
 
 	public BlockShopShelf() {
 		super("shopshelf", Material.WOOD);
@@ -109,7 +109,7 @@ public class BlockShopShelf extends BlockContainerBase
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer.Builder(this).add(FACING).add(TEXTURE).build();
+		return new BlockStateContainer.Builder(this).add(FACING).add(MIMIC).build();
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class BlockShopShelf extends BlockContainerBase
 		final TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileEntityShopShelf) {
 			final TileEntityShopShelf s = (TileEntityShopShelf) te;
-			return extendedState.withProperty(TEXTURE, s.getSkin());
+			return extendedState.withProperty(MIMIC, s.getMimic());
 		}
 
 		return super.getExtendedState(state, world, pos);
@@ -279,6 +279,16 @@ public class BlockShopShelf extends BlockContainerBase
 				final TileEntityShopShelf ss = (TileEntityShopShelf) te;
 				if (!ss.isOwned() && !ss.isAdminShop()) {
 					ss.setOwner(player);
+				}
+				
+				// Get the ItemStack in the hand they are activating with.  If it
+				// is an appropriate mimic block set that.
+				if (ss.canConfigure(player)) {
+					final ItemStack stack = player.getHeldItem(hand);
+					if (ss.isValidMimic(stack)) {
+						ss.setMimic(stack);
+						return true;
+					}
 				}
 
 				final GuiHandler.ID openAs;
