@@ -82,7 +82,9 @@ public class ShopShelfModel extends BakedModelWrapper<IBakedModel> {
 	};
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+	@Nonnull
+	public List<BakedQuad> getQuads(@Nullable final IBlockState state, @Nullable final EnumFacing side,
+			final long rand) {
 		if (state instanceof IExtendedBlockState) {
 			final IExtendedBlockState extended = (IExtendedBlockState) state;
 			final ItemStack mimic = extended.getValue(BlockShopShelf.MIMIC);
@@ -105,13 +107,13 @@ public class ShopShelfModel extends BakedModelWrapper<IBakedModel> {
 
 	@Override
 	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
-			ItemCameraTransforms.TransformType cameraTransformType) {
+			@Nonnull final ItemCameraTransforms.TransformType cameraTransformType) {
 		final Pair<? extends IBakedModel, Matrix4f> pair = this.originalModel.handlePerspective(cameraTransformType);
 		return Pair.of(this, pair.getRight());
 	}
 
 	@SubscribeEvent
-	public static void onModelBakeEvent(ModelBakeEvent event) {
+	public static void onModelBakeEvent(@Nonnull final ModelBakeEvent event) {
 		for (final EnumFacing f : BlockHorizontal.FACING.getAllowedValues()) {
 			final String variant = "facing=" + f.getName();
 			final ModelResourceLocation loc = new ModelResourceLocation(ModBlocks.SHOPSHELF.getRegistryName(), variant);

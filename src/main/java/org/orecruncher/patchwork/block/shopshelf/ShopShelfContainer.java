@@ -196,7 +196,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 		if (!this.asOwner)
 			return ItemStack.EMPTY;
 
-		ItemStack stack = null;
+		ItemStack stack = ItemStack.EMPTY;
 		final Slot slot = this.inventorySlots.get(slotIndex);
 
 		// null checks and checks if the item can be stacked (maxStackSize > 1)
@@ -209,12 +209,12 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 			// inventory.
 			if (slotIndex >= INVENTORY_SLOT_START && slotIndex < ShopShelfStackHandler.TOTAL_SLOTS) {
 				if (!mergeToPlayerInventory(stackInSlot)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (slotIndex >= ShopShelfStackHandler.TOTAL_SLOTS) {
 				// Try moving to the input slot
 				if (!mergeItemStack(stackInSlot, INVENTORY_SLOT_START, TOTAL_SLOTS, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			}
 
@@ -225,7 +225,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 
 			// Nothing changed
 			if (stackInSlot.getCount() == stack.getCount()) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 		}
 

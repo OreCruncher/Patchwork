@@ -101,7 +101,7 @@ public class ContainerBase<T extends TileEntityContainerBase> extends Container 
 		}
 
 		if (mouseButton == 2) {
-			fillPhantomSlot(slot, null, mouseButton, modifier);
+			fillPhantomSlot(slot, ItemStack.EMPTY, mouseButton, modifier);
 		} else if (mouseButton == 0 || mouseButton == 1) {
 			final InventoryPlayer playerInv = player.inventory;
 

@@ -29,7 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class ItemStackKey {
-	
+
 	private final static int TERM = 3079;
 
 	private Item item;
@@ -37,16 +37,16 @@ public final class ItemStackKey {
 	private int hash;
 
 	// The cached key is used by the various framework routines where a temporary
-	// key is generated just to index an internal table.  It's thread local so
-	// there should be no collision.  They key should not be cached or used in
+	// key is generated just to index an internal table. It's thread local so
+	// there should be no collision. They key should not be cached or used in
 	// an index - unpredictable results will occur.
 	private static final ThreadLocal<ItemStackKey> cachedKey = new ThreadLocal<ItemStackKey>() {
-        @Override
+		@Override
 		protected ItemStackKey initialValue() {
-            return new ItemStackKey();
-        }
+			return new ItemStackKey();
+		}
 	};
-	
+
 	public static ItemStackKey getCachedKey(final ItemStack stack) {
 		final ItemStackKey key = cachedKey.get();
 		key.item = stack.getItem();
@@ -72,7 +72,7 @@ public final class ItemStackKey {
 		this.meta = 0;
 		this.hash = 0;
 	}
-	
+
 	public ItemStackKey(final Item item, final int meta) {
 		this.item = item;
 		this.meta = meta;
@@ -85,17 +85,19 @@ public final class ItemStackKey {
 
 	@Override
 	public int hashCode() {
-		return hash;
+		return this.hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
+		if (obj == null)
+			return false;
 		final ItemStackKey key = (ItemStackKey) obj;
 		return this.item == key.item && this.meta == key.meta;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s:%d", item.toString(), meta);
+		return String.format("%s:%d", this.item.toString(), this.meta);
 	}
 }
