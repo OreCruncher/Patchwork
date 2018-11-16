@@ -2,6 +2,12 @@
 	"_comment": [
 		"Repair tools using repair paste"
 	],
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "toolrepair"
+		}
+	],
 	"type": "patchwork:toolrepair",
 	"group": "patchwork:toolrepair",
 	"ingredients": [

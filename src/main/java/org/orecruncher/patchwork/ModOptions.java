@@ -27,6 +27,7 @@ package org.orecruncher.patchwork;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
+import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
@@ -35,68 +36,136 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = ModInfo.MOD_ID)
-@Config(modid = ModInfo.MOD_ID, type = Type.INSTANCE, name = ModInfo.MOD_ID)
+@Config(modid = ModInfo.MOD_ID, type = Type.INSTANCE, name = ModInfo.MOD_ID, category = "")
 public class ModOptions {
 
-	@LangKey("config.patchwork.logging")
+	private static final String PREFIX = "config." + ModInfo.MOD_ID;
+
+	@Name("Logging")
+	@Comment("Options to control logging")
+	@LangKey(Logging.PREFIX)
 	public static Logging logging = new Logging();
 
-	@LangKey("config.patchwork.mobnet")
-	public static MobNet mobnet = new MobNet();
-
-	@LangKey("config.patchwork.features")
-	public static Features features = new Features();
-	
-	@LangKey("config.patchwork.furnace")
-	public static Furnace furnace = new Furnace();
-	
-	@LangKey("config.patchwork.coins")
-	public static Coins coins = new Coins();
-
 	public static class Logging {
-		@LangKey("config.patchwork.logging.enableLogging")
+
+		private static final String PREFIX = ModOptions.PREFIX + ".logging";
+
+		@LangKey(PREFIX + ".enableLogging")
 		@Comment({ "Enables debug logging output for diagnostics" })
 		public boolean enableLogging = false;
 
-		@LangKey("config.patchwork.logging.enableVersionCheck")
+		@LangKey(PREFIX + ".enableVersionCheck")
 		@Comment({ "Enables display of chat messages related to newer versions", "of the mod being available." })
 		public boolean enableVersionCheck = true;
 	}
 
-	public static class MobNet {
-		@LangKey("config.patchwork.mobnet.enableVillagerCapture")
+	@Name("Recipes")
+	@Comment("Options to control recipes")
+	@LangKey(Recipes.PREFIX)
+	public static Recipes recipes = new Recipes();
+
+	public static class Recipes {
+
+		private static final String PREFIX = ModOptions.PREFIX + ".recipes";
+
+		@LangKey(PREFIX + ".enableCoins")
+		@Comment({ "Enable Coin recipes" })
+		@RequiresMcRestart
+		public boolean enableCoins = true;
+
+		@LangKey(PREFIX + ".enableMobnet")
+		@Comment({ "Enable Mobnet recipe" })
+		@RequiresMcRestart
+		public boolean enableMobnet = true;
+
+		@LangKey(PREFIX + ".enableFurnace")
+		@Comment({ "Enables 3D Furnace recipe" })
+		@RequiresMcRestart
+		public boolean enableFurnace = true;
+
+		@LangKey(PREFIX + ".enableShopShelf")
+		@Comment({ "Enables Shop Shelf recipe" })
+		@RequiresMcRestart
+		public boolean enableShopShelf = true;
+
+		@LangKey(PREFIX + ".enableTools")
+		@Comment({ "Enables Set of Tools recipe" })
+		@RequiresMcRestart
+		public boolean enableTools = true;
+
+		@LangKey(PREFIX + ".enableToolRepair")
+		@Comment({ "Enables Tool Repair recipe" })
+		@RequiresMcRestart
+		public boolean enableToolRepair = true;
+	}
+
+	@Name("Mobnet")
+	@Comment("Options to control the Mobnet")
+	@LangKey(Mobnet.PREFIX)
+	public static Mobnet mobnet = new Mobnet();
+
+	public static class Mobnet {
+
+		private static final String PREFIX = ModOptions.PREFIX + ".mobnet";
+
+		@LangKey(PREFIX + ".enableVillagerCapture")
 		@Comment({ "Enable/disable use of the Mob Net on Villagers" })
 		public boolean enableVillagerCapture = false;
 
-		@LangKey("config.patchwork.mobnet.enableHostileCapture")
+		@LangKey(PREFIX + ".enableHostileCapture")
 		@Comment({ "Enable/diable use of the Mob Net on hostile entities" })
 		public boolean enableHostileCapture = false;
 
-		@LangKey("config.patchwork.mobnet.reusable")
+		@LangKey(PREFIX + ".reusable")
 		@Comment({ "Enable/disable reuse of Mob Nets" })
 		public boolean reusable = true;
 	}
-	
+
+	@Name("Features")
+	@Comment("Options to control various functions")
+	@LangKey(Features.PREFIX)
+	public static Features features = new Features();
+
+	public static class Features {
+
+		private static final String PREFIX = ModOptions.PREFIX + ".features";
+
+		@LangKey(PREFIX + ".nodropsfromspawnermobs")
+		@Comment({ "Enable/disable scrubbing drops from mobs that come from spawners" })
+		public boolean noDropsFromSpawnerMobs = true;
+	}
+
+	@Name("Furnace")
+	@Comment("Options to control the 3D Furnace")
+	@LangKey(Furnace.PREFIX)
+	public static Furnace furnace = new Furnace();
+
 	public static class Furnace {
-		@LangKey("config.patchwork.furnace.enableImmersiveInteraction")
+
+		private static final String PREFIX = ModOptions.PREFIX + ".furnace";
+
+		@LangKey(PREFIX + ".enableImmersiveInteraction")
 		@Comment({ "Enable/disable immersive interaction with the 3D furnace" })
 		public boolean immersiveInteraction = true;
 	}
-	
+
+	@Name("Coins")
+	@Comment("Options to control Coins")
+	@LangKey(Coins.PREFIX)
+	public static Coins coins = new Coins();
+
 	public static class Coins {
-		@LangKey("config.patchwork.coins.spawnasloot")
+
+		private static final String PREFIX = ModOptions.PREFIX + ".coins";
+
+		@LangKey(PREFIX + ".spawnasloot")
 		@Comment({ "Enable/disable generation of coins in dungeon chests" })
 		@RequiresMcRestart
 		public boolean spawnAsLoot = true;
-		@LangKey("config.patchwork.coins.mobsdropcoins")
+
+		@LangKey(PREFIX + ".mobsdropcoins")
 		@Comment({ "Enable/disable dropping of coins from mobs" })
 		public boolean mobsDropCoins = true;
-	}
-
-	public static class Features {
-		@LangKey("config.patchwork.features.nodropsfromspawnermobs")
-		@Comment({ "Enable/disable scrubbing drops from mobs that come from spawners" })
-		public boolean noDropsFromSpawnerMobs = true;
 	}
 
 	@SubscribeEvent

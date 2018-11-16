@@ -1,5 +1,11 @@
 {
 	"type": "minecraft:crafting_shaped",
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "shopshelf"
+		}
+	],
 	"pattern": [
 		"sss",
 		"sss",

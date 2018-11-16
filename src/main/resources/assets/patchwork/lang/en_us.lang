@@ -7,9 +7,9 @@ patchwork.msg.NewVersion=["§6Update Available: §9[",{"text":"§2%1$s §ev%2$s�
 
 # Metadata Updates
 patchwork.metadata.Name=§3Patchwork
-patchwork.metadata.Credits=§cNetHack, Rogue, etc.§r
+patchwork.metadata.Credits=\n\n§6spAnser§r for §23D Furnace§r\n§6OreCruncher§r for §2ShopShelf§r\n\n
 patchwork.metadata.Authors=§aOreCruncher§r
-patchwork.metadata.Description=Adds miscellaneous items and functions that can be used in an adventure centric modpack
+patchwork.metadata.Description=Adds miscellaneous items and functions for integrated modpacks
 
 # Configuration
 config.patchwork.title=Patchwork Configuration
@@ -20,6 +20,21 @@ config.patchwork.logging.enableLogging=Enable Debug Trace
 config.patchwork.logging.enableLogging.tooltip=Enable/Disable debug trace output to the Forge log
 config.patchwork.logging.enableVersionCheck=Enable Version Check
 config.patchwork.logging.enableVersionCheck.tooltip=Enable/Disable message related to a newer version of the mod being available
+
+config.patchwork.recipes=Recipes
+config.patchwork.recipes.tooltip=Enable/Disable Recipes
+config.patchwork.recipes.enableCoins=Enable Coin recipes
+config.patchwork.recipes.enableCoins.tooltip=Enable/disable crafting of coin tiers
+config.patchwork.recipes.enableMobnet=Enable Mobnet recipe
+config.patchwork.recipes.enableMobnet.tooltip=Enable/disable crafting of the Mobnet
+config.patchwork.recipes.enableFurnace=Enable 3D Furnace recipe
+config.patchwork.recipes.enableFurnace.tooltip=Enable/disable crafting of the 3D Furnace
+config.patchwork.recipes.enableShopShelf=Enable Shop Shelf recipe
+config.patchwork.recipes.enableShopShelf.tooltip=Enable/disable crafting of the Shop Shelf
+config.patchwork.recipes.enableTools=Enable Set of Tools recipe
+config.patchwork.recipes.enableTools.tooltip=Enable/disable crafting of the Set of Tools
+config.patchwork.recipes.enableToolRepair=Enable Tool Repair recipe
+config.patchwork.recipes.enableToolRepair.tooltip=Enable/disable tool repair recipe
 
 config.patchwork.mobnet=Mob Net
 config.patchwork.mobnet.tooltip=Mob Net options

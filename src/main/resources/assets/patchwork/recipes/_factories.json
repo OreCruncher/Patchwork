@@ -1,5 +1,8 @@
 {
 	"recipes": {
 		"toolrepair": "org.orecruncher.patchwork.recipe.ToolRepairRecipe$Factory"
+	},
+	"conditions": {
+		"isenabled": "org.orecruncher.patchwork.recipe.EnableDisableCondition$Factory"
 	}
 }
