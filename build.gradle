@@ -8,7 +8,13 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'eclipse'
 apply from: 'configuration.gradle'
+
+import org.gradle.plugins.ide.eclipse.model.AbstractClasspathEntry
+import org.gradle.plugins.ide.eclipse.model.ProjectDependency
+
+def localOreLib = true
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
@@ -22,49 +28,12 @@ minecraft {
 }
 
 repositories {
-
-    maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven/"
-    }
-    
-    maven {
-        name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
-    }
-    
-    maven {
-        url "http://dvs1.progwml6.com/files/maven"
-    }
-    
-    maven {
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
-    
-    maven {
-        name "Foxiehost"
-        url "http://maven.foxiehost.eu"
-    }
-	
-    maven {
-    	name "Chisel"
-    	url "http://maven.tterrag.com"
-    }
-    
-    maven {
-		url 'https://repo.elytradev.com/'
-	}
-	
-	maven {
-        name = "thiakil"
-        url = "http://maven.thiakil.com"
-    }
-    
-    maven { // TOP
-	    name 'tterrag maven'
-	    url "http://maven.tterrag.com/"
-	}
+    maven { url = "http://chickenbones.net/maven/" }
+    maven { url = "http://maven.covers1624.net" }			// CoFH
+    maven { url = "http://dvs1.progwml6.com/files/maven" }	// mezz
+    maven {	url = "http://maven.tterrag.com" }				// Chisel
+    maven { url = "https://repo.elytradev.com/" }
+	maven { url = "http://maven.thiakil.com" }
 }
 
 dependencies {
@@ -99,8 +68,9 @@ processResources
     }
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+task sourcesJar(type: Jar) {
     description = 'Creates a JAR containing the source code.'
+	dependsOn classes
     from sourceSets.main.allSource
     classifier = 'sources'
 }
@@ -111,25 +81,27 @@ task deobfJar(type: Jar) {
     classifier = "deobf"
 }
 
-//Adds the artifact types added by this script to the actual artifacts list.
-artifacts {
-    archives sourcesJar
-    archives deobfJar
-}
-
 // https://gist.github.com/matthewprenger/9b2da059b89433a01c1c
-task signJar(type: SignJar, dependsOn: reobfJar) {
+task signJar(type: SignJar) {
 
     onlyIf { // Skip the task if our secret data isn't available
         project.hasProperty('keyStore')
     }
 
+	dependsOn reobfJar
+    
     keyStore = project.keyStore // This needs to be a path to the keystore file
     alias = project.keyStoreAlias
     storePass = project.keyStorePass
     keyPass = project.keyStoreKeyPass
     inputFile = jar.archivePath
     outputFile = jar.archivePath
+}
+
+//Adds the artifact types added by this script to the actual artifacts list.
+artifacts {
+    archives sourcesJar
+    archives deobfJar
 }
 
 signJar.dependsOn build
