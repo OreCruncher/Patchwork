@@ -31,8 +31,8 @@ public final class ModInfo {
 	public static final String VERSION = "@VERSION@";
 	public static final String MINECRAFT_VERSIONS = "[1.12.2,)";
 	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);required-after:orelib@[3.5,)";
-	public static final String UPDATE_URL = "https://raw.githubusercontent.com/OreCruncher/Patchwork/master/version.json";
-	public static final String FINGERPRINT = "7a2128d395ad96ceb9d9030fbd41d035b435753a";
+	public static final String UPDATE_URL = "@UPDATEURL@";
+	public static final String FINGERPRINT = "@FINGERPRINT@";
 
 	private ModInfo() {
 
