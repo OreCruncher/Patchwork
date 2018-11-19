@@ -43,8 +43,8 @@ allprojects {
 
 	dependencies {
 	    //compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2402:deobf"
-	    deobfCompile "mezz.jei:jei_1.12.2:4.12.1.217:api"
-	    runtime "mezz.jei:jei_1.12.2:4.12.1.217"
+	    deobfCompile "mezz.jei:jei_1.12.2:4.13.1.224:api"
+	    runtime "mezz.jei:jei_1.12.2:4.13.1.224"
 	    deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
 		deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 	    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.20-12"
@@ -108,7 +108,16 @@ allprojects {
 
 minecraft {
 	if (project.ext.has('secrets')) {
-    	clientRunArgs = ["--uuid ${secrets.uuid}", "--username ${secrets.username}"]
+		if (secrets.uuid != null)
+    		clientRunArgs += ["--uuid ${secrets.uuid}"]
+    	if (secrets.username != null)
+    		clientRunArgs += ["--username ${secrets.username}"]
+    	if (secrets.password != null)
+    		clientRunArgs += ["--password ${secrets.password}"]
+    	if (secrets.jvmArgs != null) {
+    		clientJvmArgs += secrets.jvmArgs
+    		serverJvmArgs += secrets.jvmArgs
+    	}
     }
 }
 
