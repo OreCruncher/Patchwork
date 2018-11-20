@@ -26,13 +26,17 @@ package org.orecruncher.patchwork.world.event;
 
 import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.ModOptions;
+import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.ModOptions;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /*
@@ -46,23 +50,28 @@ public class SpawnerDropPurge {
 	/*
 	 * Tag a mob when it is spawned by a spawner
 	 */
-	@SubscribeEvent(receiveCanceled = false)
-	public static void onSpecialSpawn(@Nonnull final LivingSpawnEvent.SpecialSpawn event) {
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void checkSpawn(@Nonnull final LivingSpawnEvent.CheckSpawn event) {
 		if (!ModOptions.features.noDropsFromSpawnerMobs)
 			return;
 
-		if (event.getSpawner() != null)
+		if (event.getSpawner() != null && event.getResult() != Result.DENY) {
 			event.getEntity().getTags().add(spawnTag);
+		}
 	}
 
 	/*
 	 * If a mob dies, check it's tag. If it was spawned by a spawner cancel the
 	 * event.
 	 */
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingDrops(@Nonnull final LivingDropsEvent event) {
-		if (event.getEntity().getTags().contains(spawnTag))
+		if (event.getEntity().getTags().contains(spawnTag)) {
+			final Entity entity = event.getEntity();
+			ModBase.log().debug("Cancelling drops for entity [%s/%d]", entity.getName(), entity.getEntityId());
+			event.setResult(Result.DENY);
 			event.setCanceled(true);
+		}
 	}
 
 }
