@@ -90,6 +90,7 @@ item.patchwork.wing_speed.name=Speedy Wing
 item.patchwork.mobnet.name=Mob Net
 item.patchwork.repairpaste.name=Repair Paste
 item.patchwork.tools.name=Set of Tools
+item.patchwork.magnet.name=Item Magnet
 
 # Blocks
 tile.patchwork.furnace.name=Furnace

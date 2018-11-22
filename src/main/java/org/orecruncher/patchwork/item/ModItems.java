@@ -34,6 +34,7 @@ public class ModItems {
 	public static final Item COIN = new ItemCoin();
 	public static final Item MOB_NET = new ItemMobNet();
 	public static final Item TOOLS = new ItemTools();
+	public static final Item MAGNET = new ItemMagnet();
 	public static final Item RING_OF_FLIGHT = new ItemRingOfFlight();
 	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(ModCreativeTab.tab);
 	
