@@ -121,6 +121,13 @@ minecraft {
     }
 }
 
+jar {
+    // Add CREDITS.md
+    into('/') {
+        from('CREDITS.md')
+    }
+}
+
 //Adds the artifact types added by this script to the actual artifacts list.
 artifacts {
     archives sourcesJar
