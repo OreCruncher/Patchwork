@@ -31,10 +31,8 @@ import org.orecruncher.patchwork.item.ItemRingOfFlight;
 import org.orecruncher.patchwork.item.ItemRingOfFlight.Variant;
 
 import baubles.api.BaubleType;
-import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import baubles.api.cap.BaublesCapabilities;
-import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,8 +44,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class RingOfFlightBaubleData implements IBauble {
 
 	private static final float DEFAULT_FLY_SPEED = 0.05F;
-	private static final int RINGSLOT1 = 1;
-	private static final int RINGSLOT2 = 2;
 
 	@Override
 	@Nonnull
@@ -73,7 +69,7 @@ public class RingOfFlightBaubleData implements IBauble {
 	public void onEquipped(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase entity) {
 		if (entity.getEntityWorld().isRemote)
 			return;
-		
+
 		final EntityPlayer player = (EntityPlayer) entity;
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
 		if (caps != null && caps.getVariant() != Variant.CORE) {
@@ -105,9 +101,7 @@ public class RingOfFlightBaubleData implements IBauble {
 
 	@Override
 	public boolean canEquip(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase entity) {
-		final EntityPlayer player = (EntityPlayer) entity;
-		final IBaublesItemHandler h = BaublesApi.getBaublesHandler(player);
-		return h != null && !isRingEquiped(h, player, RINGSLOT1) && !isRingEquiped(h, player, RINGSLOT2);
+		return ItemRingOfFlight.getActiveRing((EntityPlayer) entity).isEmpty();
 	}
 
 	@Override
@@ -118,12 +112,6 @@ public class RingOfFlightBaubleData implements IBauble {
 	@Override
 	public boolean willAutoSync(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase entity) {
 		return false;
-	}
-
-	private boolean isRingEquiped(@Nonnull final IBaublesItemHandler handler, @Nonnull final EntityPlayer player,
-			final int slot) {
-		final ItemStack stack = handler.getStackInSlot(slot);
-		return stack.getItem() instanceof ItemRingOfFlight;
 	}
 
 	@Nonnull

@@ -32,6 +32,8 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.item.ringofflight.LayerWings;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -62,6 +64,8 @@ public class ClientSupport extends SideSupport {
 	@Override
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
 		super.postInit(event);
+		
+		LayerWings.initialize();
 
 		// Fancify our mod config info page
 		final ModMetadata data = org.orecruncher.lib.ForgeUtils.getModMetadata(ModInfo.MOD_ID);

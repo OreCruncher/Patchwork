@@ -38,8 +38,11 @@ import org.orecruncher.patchwork.item.ringofflight.CapabilityRingOfFlight;
 import org.orecruncher.patchwork.item.ringofflight.IRingOfFlight;
 import org.orecruncher.patchwork.item.ringofflight.IRingOfFlightSettable;
 
+import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
@@ -56,6 +59,8 @@ public class ItemRingOfFlight extends ItemBase {
 
 	// Don't forget recipes if this is changed!
 	private static final int BASE_DURABILITY = 1000;
+	private static final int RINGSLOT1 = 1;
+	private static final int RINGSLOT2 = 2;
 
 	private static final ResourceLocation VARIANT_GETTER_ID = new ResourceLocation(ModInfo.MOD_ID, "rof_variant");
 	private static final IItemPropertyGetter VARIANT_GETTER = new IItemPropertyGetter() {
@@ -121,9 +126,21 @@ public class ItemRingOfFlight extends ItemBase {
 		final IRingOfFlight caps = CapabilityRingOfFlight.getCapability(stack);
 		return caps != null ? caps.getVariant().getRarity() : EnumRarity.COMMON;
 	}
-	
+
+	@Nonnull
+	public static ItemStack getActiveRing(@Nonnull final EntityPlayer player) {
+		final IBaublesItemHandler h = BaublesApi.getBaublesHandler(player);
+		ItemStack stack = h.getStackInSlot(RINGSLOT1);
+		if (stack.getItem() instanceof ItemRingOfFlight)
+			return stack;
+		stack = h.getStackInSlot(RINGSLOT2);
+		if (stack.getItem() instanceof ItemRingOfFlight)
+			return stack;
+		return ItemStack.EMPTY;
+	}
+
 	/*
-	 * Used to make the ring inert.  Happens when the ring runs out of juice.
+	 * Used to make the ring inert. Happens when the ring runs out of juice.
 	 */
 	public void makeInert(@Nonnull final ItemStack stack) {
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
@@ -157,7 +174,7 @@ public class ItemRingOfFlight extends ItemBase {
 			}
 		}
 	}
-	
+
 	private static class NBT {
 		public static final String RING_DATA = "rof_data";
 	}
