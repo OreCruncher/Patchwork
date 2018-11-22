@@ -35,6 +35,8 @@ config.patchwork.recipes.enableTools=Enable Set of Tools recipe
 config.patchwork.recipes.enableTools.tooltip=Enable/disable crafting of the Set of Tools
 config.patchwork.recipes.enableToolRepair=Enable Tool Repair recipe
 config.patchwork.recipes.enableToolRepair.tooltip=Enable/disable tool repair recipe
+config.patchwork.recipes.enableRingOfFlight=Enable Ring of Flight recipes
+config.patchwork.recipes.enableRingOfFlight.tooltip=Enable/disable the various Ring of Flight recipes
 
 config.patchwork.mobnet=Mob Net
 config.patchwork.mobnet.tooltip=Mob Net options

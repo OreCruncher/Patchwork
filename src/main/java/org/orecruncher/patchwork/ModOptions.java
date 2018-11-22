@@ -95,8 +95,12 @@ public class ModOptions {
 
 		@LangKey(PREFIX + ".enableToolRepair")
 		@Comment({ "Enables Tool Repair recipe" })
-		@RequiresMcRestart
 		public boolean enableToolRepair = true;
+	
+		@LangKey(PREFIX + ".enableRingOfFlight")
+		@Comment({ "Enables Ring of Flight recipes" })
+		@RequiresMcRestart
+		public boolean enableRingOfFlight = true;
 	}
 
 	@Name("Mobnet")
