@@ -30,7 +30,7 @@ public final class ModInfo {
 	public static final String MOD_NAME = "Patchwork";
 	public static final String VERSION = "@VERSION@";
 	public static final String MINECRAFT_VERSIONS = "[1.12.2,)";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);required-after:orelib@[3.5,)";
+	public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);required-after:orelib@[3.5,);required-after:baubles@[1.5.2,)";
 	public static final String UPDATE_URL = "@UPDATEURL@";
 	public static final String FINGERPRINT = "@FINGERPRINT@";
 

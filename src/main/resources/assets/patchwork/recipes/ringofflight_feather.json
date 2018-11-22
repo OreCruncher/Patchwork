@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "ringofflight"
+		}
+	],
+	"pattern": [
+		" d ",
+		"wrw",
+		" p "
+	],
+	"key": {
+		"d": {
+			"item": "minecraft:diamond"
+		},
+		"w": {
+			"item": "patchwork:wing_feather"
+		},
+		"p": {
+			"item": "minecraft:ender_pearl"
+		},
+		"r": {
+			"type": "minecraft:item_nbt",
+			"item": "patchwork:ringofflight",
+			"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:0,cd:0}}}"
+		}
+	},
+	"result": {
+		"type": "minecraft:item_nbt",
+		"item": "patchwork:ringofflight",
+		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:1,cd:25000}}}",
+		"count": 1
+	}
+}

@@ -61,6 +61,8 @@ public class EnableDisableCondition {
 					return ModOptions.recipes.enableTools ? TRUE : FALSE;
 				case "toolrepair":
 					return (ModOptions.recipes.enableToolRepair && ModOptions.recipes.enableTools) ? TRUE : FALSE;
+				case "ringofflight":
+					return TRUE;
 				default:
 					ModBase.log().warn("Unknown recipe option [%s]", option);
 					break;

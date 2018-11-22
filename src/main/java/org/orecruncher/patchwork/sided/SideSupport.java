@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.orecruncher.patchwork.ModBase;
+import org.orecruncher.patchwork.item.ringofflight.CapabilityRingOfFlight;
 import org.orecruncher.patchwork.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.GuiHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
@@ -63,7 +64,7 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
-		// Intentionally blank
+		CapabilityRingOfFlight.register();
 	}
 
 	/**

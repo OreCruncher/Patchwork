@@ -21,29 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.orecruncher.patchwork.item.ringofflight;
 
-package org.orecruncher.patchwork.network;
+import javax.annotation.Nonnull;
 
-import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.item.ItemRingOfFlight.Variant;
 
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+public interface IRingOfFlightSettable extends IRingOfFlight {
 
-public class NetworkHandler {
-	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ModInfo.MOD_ID);
-
-	private static int msgId = 1;
-
-	public static void init() {
-		registerMessage(PacketRingOfFlight.Handler.class, PacketRingOfFlight.class, Side.CLIENT);
-	}
-
-	private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(
-			Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType,
-			Side receivingSide) {
-		INSTANCE.registerMessage(messageHandler, requestMessageType, msgId++, receivingSide);
-	}
+	boolean isDirty();
+	
+	void clearDirty();
+	
+	void setVariant(@Nonnull final Variant v);
+	
+	void setDurability(final int dmg);
+	
+	boolean damage(final int dmg);
 }

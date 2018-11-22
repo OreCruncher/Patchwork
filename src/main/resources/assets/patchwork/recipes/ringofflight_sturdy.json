@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "ringofflight"
+		}
+	],
+	"pattern": [
+		" d ",
+		"wrw",
+		" p "
+	],
+	"key": {
+		"d": {
+			"item": "minecraft:emerald"
+		},
+		"w": {
+			"item": "patchwork:wing_sturdy"
+		},
+		"p": {
+			"item": "minecraft:ender_eye"
+		},
+		"r": {
+			"type": "minecraft:item_nbt",
+			"item": "patchwork:ringofflight",
+			"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:0,cd:0}}}"
+		}
+	},
+	"result": {
+		"type": "minecraft:item_nbt",
+		"item": "patchwork:ringofflight",
+		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:2,cd:75000}}}",
+		"count": 1
+	}
+}

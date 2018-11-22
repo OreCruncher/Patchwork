@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "ringofflight"
+		}
+	],
+	"pattern": [
+		"ff ",
+		" ff",
+		"f  "
+	],
+	"key": {
+		"f": {
+			"item": "minecraft:feather"
+		}
+	},
+	"result": {
+		"item": "patchwork:wing_feather",
+		"count": 1
+	}
+}

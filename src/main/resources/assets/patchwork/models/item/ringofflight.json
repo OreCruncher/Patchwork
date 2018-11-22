@@ -1,0 +1,38 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "patchwork:items/ringofflight/ring_core"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"patchwork:rof_variant": 0
+			},
+			"model": "patchwork:item/ringofflight/core"
+		},
+		{
+			"predicate": {
+				"patchwork:rof_variant": 1
+			},
+			"model": "patchwork:item/ringofflight/feather"
+		},
+		{
+			"predicate": {
+				"patchwork:rof_variant": 2
+			},
+			"model": "patchwork:item/ringofflight/sturdy"
+		},
+		{
+			"predicate": {
+				"patchwork:rof_variant": 3
+			},
+			"model": "patchwork:item/ringofflight/obsidian"
+		},
+		{
+			"predicate": {
+				"patchwork:rof_variant": 4
+			},
+			"model": "patchwork:item/ringofflight/speed"
+		}
+	]
+}

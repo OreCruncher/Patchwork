@@ -75,6 +75,17 @@ item.patchwork.coin_silver.name=Silver Coin
 item.patchwork.coin_gold.name=Gold Coin
 item.patchwork.coin_platinum.name=Platinum Coin
 
+# Ring of Flight
+item.patchwork.ringofflight.core=Flight Core
+item.patchwork.ringofflight.feather=Avian Leg Ring Band
+item.patchwork.ringofflight.sturdy=Stout Ring of Flight
+item.patchwork.ringofflight.obsidian=Ring of Methodical Flight
+item.patchwork.ringofflight.speed=Ring of the Zephyr
+item.patchwork.wing_feather.name=Feather Wing
+item.patchwork.wing_obsidian.name=Obsidian Wing
+item.patchwork.wing_sturdy.name=Sturdy Wing
+item.patchwork.wing_speed.name=Speedy Wing
+
 # Miscellaneous Items
 item.patchwork.mobnet.name=Mob Net
 item.patchwork.repairpaste.name=Repair Paste

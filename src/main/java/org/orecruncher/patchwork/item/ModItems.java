@@ -33,8 +33,15 @@ public class ModItems {
 	//@formatter:off
 	public static final Item COIN = new ItemCoin();
 	public static final Item MOB_NET = new ItemMobNet();
-	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(ModCreativeTab.tab);
 	public static final Item TOOLS = new ItemTools();
+	public static final Item RING_OF_FLIGHT = new ItemRingOfFlight();
+	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(ModCreativeTab.tab);
+	
+	// Material
+	public static final Item WING_FEATHER = new ItemBase("wing_feather").setCreativeTab(ModCreativeTab.tab);
+	public static final Item WING_OBSIDIAN = new ItemBase("wing_obsidian").setCreativeTab(ModCreativeTab.tab);
+	public static final Item WING_SPEED = new ItemBase("wing_speed").setCreativeTab(ModCreativeTab.tab);
+	public static final Item WING_STURDY = new ItemBase("wing_sturdy").setCreativeTab(ModCreativeTab.tab);
 	//@formatter:on
 
 	public static void initialize() {
