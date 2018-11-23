@@ -59,32 +59,32 @@ public class ModOptions {
 		public boolean enableVersionCheck = true;
 	}
 
-	@Name("Recipes")
-	@Comment("Options to control recipes")
-	@LangKey(Recipes.PREFIX)
-	public static Recipes recipes = new Recipes();
+	@Name("Items")
+	@Comment("Options to control item items and loot tables")
+	@LangKey(Items.PREFIX)
+	public static Items items = new Items();
 
-	public static class Recipes {
+	public static class Items {
 
-		private static final String PREFIX = ModOptions.PREFIX + ".recipes";
+		private static final String PREFIX = ModOptions.PREFIX + ".items";
 
 		@LangKey(PREFIX + ".enableCoins")
-		@Comment({ "Enable Coin recipes" })
+		@Comment({ "Enable Coins" })
 		@RequiresMcRestart
 		public boolean enableCoins = true;
 
 		@LangKey(PREFIX + ".enableMobnet")
-		@Comment({ "Enable Mobnet recipe" })
+		@Comment({ "Enable Mobnet" })
 		@RequiresMcRestart
 		public boolean enableMobnet = true;
 
 		@LangKey(PREFIX + ".enableFurnace")
-		@Comment({ "Enables 3D Furnace recipe" })
+		@Comment({ "Enable 3D Furnace" })
 		@RequiresMcRestart
 		public boolean enableFurnace = true;
 
 		@LangKey(PREFIX + ".enableShopShelf")
-		@Comment({ "Enables Shop Shelf recipe" })
+		@Comment({ "Enables Shop Shelf" })
 		@RequiresMcRestart
 		public boolean enableShopShelf = true;
 
@@ -93,14 +93,20 @@ public class ModOptions {
 		@RequiresMcRestart
 		public boolean enableTools = true;
 
-		@LangKey(PREFIX + ".enableToolRepair")
-		@Comment({ "Enables Tool Repair recipe" })
-		public boolean enableToolRepair = true;
-	
 		@LangKey(PREFIX + ".enableRingOfFlight")
-		@Comment({ "Enables Ring of Flight recipes" })
+		@Comment({ "Enables Ring of Flight" })
 		@RequiresMcRestart
 		public boolean enableRingOfFlight = true;
+
+		@LangKey(PREFIX + ".enableMagnet")
+		@Comment({ "Enables Item Magnet" })
+		@RequiresMcRestart
+		public boolean enableItemMagnet = true;
+
+		@LangKey(PREFIX + ".enableToolRepair")
+		@Comment({ "Enables Tool Repair" })
+		@RequiresMcRestart
+		public boolean enableToolRepair = true;
 	}
 
 	@Name("Mobnet")
@@ -137,6 +143,11 @@ public class ModOptions {
 		@LangKey(PREFIX + ".nodropsfromspawnermobs")
 		@Comment({ "Enable/disable scrubbing drops from mobs that come from spawners" })
 		public boolean noDropsFromSpawnerMobs = true;
+		
+		@LangKey(PREFIX + ".renderwings")
+		@Comment({ "Enable/disable rendering of wings for Ring Of Flight" })
+		@RequiresMcRestart
+		public boolean renderWings = true;
 	}
 
 	@Name("Furnace")

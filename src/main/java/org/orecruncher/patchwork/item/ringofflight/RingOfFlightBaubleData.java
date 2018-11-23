@@ -55,13 +55,18 @@ public class RingOfFlightBaubleData implements IBauble {
 	public void onWornTick(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase entity) {
 		final EntityPlayer player = (EntityPlayer) entity;
 		final World world = player.getEntityWorld();
-		if (world.isRemote || player.capabilities.isCreativeMode || !player.capabilities.isFlying)
+		if (world.isRemote)
 			return;
 
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
-		if (caps != null && caps.getVariant() != Variant.CORE && !caps.damage(1)) {
-			onUnequipped(stack, player);
-			((ItemRingOfFlight) (stack.getItem())).makeInert(stack);
+		if (caps != null && caps.getVariant() != Variant.CORE) {
+			tagAndBag(player, caps);
+			if (player.capabilities.isCreativeMode || !player.capabilities.isFlying)
+				return;
+			if (!caps.damage(1)) {
+				onUnequipped(stack, player);
+				((ItemRingOfFlight) (stack.getItem())).makeCore(stack);
+			}
 		}
 	}
 
@@ -72,12 +77,8 @@ public class RingOfFlightBaubleData implements IBauble {
 
 		final EntityPlayer player = (EntityPlayer) entity;
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
-		if (caps != null && caps.getVariant() != Variant.CORE) {
-			player.getEntityData().setBoolean(NBT.TAG_FLIGHT, true);
-			player.capabilities.allowFlying = true;
-			player.capabilities.setFlySpeed(caps.getVariant().getSpeed());
-			player.sendPlayerAbilities();
-		}
+		if (caps != null && caps.getVariant() != Variant.CORE)
+			tagAndBag(player, caps);
 	}
 
 	@Override
@@ -85,17 +86,22 @@ public class RingOfFlightBaubleData implements IBauble {
 		if (entity.getEntityWorld().isRemote)
 			return;
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
-		if (caps != null) {
+		if (caps != null && caps.getVariant() != Variant.CORE) {
 			final EntityPlayer player = (EntityPlayer) entity;
-			if (player.getEntityData().hasKey(NBT.TAG_FLIGHT)) {
-				if (!player.isCreative()) {
-					player.capabilities.isFlying = false;
-					player.capabilities.allowFlying = false;
-				}
-				player.capabilities.setFlySpeed(DEFAULT_FLY_SPEED);
-				player.sendPlayerAbilities();
-				player.getEntityData().removeTag(NBT.TAG_FLIGHT);
+			if (!player.isCreative()) {
+				player.capabilities.isFlying = false;
+				player.capabilities.allowFlying = false;
 			}
+			player.capabilities.setFlySpeed(DEFAULT_FLY_SPEED);
+			player.sendPlayerAbilities();
+		}
+	}
+
+	private void tagAndBag(@Nonnull final EntityPlayer player, @Nonnull final IRingOfFlight caps) {
+		if (!player.capabilities.allowFlying || player.capabilities.getFlySpeed() != caps.getVariant().getSpeed()) {
+			player.capabilities.allowFlying = true;
+			player.capabilities.setFlySpeed(caps.getVariant().getSpeed());
+			player.sendPlayerAbilities();
 		}
 	}
 
@@ -132,9 +138,5 @@ public class RingOfFlightBaubleData implements IBauble {
 			}
 
 		};
-	}
-
-	private static class NBT {
-		private static final String TAG_FLIGHT = "rof_flight";
 	}
 }

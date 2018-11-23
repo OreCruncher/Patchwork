@@ -6,6 +6,12 @@
 				"min": 1,
 				"max": 2
 			},
+			"conditions": [
+				{
+					"condition": "patchwork:isEnabled",
+					"option": "coins"
+				}
+			],
 			"entries": [
 				{
 					"entryName": "Bronze Coins",

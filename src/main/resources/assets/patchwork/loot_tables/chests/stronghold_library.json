@@ -15,12 +15,24 @@
 				{
 					"type": "item",
 					"name": "patchwork:ringofflight",
-					"weight": 20
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					]
 				},
 				{
 					"type": "item",
 					"name": "patchwork:wing_sturdy",
 					"weight": 10,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",
@@ -35,6 +47,12 @@
 					"type": "item",
 					"name": "patchwork:wing_speed",
 					"weight": 10,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",

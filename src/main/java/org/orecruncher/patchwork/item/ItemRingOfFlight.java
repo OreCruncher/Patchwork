@@ -57,7 +57,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 // https://github.com/spacechase0/SurvivalWings/blob/master/com/spacechase0/minecraft/wings/client/WingsModel.java
 public class ItemRingOfFlight extends ItemBase {
 
-	// Don't forget recipes if this is changed!
+	// Don't forget items if this is changed!
 	private static final int BASE_DURABILITY = 1000;
 	private static final int RINGSLOT1 = 1;
 	private static final int RINGSLOT2 = 2;
@@ -142,7 +142,7 @@ public class ItemRingOfFlight extends ItemBase {
 	/*
 	 * Used to make the ring inert. Happens when the ring runs out of juice.
 	 */
-	public void makeInert(@Nonnull final ItemStack stack) {
+	public void makeCore(@Nonnull final ItemStack stack) {
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
 		if (caps != null) {
 			caps.setVariant(Variant.CORE);

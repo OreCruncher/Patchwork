@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 import org.orecruncher.lib.math.MathStuff;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.patchwork.item.ItemRingOfFlight;
 
 import net.minecraft.client.Minecraft;
@@ -122,26 +123,26 @@ public class LayerWings implements LayerRenderer<AbstractClientPlayer> {
 		final Tessellator instance = Tessellator.getInstance();
 		final BufferBuilder b = instance.getBuffer();
 		list = GLAllocation.generateDisplayLists(2);
-		GL11.glNewList(list, GL11.GL_COMPILE);
-		GL11.glColor4f(1, 1, 1, 1);
-		GL11.glTranslatef(0.0F, -0.25F - 0.0625F, 0);
+		GlStateManager.glNewList(list, GL11.GL_COMPILE);
+		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.translate(0.0F, -0.25F - 0.0625F, 0);
 		b.begin(7, DefaultVertexFormats.POSITION_TEX);
 		b.pos(0, 0, 0).tex(0, 0).endVertex();
 		b.pos(0, 1, 0).tex(0, 1).endVertex();
 		b.pos(1, 1, 0).tex(1, 1).endVertex();
 		b.pos(1, 0, 0).tex(1, 0).endVertex();
 		instance.draw();
-		GL11.glEndList();
+		GlStateManager.glEndList();
 
-		GL11.glNewList(list + 1, GL11.GL_COMPILE);
+		GlStateManager.glNewList(list + 1, GL11.GL_COMPILE);
 		b.begin(7, DefaultVertexFormats.POSITION_TEX);
-		GL11.glTranslatef(0.0F, -0.25F - 0.0625F, 0);
+		GlStateManager.translate(0.0F, -0.25F - 0.0625F, 0);
 		b.pos(0, 0, 0).tex(0, 0).endVertex();
 		b.pos(0, 1, 0).tex(0, 1).endVertex();
 		b.pos(-1, 1, 0).tex(1, 1).endVertex();
 		b.pos(-1, 0, 0).tex(1, 0).endVertex();
 		instance.draw();
-		GL11.glEndList();
+		GlStateManager.glEndList();
 		return list;
 	}
 
@@ -159,9 +160,11 @@ public class LayerWings implements LayerRenderer<AbstractClientPlayer> {
 	}
 
 	public static void initialize() {
-		final Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
-		addLayer(skinMap.get("default"));
-		addLayer(skinMap.get("slim"));
+		if (ModOptions.items.enableRingOfFlight && ModOptions.features.renderWings) {
+			final Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
+			addLayer(skinMap.get("default"));
+			addLayer(skinMap.get("slim"));
+		}
 	}
 
 	private static void addLayer(@Nonnull final RenderPlayer rp) {

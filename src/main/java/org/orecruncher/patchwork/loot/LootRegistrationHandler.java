@@ -34,6 +34,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -59,6 +60,10 @@ public class LootRegistrationHandler {
 	//@formatter:on
 
 	public static void initialize() {
+		
+		// Conditions
+		LootConditionManager.registerCondition(new EnableDisableCondition.Serializer());
+		
 		// Tables
 		LootTableList.register(Loot.COIN_PASSIVE);
 		LootTableList.register(Loot.COIN_SPAWNER);

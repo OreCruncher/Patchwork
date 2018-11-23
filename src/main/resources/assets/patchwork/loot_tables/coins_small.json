@@ -3,6 +3,12 @@
 		{
 			"name": "coins_small",
 			"rolls": 1,
+			"conditions": [
+				{
+					"condition": "patchwork:isEnabled",
+					"option": "coins"
+				}
+			],
 			"entries": [
 				{
 					"entryName": "Copper Coins",

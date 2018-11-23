@@ -16,6 +16,12 @@
 					"type": "item",
 					"name": "patchwork:repairpaste",
 					"weight": 35,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "repairpaste"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",
@@ -28,18 +34,47 @@
 				},
 				{
 					"type": "item",
+					"name": "patchwork:magnet",
+					"weight": 15,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "magnet"
+						}
+					]
+				},
+				{
+					"type": "item",
 					"name": "patchwork:tools",
-					"weight": 20
+					"weight": 20,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "tools"
+						}
+					]
 				},
 				{
 					"type": "item",
 					"name": "patchwork:ringofflight",
-					"weight": 15
+					"weight": 15,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					]
 				},
 				{
 					"type": "item",
 					"name": "patchwork:wing_feather",
 					"weight": 7,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",
@@ -54,6 +89,12 @@
 					"type": "item",
 					"name": "patchwork:wing_obsidian",
 					"weight": 7,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",
@@ -68,6 +109,12 @@
 					"type": "item",
 					"name": "patchwork:wing_sturdy",
 					"weight": 2,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",
@@ -82,6 +129,12 @@
 					"type": "item",
 					"name": "patchwork:wing_speed",
 					"weight": 2,
+					"conditions": [
+						{
+							"condition": "patchwork:isEnabled",
+							"option": "ringofflight"
+						}
+					],
 					"functions": [
 						{
 							"function": "set_count",
