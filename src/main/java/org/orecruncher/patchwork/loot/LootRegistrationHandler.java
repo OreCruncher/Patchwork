@@ -86,7 +86,7 @@ public class LootRegistrationHandler {
 	@SubscribeEvent
 	public static void onLootTableLoadEvent(@Nonnull final LootTableLoadEvent event) {
 		if (ModOptions.coins.spawnAsLoot) {
-			ModBase.log().info("Encountered pool [%s]", event.getName().toString());
+			ModBase.log().debug("Encountered pool [%s]", event.getName().toString());
 			for (final String location : LOOT_INJECTION_LOCATIONS) {
 				if (event.getName().toString().matches(location)) {
 					final ResourceLocation t = new ResourceLocation(location);
@@ -96,7 +96,7 @@ public class LootRegistrationHandler {
 						final LootPool pool = table.getPool(ModInfo.MOD_ID);
 						if (pool != null) {
 							event.getTable().addPool(pool);
-							ModBase.log().info("Added pool [%s] to loot table [%s]",
+							ModBase.log().debug("Added pool [%s] to loot table [%s]",
 									rl.toString() + "#" + pool.getName(), location);
 						} else {
 							ModBase.log().warn("Could not find pool [%s] in loot table [%s]", ModInfo.MOD_ID,
