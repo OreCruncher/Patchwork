@@ -24,11 +24,15 @@
 
 package org.orecruncher.patchwork.loot;
 
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.ModOptions;
+
+import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootPool;
@@ -43,27 +47,26 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class LootRegistrationHandler {
 
 	//@formatter:off
-	private static final String[] LOOT_INJECTION_LOCATIONS =
-	{
-		"minecraft:chests/simple_dungeon",
-		"minecraft:chests/abandoned_mineshaft",
-		"minecraft:chests/desert_pyramid",
-		"minecraft:chests/jungle_temple",
-		"minecraft:chests/stronghold_corridor",
-		"minecraft:chests/stronghold_crossing",
-		"minecraft:chests/stronghold_library",
-		"minecraft:chests/igloo_chest",
-		"minecraft:chests/woodland_mansion",
-		"minecraft:chests/end_city_treasure",
-		"minecraft:chests/village_blacksmith"
-	};
+	private static final Set<String> LOOT_INJECTION_LOCATIONS = ImmutableSet.<String>builder()
+		.add(
+			"minecraft:chests/simple_dungeon",
+			"minecraft:chests/abandoned_mineshaft",
+			"minecraft:chests/desert_pyramid",
+			"minecraft:chests/jungle_temple",
+			"minecraft:chests/stronghold_corridor",
+			"minecraft:chests/stronghold_crossing",
+			"minecraft:chests/stronghold_library",
+			"minecraft:chests/igloo_chest",
+			"minecraft:chests/woodland_mansion",
+			"minecraft:chests/end_city_treasure",
+			"minecraft:chests/village_blacksmith"
+		).build();
 	//@formatter:on
 
 	public static void initialize() {
-		
 		// Conditions
 		LootConditionManager.registerCondition(new EnableDisableCondition.Serializer());
-		
+
 		// Tables
 		LootTableList.register(Loot.COIN_PASSIVE);
 		LootTableList.register(Loot.COIN_SPAWNER);
@@ -87,24 +90,22 @@ public class LootRegistrationHandler {
 	public static void onLootTableLoadEvent(@Nonnull final LootTableLoadEvent event) {
 		if (ModOptions.coins.spawnAsLoot) {
 			ModBase.log().debug("Encountered pool [%s]", event.getName().toString());
-			for (final String location : LOOT_INJECTION_LOCATIONS) {
-				if (event.getName().toString().matches(location)) {
-					final ResourceLocation t = new ResourceLocation(location);
-					final ResourceLocation rl = new ResourceLocation(ModInfo.MOD_ID, t.getPath());
-					final LootTable table = event.getLootTableManager().getLootTableFromLocation(rl);
-					if (table != null) {
-						final LootPool pool = table.getPool(ModInfo.MOD_ID);
-						if (pool != null) {
-							event.getTable().addPool(pool);
-							ModBase.log().debug("Added pool [%s] to loot table [%s]",
-									rl.toString() + "#" + pool.getName(), location);
-						} else {
-							ModBase.log().warn("Could not find pool [%s] in loot table [%s]", ModInfo.MOD_ID,
-									rl.toString());
-						}
+			if (LOOT_INJECTION_LOCATIONS.contains(event.getName().toString())) {
+				final ResourceLocation t = event.getName();
+				final ResourceLocation rl = new ResourceLocation(ModInfo.MOD_ID, t.getPath());
+				final LootTable table = event.getLootTableManager().getLootTableFromLocation(rl);
+				if (table != null) {
+					final LootPool pool = table.getPool(ModInfo.MOD_ID);
+					if (pool != null) {
+						event.getTable().addPool(pool);
+						ModBase.log().debug("Added pool [%s] to loot table [%s]", rl.toString() + "#" + pool.getName(),
+								t.toString());
 					} else {
-						ModBase.log().warn("Could not find loot table [%s]", rl.toString());
+						ModBase.log().warn("Could not find pool [%s] in loot table [%s]", ModInfo.MOD_ID,
+								rl.toString());
 					}
+				} else {
+					ModBase.log().warn("Could not find loot table [%s]", rl.toString());
 				}
 			}
 		}
