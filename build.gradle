@@ -14,10 +14,28 @@ if (file('secrets.properties').exists()) {
 	file('secrets.properties').withReader {secrets.load(it)}
 }
 
-allprojects {
+repositories {
+    maven { url = "http://chickenbones.net/maven/" }
+    maven { url = "http://maven.covers1624.net" }			// CoFH
+    maven { url = "http://dvs1.progwml6.com/files/maven" }	// mezz
+    maven {	url = "http://maven.tterrag.com" }				// Chisel
+    maven { url = "https://repo.elytradev.com/" }
+	maven { url = "http://maven.thiakil.com" }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
+}
 
-	apply plugin: 'net.minecraftforge.gradle.forge'
-	apply from: 'configuration.gradle'
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply from: 'configuration.gradle'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+compileJava {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+allprojects {
 
 	minecraft {
 	    runDir = "run"
@@ -27,21 +45,10 @@ allprojects {
 	    mappings = project.ext.snapshot
 	}
 	
-	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-	compileJava {
-	    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-	}
-
-	repositories {
-	    maven { url = "http://chickenbones.net/maven/" }
-	    maven { url = "http://maven.covers1624.net" }			// CoFH
-	    maven { url = "http://dvs1.progwml6.com/files/maven" }	// mezz
-	    maven {	url = "http://maven.tterrag.com" }				// Chisel
-	    maven { url = "https://repo.elytradev.com/" }
-		maven { url = "http://maven.thiakil.com" }
-	}
-
 	dependencies {
+	
+		compile "orelib:OreLib-1.12.2:3.5.0.0BETA:deobf"
+	
 	    //compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2402:deobf"
 	    deobfCompile "mezz.jei:jei_1.12.2:4.13.1.224:api"
 	    runtime "mezz.jei:jei_1.12.2:4.13.1.224"
