@@ -77,16 +77,16 @@ public class ItemCoin extends ItemBase implements IColorizer {
 
 	public static enum Type implements IVariant {
 
-		// #b87333
-		COPPER(0, "copper", 12088115),
-		// #cd7f32
-		BRONZE(1, "bronze", 13467442),
-		// #c0c0c0
+		// #E27208
+		COPPER(0, "copper", 14840328),
+		// #BB8044
+		BRONZE(1, "bronze", 12288068),
+		// #C0C0C0
 		SILVER(2, "silver", 12632256),
-		// #ffd700
+		// #FFD700
 		GOLD(3, "gold", 16766720),
-		// #e5e4e2
-		PLATINUM(4, "platinum", 5066338);
+		// #F5F5F4
+		PLATINUM(4, "platinum", 16119284);
 
 		private static final Type[] SUBTYPE_LOOKUP = Stream.of(values())
 				.sorted(Comparator.comparing(Type::getSubTypeId)).toArray(Type[]::new);
