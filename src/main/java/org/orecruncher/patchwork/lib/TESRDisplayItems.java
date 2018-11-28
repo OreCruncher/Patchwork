@@ -82,7 +82,7 @@ public class TESRDisplayItems<T extends TileEntityContainerBase> extends TileEnt
 
 		// Need this to get the proper ambient lighting on the items within. Without it
 		// they will render darker than they should.
-		final int i = te.getWorld().getCombinedLight(te.getPos().up(), 0);
+		final int i = te.getWorld().getCombinedLight(te.getPos(), 0);
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, i % 65536, i / 65536);
 
 		// Have to set rotation based on facing so the items go in their proper
