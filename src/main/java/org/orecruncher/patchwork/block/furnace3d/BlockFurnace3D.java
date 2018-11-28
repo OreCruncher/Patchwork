@@ -79,6 +79,7 @@ public class BlockFurnace3D extends BlockContainerBase
 	public BlockFurnace3D() {
 		super("furnace", Material.ROCK);
 
+		this.fullBlock = false;
 		setHardness(3.5F);
 		setSoundType(SoundType.STONE);
 		setCreativeTab(ModCreativeTab.tab);
@@ -276,6 +277,22 @@ public class BlockFurnace3D extends BlockContainerBase
 	public int getComparatorInputOverride(@Nonnull final IBlockState blockState, @Nonnull final World world,
 			@Nonnull final BlockPos pos) {
 		return Container.calcRedstone(world.getTileEntity(pos));
+	}
+
+	@Override
+	public boolean isFullCube(@Nonnull final IBlockState state) {
+		return false;
+	}
+	
+	@Override
+	public boolean isOpaqueCube(@Nonnull final IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public int getLightOpacity(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
+			@Nonnull final BlockPos pos) {
+		return 0;
 	}
 
 	@Override

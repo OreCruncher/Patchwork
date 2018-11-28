@@ -278,10 +278,13 @@ public class BlockShopShelf extends BlockContainerBase
 			if (te instanceof TileEntityShopShelf) {
 				final TileEntityShopShelf ss = (TileEntityShopShelf) te;
 				if (!ss.isOwned() && !ss.isAdminShop()) {
-					ss.setOwner(player);
+					if (player.capabilities.isCreativeMode)
+						ss.setAdminShop();
+					else
+						ss.setOwner(player);
 				}
-				
-				// Get the ItemStack in the hand they are activating with.  If it
+
+				// Get the ItemStack in the hand they are activating with. If it
 				// is an appropriate mimic block set that.
 				if (ss.canConfigure(player)) {
 					final ItemStack stack = player.getHeldItem(hand);
