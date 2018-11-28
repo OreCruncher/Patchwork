@@ -78,9 +78,10 @@ A Server Shop Shelf essentially has a bottomless inventory. It has infinite amou
 out, and can accept an infinite amount of items in return. The operation is similar to Admin signs
 that are found on Bukkit servers.
 
-..	note::
+..	versionadded:: 0.2.0.0
 
-	Currently it is not possible to setup a Server Shop Shelf.  This feature will be arriving soon. :)
+To create a Server Shop Shelf open an unowned Shop Shelf while in creative mode.  Patchwork will
+automatically set the Server Shop Shelf role.
 
 Notes
 ^^^^^
