@@ -23,19 +23,28 @@
  */
 package org.orecruncher.patchwork.block.shopshelf;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.lib.GuiContainerBase;
+import org.orecruncher.patchwork.lib.SlotPhantom;
+import org.orecruncher.patchwork.lib.TradeSlot;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ShopShelfOwnerGui  extends GuiContainerBase {
+public class ShopShelfOwnerGui extends GuiContainerBase {
 
 	private static final ResourceLocation BACKGROUND = new ResourceLocation(ModInfo.MOD_ID,
 			"textures/gui/shopshelf_owner.png");
 
 	protected final TileEntityShopShelf tile;
-	
+
 	public ShopShelfOwnerGui(final TileEntityShopShelf tile, final EntityPlayer player) {
 		super(BACKGROUND, new ShopShelfContainer(tile, player, true));
 
@@ -43,9 +52,33 @@ public class ShopShelfOwnerGui  extends GuiContainerBase {
 		this.xSize = 175;
 		this.ySize = 231;
 	}
-	
+
 	@Override
 	public String getTitle() {
-		return Localization.loadString(tile.getName());
+		return Localization.loadString(this.tile.getName());
+	}
+
+	@Override
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
+		// note to self(signum returns +1 for positive numbers and -1 for negative
+		// numbers, 0 for 0..)
+		final int amt = Integer.signum(Mouse.getEventDWheel());
+		if (amt != 0) {
+			// The player scrolled the wheel
+			final Slot slot = getSlotUnderMouse();
+			if (slot instanceof SlotPhantom || slot instanceof TradeSlot) {
+				// Don't want to drop below 1 or go above the stack amount
+				final ItemStack stack = slot.getStack();
+				if (amt < 0 && stack.getCount() < 2)
+					return;
+				if (amt > 0 && stack.getCount() == stack.getMaxStackSize())
+					return;
+				// Simulate a mouse click in the slot
+				final int mouseButton = amt < 0 ? 0 : 1;
+
+				handleMouseClick(slot, slot.slotNumber, mouseButton, ClickType.PICKUP);
+			}
+		}
 	}
 }
