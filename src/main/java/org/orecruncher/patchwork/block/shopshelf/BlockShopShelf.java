@@ -50,6 +50,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -171,6 +172,11 @@ public class BlockShopShelf extends BlockContainerBase
 		return 0;
 	}
 
+	@Override
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
+	}
+	
 	@Override
 	public boolean doesSideBlockRendering(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
 			@Nonnull final BlockPos pos, @Nonnull final EnumFacing face) {
