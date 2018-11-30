@@ -1,11 +1,12 @@
 Shop Shelf
 ==========
 ..	list-table::
-	:widths: 40 40
+	:widths: 40 40 40
 	:header-rows: 0
 	
 	*	- .. 	image:: images/shopshelf_wood.png
 		- .. 	image:: images/shopshelf_stone.png
+		- ..	image::	images/shopshelf_glass.png
 
 The Shop Shelf is a special block that allows for trading between players on a server.  Operationally
 it is like the Vending Machine block from my old 1.7.10 mod Thermal Recycling.
