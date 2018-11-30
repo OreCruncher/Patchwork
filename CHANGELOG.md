@@ -1,3 +1,7 @@
+### Patchwork-1.12.2-0.2.1.0
+**Fixes**
+* Shop Shelf renders correctly with cutout or translucent textures, like glass, stained glass, and cobwebs.
+
 ### Patchwork-1.12.2-0.2.0.0
 **What's New**
 * Opening an unowned Shop Shelf while in creative mode will set the shelf to a Server Shop.
