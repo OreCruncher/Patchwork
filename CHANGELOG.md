@@ -1,3 +1,11 @@
+### Patchwork-1.12.2-0.2.2.0
+**What's New**
+* Wood Pile to make charcoal
+
+**Changes**
+* Configurable amount of damaged repair with Repair Paste.
+* Ring of Flight can be refueled with Fire Charges.  Also changed recipes.
+
 ### Patchwork-1.12.2-0.2.1.0
 **Fixes**
 * Shop Shelf renders correctly with cutout or translucent textures, like glass, stained glass, and cobwebs.

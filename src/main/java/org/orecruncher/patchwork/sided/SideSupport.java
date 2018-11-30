@@ -32,6 +32,7 @@ import org.orecruncher.patchwork.item.ringofflight.CapabilityRingOfFlight;
 import org.orecruncher.patchwork.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.GuiHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
+import org.orecruncher.patchwork.recipe.BrewingHelper;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,6 +87,7 @@ public abstract class SideSupport {
 	 *                  The fired event
 	 */
 	public void postInit(@Nonnull final FMLPostInitializationEvent event) {
+		BrewingHelper.initialize();
 		LootRegistrationHandler.initialize();
 	}
 

@@ -7,9 +7,9 @@
 		}
 	],
 	"pattern": [
-		" d ",
+		"pdp",
 		"wrw",
-		" p "
+		"pdp"
 	],
 	"key": {
 		"d": {
@@ -19,7 +19,7 @@
 			"item": "patchwork:wing_obsidian"
 		},
 		"p": {
-			"item": "minecraft:ender_pearl"
+			"item": "patchwork:flight_essence"
 		},
 		"r": {
 			"type": "minecraft:item_nbt",
@@ -30,7 +30,7 @@
 	"result": {
 		"type": "minecraft:item_nbt",
 		"item": "patchwork:ringofflight",
-		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:3,cd:100000}}}",
+		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:3,cd:75000}}}",
 		"count": 1
 	}
 }

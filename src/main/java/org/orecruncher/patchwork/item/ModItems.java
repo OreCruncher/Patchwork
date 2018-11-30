@@ -36,9 +36,10 @@ public class ModItems {
 	public static final Item TOOLS = new ItemTools();
 	public static final Item MAGNET = new ItemMagnet();
 	public static final Item RING_OF_FLIGHT = new ItemRingOfFlight();
-	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(ModCreativeTab.tab);
 	
 	// Material
+	public static final Item REPAIR_PASTE = new ItemBase("repairpaste").setCreativeTab(ModCreativeTab.tab);
+	public static final Item FLIGHT_ESSENCE = new ItemBase("flight_essence").setCreativeTab(ModCreativeTab.tab).setHasEffect(true);
 	public static final Item WING_FEATHER = new ItemBase("wing_feather").setCreativeTab(ModCreativeTab.tab);
 	public static final Item WING_OBSIDIAN = new ItemBase("wing_obsidian").setCreativeTab(ModCreativeTab.tab);
 	public static final Item WING_SPEED = new ItemBase("wing_speed").setCreativeTab(ModCreativeTab.tab);

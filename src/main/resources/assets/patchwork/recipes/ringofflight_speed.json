@@ -7,9 +7,9 @@
 		}
 	],
 	"pattern": [
-		" e ",
+		"pep",
 		"wrw",
-		" p "
+		"pep"
 	],
 	"key": {
 		"e": {
@@ -19,7 +19,7 @@
 			"item": "patchwork:wing_speed"
 		},
 		"p": {
-			"item": "minecraft:ender_eye"
+			"item": "patchwork:flight_essence"
 		},
 		"r": {
 			"type": "minecraft:item_nbt",
@@ -30,7 +30,7 @@
 	"result": {
 		"type": "minecraft:item_nbt",
 		"item": "patchwork:ringofflight",
-		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:4,cd:50000}}}",
+		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:4,cd:37500}}}",
 		"count": 1
 	}
 }

@@ -59,13 +59,13 @@ public class RingOfFlightBaubleData implements IBauble {
 			return;
 
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
-		if (caps != null && caps.getVariant() != Variant.CORE) {
-			tagAndBag(player, caps);
+		if (caps != null && caps.getVariant() != ItemRingOfFlight.Variant.CORE) {
+			if (caps.getRemainingDurability() > 0)
+				tagAndBag(player, caps);
 			if (player.capabilities.isCreativeMode || !player.capabilities.isFlying)
 				return;
 			if (!caps.damage(1)) {
 				onUnequipped(stack, player);
-				((ItemRingOfFlight) (stack.getItem())).makeCore(stack);
 			}
 		}
 	}
@@ -77,7 +77,7 @@ public class RingOfFlightBaubleData implements IBauble {
 
 		final EntityPlayer player = (EntityPlayer) entity;
 		final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
-		if (caps != null && caps.getVariant() != Variant.CORE)
+		if (caps != null && caps.getRemainingDurability() > 0)
 			tagAndBag(player, caps);
 	}
 

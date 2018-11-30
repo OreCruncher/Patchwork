@@ -27,48 +27,55 @@ package org.orecruncher.patchwork.recipe;
 import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModOptions;
+import org.orecruncher.patchwork.item.ItemRingOfFlight;
+import org.orecruncher.patchwork.item.ringofflight.CapabilityRingOfFlight;
+import org.orecruncher.patchwork.item.ringofflight.IRingOfFlight;
+import org.orecruncher.patchwork.item.ringofflight.IRingOfFlightSettable;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemFishingRod;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
-import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
-public class ToolRepairRecipe extends RepairRecipeBase {
+public class FlightRingRefuelRecipe extends RepairRecipeBase {
 
-	@ItemStackHolder(value = "patchwork:repairpaste")
-	public static final ItemStack REPAIR_PASTE = ItemStack.EMPTY;
-
-	public ToolRepairRecipe() {
-		super(() -> REPAIR_PASTE, () -> ModOptions.repairPaste.repairAmount);
-	}
-
-	protected boolean isTypeAcceptable(@Nonnull final Item item) {
-		return item instanceof ItemArmor || item instanceof ItemTool || item instanceof ItemFishingRod
-				|| item instanceof ItemHoe || item instanceof ItemShield || item instanceof ItemSword
-				|| item instanceof ItemShears;
+	public FlightRingRefuelRecipe() {
+		super(() -> BrewingHelper.FLIGHT_ESSENCE, () -> ModOptions.ringOfFlight.refuelAmount);
 	}
 
 	@Override
-	protected boolean isDamagedItem(final ItemStack stack) {
-		return stack.getItem().isDamageable() && stack.isItemDamaged() && isTypeAcceptable(stack.getItem());
+	protected boolean isDamagedItem(@Nonnull final ItemStack stack) {
+		if (stack.getItem() instanceof ItemRingOfFlight) {
+			final IRingOfFlight cap = CapabilityRingOfFlight.getCapability(stack);
+			final ItemRingOfFlight.Variant v = cap.getVariant();
+			return cap.getRemainingDurability() < v.getMaxDurability();
+		}
+		return false;
+	}
+
+	@Override
+	protected int getItemDamage(@Nonnull final ItemStack stack) {
+		final IRingOfFlightSettable cap = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
+		final ItemRingOfFlight.Variant v = cap.getVariant();
+		return v.getMaxDurability() - cap.getRemainingDurability();
+	}
+
+	// It's operating on a copy
+	@Override
+	protected ItemStack fixItemDamage(@Nonnull final ItemStack stack, final int repairAmount) {
+		final IRingOfFlightSettable cap = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
+		final ItemRingOfFlight.Variant v = cap.getVariant();
+		cap.setDurability(Math.min(v.getMaxDurability(), cap.getRemainingDurability() + repairAmount));
+		return stack;
 	}
 
 	public static class Factory implements IRecipeFactory {
 		@Override
 		@Nonnull
 		public IRecipe parse(@Nonnull final JsonContext context, @Nonnull final JsonObject json) {
-			return new ToolRepairRecipe();
+			return new FlightRingRefuelRecipe();
 		}
 	}
 

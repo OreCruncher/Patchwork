@@ -63,6 +63,10 @@ public class EnableDisableCondition {
 					return (ModOptions.items.enableToolRepair && ModOptions.items.enableTools) ? TRUE : FALSE;
 				case "ringofflight":
 					return ModOptions.items.enableRingOfFlight ? TRUE : FALSE;
+				case "refuelring":
+					return (ModOptions.items.enableRingOfFlight && ModOptions.items.enableTools) ? TRUE : FALSE;
+				case "wood_pile":
+					return ModOptions.items.enableWoodPile ? TRUE : FALSE;
 				default:
 					ModBase.log().warn("Unknown recipe option [%s]", option);
 					break;

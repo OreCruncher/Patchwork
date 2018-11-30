@@ -1,0 +1,17 @@
+{
+	"_comment": [
+		"Refuel Ring of Flight"
+	],
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "refuelring"
+		}
+	],
+	"type": "patchwork:ringrefuel",
+	"group": "patchwork:ringrefuel",
+	"ingredients": [
+	],
+	"result": {
+	}
+}

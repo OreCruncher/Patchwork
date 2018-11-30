@@ -59,14 +59,14 @@ public class RingOfFlightData implements IRingOfFlightSettable {
 	public void setDurability(final int dmg) {
 		if (this.currentDurability != dmg) {
 			this.currentDurability = MathStuff.clamp(dmg, 0,
-					ItemRingOfFlight.Variant.bySubTypeId(this.variant).getMaxDamage());
+					ItemRingOfFlight.Variant.bySubTypeId(this.variant).getMaxDurability());
 			this.dirty = true;
 		}
 	}
 
 	@Override
 	public float getDurabilityForDisplay() {
-		final int max = ItemRingOfFlight.Variant.bySubTypeId(this.variant).getMaxDamage();
+		final int max = ItemRingOfFlight.Variant.bySubTypeId(this.variant).getMaxDurability();
 		return (float) (max - this.currentDurability) / (float) max;
 	}
 
@@ -100,7 +100,8 @@ public class RingOfFlightData implements IRingOfFlightSettable {
 	@Override
 	public void deserializeNBT(@Nonnull final NBTTagCompound nbt) {
 		this.variant = nbt.getInteger(NBT.VARIANT);
-		this.currentDurability = nbt.getInteger(NBT.CURRENT_DURABILITY);
+		this.currentDurability = MathStuff.clamp(nbt.getInteger(NBT.CURRENT_DURABILITY), 0,
+				getVariant().getMaxDurability());
 		this.dirty = true;
 	}
 

@@ -21,58 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package org.orecruncher.patchwork.item;
+package org.orecruncher.patchwork.block;
 
 import javax.annotation.Nonnull;
 
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModInfo;
-
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemBlock;
 
-public class ItemBase extends Item {
+public class BlockBase extends Block implements IBlockRegistration {
 
 	protected final String name;
-	protected boolean hasEffect;
 
-	public ItemBase(@Nonnull final String name) {
+	public BlockBase(@Nonnull final String name, @Nonnull final Material blockMaterialIn,
+			@Nonnull final MapColor blockMapColorIn) {
+		super(blockMaterialIn, blockMapColorIn);
 		this.name = name;
 		setRegistryName(this.name);
 		setTranslationKey(ModInfo.MOD_ID + "." + this.name);
 
 		// Let the registration handler know about this
 		// new item.
-		ItemRegistrationHandler.add(this);
-	}
-
-	public void registerItemModel() {
-		ModBase.proxy().registerItemRenderer(this, 0,
-				new ModelResourceLocation(ModInfo.MOD_ID + ":" + this.name, "inventory"));
+		BlockRegistrationHandler.add(this);
 	}
 
 	@Override
-	@Nonnull
-	public ItemBase setCreativeTab(@Nonnull final CreativeTabs tab) {
-		super.setCreativeTab(tab);
-		return this;
-	}
-	
-	@Nonnull
-	public ItemBase setHasEffect(final boolean flag) {
-		this.hasEffect = flag;
-		return this;
+	public Item createItemBlock() {
+		return new ItemBlock(this).setRegistryName(getRegistryName());
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(@Nonnull final ItemStack stack) {
-		return this.hasEffect || super.hasEffect(stack);
+	public void registerBlockModel() {
+		ModBase.proxy().registerItemRenderer(Item.getItemFromBlock(this), 0,
+				new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 
 }

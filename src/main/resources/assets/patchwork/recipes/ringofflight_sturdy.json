@@ -7,19 +7,19 @@
 		}
 	],
 	"pattern": [
-		" d ",
+		"pep",
 		"wrw",
-		" p "
+		"pep"
 	],
 	"key": {
-		"d": {
+		"e": {
 			"item": "minecraft:emerald"
 		},
 		"w": {
 			"item": "patchwork:wing_sturdy"
 		},
 		"p": {
-			"item": "minecraft:ender_eye"
+			"item": "patchwork:flight_essence"
 		},
 		"r": {
 			"type": "minecraft:item_nbt",
@@ -30,7 +30,7 @@
 	"result": {
 		"type": "minecraft:item_nbt",
 		"item": "patchwork:ringofflight",
-		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:2,cd:75000}}}",
+		"nbt": "{ForgeCaps:{\"patchwork:rof_caps\":{v:2,cd:56250}}}",
 		"count": 1
 	}
 }

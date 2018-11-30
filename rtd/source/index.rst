@@ -21,6 +21,7 @@ behavior.
 				repairpaste
 				ringofflight
 				mobnet
+				woodpile
 		- ..	toctree::
 				:titlesonly:
 				:caption: Features

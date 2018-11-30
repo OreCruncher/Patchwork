@@ -1,0 +1,12 @@
+{
+	"parent": "block/cube",
+	"textures": {
+		"particle": "minecraft:blocks/log_oak",
+		"down": "patchwork:blocks/wood_pile_end",
+		"up": "patchwork:blocks/wood_pile_end",
+		"east": "minecraft:blocks/log_oak",
+		"west": "minecraft:blocks/log_oak",
+		"north": "minecraft:blocks/log_oak",
+		"south": "minecraft:blocks/log_oak"
+	}
+}

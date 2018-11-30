@@ -1,0 +1,30 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "wood_pile"
+		}
+	],
+	"ingredients": [
+		{
+			"type": "forge:ore_dict",
+			"ore": "logWood"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "logWood"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "logWood"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "logWood"
+		}
+	],
+	"result": {
+		"item": "patchwork:wood_pile"
+	}
+}

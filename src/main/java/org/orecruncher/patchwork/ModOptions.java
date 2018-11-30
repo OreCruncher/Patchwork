@@ -107,6 +107,11 @@ public class ModOptions {
 		@Comment({ "Enables Tool Repair" })
 		@RequiresMcRestart
 		public boolean enableToolRepair = true;
+
+		@LangKey(PREFIX + ".enableWoodPile")
+		@Comment({ "Enables Wood Pile" })
+		@RequiresMcRestart
+		public boolean enableWoodPile = true;
 	}
 
 	@Name("Mobnet")
@@ -195,6 +200,49 @@ public class ModOptions {
 		@Comment({ "Amount repaired per Repair Paste" })
 		public int repairAmount = 100;
 
+	}
+
+	@Name("RingOfFlight")
+	@Comment("Options to control Ring of Flight")
+	@LangKey(RingOfFlight.PREFIX)
+	public static RingOfFlight ringOfFlight = new RingOfFlight();
+
+	public static class RingOfFlight {
+
+		private static final String PREFIX = ModOptions.PREFIX + ".ringofflight";
+
+		@LangKey(PREFIX + ".refuel")
+		@Comment({ "Amount refueld per Fire Charge" })
+		public int refuelAmount = 5000;
+
+	}
+
+	@Name("AshBlock")
+	@Comment("Options to control Ash Block")
+	@LangKey(AshBlock.PREFIX)
+	public static AshBlock ashBlock = new AshBlock();
+
+	public static class AshBlock {
+
+		private static final String PREFIX = ModOptions.PREFIX + ".ashblock";
+
+		@LangKey(PREFIX + ".yield")
+		@Comment({ "Number of charcoal to drop when broken" })
+		public int yield = 8;
+	}
+	
+	@Name("WoodPile")
+	@Comment("Options to control Wood Pile")
+	@LangKey(WoodPile.PREFIX)
+	public static WoodPile woodPile = new WoodPile();
+
+	public static class WoodPile {
+		
+		private static final String PREFIX = ModOptions.PREFIX + ".woodpile";
+		
+		@LangKey(PREFIX + ".tickrate")
+		@Comment({ "Ticks between stage checks" })
+		public int tickRate = 600;
 	}
 
 	@SubscribeEvent

@@ -39,6 +39,8 @@ config.patchwork.items.enableRingOfFlight=Enable Ring of Flight
 config.patchwork.items.enableRingOfFlight.tooltip=Enable/disable the Ring of Flight
 config.patchwork.items.enableToolRepair=Enable Tool Repair
 config.patchwork.items.enableToolRepair.tooltip=Enable/disable tool repair recipes
+config.patchwork.items.enableWoodPile=Enable Wood Pile
+config.patchwork.items.enableWoodPile.tooltip=Enable/disable Wood Pile recipe
 
 config.patchwork.mobnet=Mob Net
 config.patchwork.mobnet.tooltip=Mob Net options
@@ -73,8 +75,23 @@ config.patchwork.repairpaste.tooltip=Repair Paste Options
 config.patchwork.repairpaste.repairamount=Repair Amount
 config.patchwork.repairpaste.repairamount.tooltip=Amount of damage to repair per Repair Paste
 
+config.patchwork.ringofflight=Ring of Flight
+confit.patchwork.ringofflight.tooltip=Ring of Flight Options
+config.patchwork.ringofflight.refuelamount=Refuel Amount
+config.patchwork.ringofflight.refuelamount.tooltip=Amount of durability repaired per Fire Charge
+
+config.patchwork.ashblock=Ash Block
+config.patchwork.ashblock.tooltip=Ash Block Options
+config.patchwork.ashblock.yield= Charcoal Yield
+config.patchwork.ashblock.yield.tooltip=Amount of charcoal to drop when an Ash Block is broken
+
+config.patchwork.woodpile=Wood Pile
+config.patchwork.woodpile.tooltip=Wood Pile Options
+config.patchwork.woodpile.tickrate=Tick Rate
+config.patchwork.woodpile.tickrate.tooltip=Ticks between stage checks
+
 # Format strings
-patchwork.msg.advanced_tooltip=Press <SHIFT> for more
+text.patchwork.advanced_tooltip=Press <SHIFT> for more
 
 # Creative Tab
 itemGroup.creativetab.patchwork.main=§3Patchwork
@@ -97,14 +114,20 @@ item.patchwork.wing_obsidian.name=Obsidian Wing
 item.patchwork.wing_sturdy.name=Sturdy Wing
 item.patchwork.wing_speed.name=Speedy Wing
 
+text.patchwork.ringofflight.ratio=§2Remaining: %1$.1f%%§r
+text.patchwork.ringofflight.durability=§2%1$d / %2$d§r
+
 # Miscellaneous Items
 item.patchwork.mobnet.name=Mob Net
 item.patchwork.repairpaste.name=Repair Paste
 item.patchwork.tools.name=Set of Tools
 item.patchwork.magnet.name=Item Magnet
+item.patchwork.flight_essence.name=Essence of Flight
 
 # Blocks
 tile.patchwork.furnace.name=Furnace
 tile.patchwork.shopshelf.name=Shop Shelf
 tile.patchwork.shopshelf.name.format=%1$s's Shop
 tile.patchwork.shopshelf.admin.name=Server
+tile.patchwork.ash_block.name=Ash Pile
+tile.patchwork.wood_pile.name=Wood Pile

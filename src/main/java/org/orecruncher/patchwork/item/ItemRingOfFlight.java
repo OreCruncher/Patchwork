@@ -24,6 +24,7 @@
 package org.orecruncher.patchwork.item;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -40,6 +41,8 @@ import org.orecruncher.patchwork.item.ringofflight.IRingOfFlightSettable;
 
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,13 +57,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 // So we don't lose it
-// https://github.com/spacechase0/SurvivalWings/blob/master/com/spacechase0/minecraft/wings/client/WingsModel.java
 public class ItemRingOfFlight extends ItemBase {
 
 	// Don't forget items if this is changed!
-	private static final int BASE_DURABILITY = 1000;
+	private static final int BASE_DURABILITY = 750;
 	private static final int RINGSLOT1 = 1;
 	private static final int RINGSLOT2 = 2;
+
+	private static final String RATIO = Localization.loadString("text.patchwork.ringofflight.ratio");
+	private static final String DURABILITY = Localization.loadString("text.patchwork.ringofflight.durability");
+	private static final String ADVANCED_TOOLTIP = Localization.loadString("text.patchwork.advanced_tooltip");
 
 	private static final ResourceLocation VARIANT_GETTER_ID = new ResourceLocation(ModInfo.MOD_ID, "rof_variant");
 	private static final IItemPropertyGetter VARIANT_GETTER = new IItemPropertyGetter() {
@@ -86,7 +92,7 @@ public class ItemRingOfFlight extends ItemBase {
 				final ItemStack stack = new ItemStack(this);
 				final IRingOfFlightSettable caps = (IRingOfFlightSettable) CapabilityRingOfFlight.getCapability(stack);
 				caps.setVariant(v);
-				caps.setDurability(v.getMaxDamage());
+				caps.setDurability(v.getMaxDurability());
 				items.add(stack);
 			}
 		}
@@ -113,6 +119,24 @@ public class ItemRingOfFlight extends ItemBase {
 			return Localization.loadString(super.getTranslationKey() + "." + caps.getVariant().getName());
 		}
 		return "WFT?";
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(@Nonnull final ItemStack stack, @Nullable final World world,
+			@Nonnull final List<String> tips, @Nonnull final ITooltipFlag flag) {
+		final IRingOfFlight caps = CapabilityRingOfFlight.getCapability(stack);
+		if (caps != null && caps.getVariant() != Variant.CORE) {
+			final boolean doAdvanced = GuiScreen.isShiftKeyDown();
+			final float ratio = ((float) caps.getRemainingDurability() / caps.getVariant().getMaxDurability()) * 100F;
+			tips.add(String.format(RATIO, ratio));
+			if (doAdvanced) {
+				tips.add(String.format(DURABILITY, caps.getRemainingDurability(), caps.getVariant().getMaxDurability()));
+			} else {
+				tips.add("");
+				tips.add(ADVANCED_TOOLTIP);
+			}
+		}
 	}
 
 	@Override
@@ -193,7 +217,7 @@ public class ItemRingOfFlight extends ItemBase {
 
 		private final String name;
 		private final int subTypeId;
-		private final int maxDamage;
+		private final int maxDurability;
 		private final float speed;
 		private final EnumRarity rarity;
 
@@ -201,7 +225,7 @@ public class ItemRingOfFlight extends ItemBase {
 				@Nonnull final EnumRarity r) {
 			this.name = name;
 			this.subTypeId = id;
-			this.maxDamage = maxDamage;
+			this.maxDurability = maxDamage;
 			this.speed = speed;
 			this.rarity = r;
 		}
@@ -216,8 +240,8 @@ public class ItemRingOfFlight extends ItemBase {
 			return this.subTypeId;
 		}
 
-		public int getMaxDamage() {
-			return this.maxDamage;
+		public int getMaxDurability() {
+			return this.maxDurability;
 		}
 
 		public float getSpeed() {

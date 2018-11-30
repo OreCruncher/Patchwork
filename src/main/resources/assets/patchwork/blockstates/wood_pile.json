@@ -1,0 +1,17 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"uvlock": true,
+		"model": "patchwork:wood_pile"
+	},
+	"variants": {
+		"inventory": [
+			{
+				"transform": "forge:default-block"
+			}
+		],
+		"normal": {
+			"model": "patchwork:wood_pile"
+		}
+	}
+}

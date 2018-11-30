@@ -1,0 +1,19 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"uvlock": true,
+		"model": "patchwork:ash_block"
+	},
+	"variants": {
+		"inventory": [
+			{
+				"transform": "forge:default-block"
+			}
+		],
+		"normal": [
+			{
+				"model": "patchwork:ash_block"
+			}
+		]
+	}
+}

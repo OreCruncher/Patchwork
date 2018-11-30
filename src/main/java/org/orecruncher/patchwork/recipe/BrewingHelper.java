@@ -21,23 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.orecruncher.patchwork.recipe;
 
-package org.orecruncher.patchwork.block;
+import org.orecruncher.patchwork.ModOptions;
 
-import org.orecruncher.patchwork.block.furnace3d.BlockFurnace3D;
-import org.orecruncher.patchwork.block.shopshelf.BlockShopShelf;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
-import net.minecraft.block.Block;
+public class BrewingHelper {
 
-public class ModBlocks {
-	
-	public final static BlockContainerBase FURNACE = new BlockFurnace3D();
-	public final static BlockContainerBase SHOPSHELF = new BlockShopShelf();
-	public final static Block ASH = new BlockAsh();
-	public final static Block WOOD_PILE = new BlockWoodPile();
+	// For making the Flight Essence material
+	@ItemStackHolder(value = "minecraft:splash_potion", nbt = "{Potion:\"minecraft:thick\"}")
+	public static final ItemStack THICK_SPLASH_POTION = null;
+	@ItemStackHolder("minecraft:ghast_tear")
+	public static final ItemStack GHAST_TEAR = null;
+	@ItemStackHolder("patchwork:flight_essence")
+	public static final ItemStack FLIGHT_ESSENCE = null;
 
 	public static void initialize() {
-		// Currently a do nothing function. By calling this it triggers the
-		// classes static initializers to run.
+		if (ModOptions.items.enableRingOfFlight)
+			BrewingRecipeRegistry.addRecipe(THICK_SPLASH_POTION, GHAST_TEAR, FLIGHT_ESSENCE);
 	}
+
 }

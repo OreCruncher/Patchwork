@@ -16,14 +16,41 @@ The Feather and Obsidian Wings can be crafted by the player.  The Stout and Spee
 crafted, and have to be found in village blacksmith and dungeon chests.
 
 Each of the rings has a durability that will be consumed when the player flies.  When the
-durability reaches 0, the ring will revert back to a Flight Core.  The player will drop to the
-ground and will take damage if the fall distance is high enough.
+durability reaches 0, the player will drop to the ground and will take damage if the fall distance
+is high enough.
 
-..	note::
-	The flight rings cannot be repaired using Repair Paste.  So there.
+..	versionadded:: 0.2.2.0
+
+To refuel a Ring of Flight combine the item with Essence of Flight and a Set of Tools in a crafting
+grid.  Each Essence of Flight will repair up to 5000 points of flight time.  If a stack or more of
+Essence of FLight is provided the crafting operation will deduct an amount needed to fully charge
+the item.  The Set of Tools will be damaged based on the amount refueled.
+
+..	list-table::
+	:widths: 20 20 40
+	:header-rows: 1
+	
+	*	- Ring
+		- Flight Duration
+		- Comment
+		
+	*	- Avian Leg Ring Band
+		- 15 - 16 minutes
+		- Feather Wing
+	*	- Ring of Methodical Flight
+		- 62 - 63 minutes
+		- Obsidian Wing
+	*	- Stout Ring of Flight
+		- 46 - 47 minutes
+		- Sturdy Wing; must be found
+	*	- Ring of the Zephyr
+		- 31 - 32 minutes
+		- Speedy Wing; must be found
 
 Configuration
 ^^^^^^^^^^^^^
 
 - **items.enableRingOfFlight** Enables/disables loot table inclusion and recipes for the ring.
 - **features.renderWings** Enables/disables rendering of wings on player's back.
+- **ringofflight.refuelAmount** Amount per Fire Charge repaired
+

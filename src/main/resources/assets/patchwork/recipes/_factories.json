@@ -1,6 +1,7 @@
 {
 	"recipes": {
-		"toolrepair": "org.orecruncher.patchwork.recipe.ToolRepairRecipe$Factory"
+		"toolrepair": "org.orecruncher.patchwork.recipe.ToolRepairRecipe$Factory",
+		"ringrefuel": "org.orecruncher.patchwork.recipe.FlightRingRefuelRecipe$Factory"
 	},
 	"conditions": {
 		"isenabled": "org.orecruncher.patchwork.recipe.EnableDisableCondition$Factory"
