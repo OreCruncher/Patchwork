@@ -15,3 +15,10 @@ Coins can be combined to create a coin of the next larger denomination: 9 Copper
 For server owners Coins can be handed out as rewards for things like voting, and can be used to
 purchase items at Server Shops.  For modpack makers coins could be handed out as quest rewards, and
 used as items to satisfy quests.
+
+Configuration
+^^^^^^^^^^^^^
+
+- **coins.mobsDropCoins** Enable/disable coins as mob drops when a player kills a mob.  Mobs do not drop coins if killed by other means (fall traps, machines, etc.)
+- **coins.spawnAsLoot** Enable/disable coins in the various loot tables.
+- **items.enableCoins** Enable/disable coin recipes.

@@ -17,3 +17,9 @@ The other main feature of the 3D furnace is that the player can interact with it
 While operating the furnace interior will glow, and the furnace itself will give off light at level
 7.  It will flame and smoke while it is lit.  Once smelting has completed the light will turn off and
 the furnace will no longer glow.
+
+Configuration
+^^^^^^^^^^^^^
+
+- **furnace.immersiveInteraction** Enables/disables the ability of the player to interact with the furnace by right clicking with their hand.
+- **items.enableFurnace** Enable/disable crafting of the furnace.

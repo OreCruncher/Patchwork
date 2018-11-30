@@ -89,3 +89,7 @@ Notes
 - While the shop is owned it cannot be broken by another regular player, and it cannot be blown up with creepers or TNT.  I'm not sure if it would survive a Draconic Evolution reactor explosion.
 - Automation is not possible with the Shop Shelf.  Items cannot be piped in or extract using transfer pipes, hoppers, and similar devices.
 - Any player that is in creative mode can interact with the Shop Shelf as if they were the owner.  This is to permit Administrators on servers latitude to administer their servers.
+
+Configuration
+^^^^^^^^^^^^^
+- **items.enableShopShelf** Enable/disable the crafting recipe for the Shop Shelf.

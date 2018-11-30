@@ -13,3 +13,10 @@ will be damaged based on the amount repaired.
 
 It is recommended that the traditional method of Anvil repair should be used as long as possible
 to repair an item.  When the cost of Anvil repair becomes prohibitive, Repair Paste should be used.
+
+Configuration
+^^^^^^^^^^^^^
+
+- **items.enableToolRepair** Enable/disable the ability to repair tools with Repair Paste.
+- **repairpaste.repairAmount** Amount of damage to repair per paste.
+ 
