@@ -26,6 +26,8 @@ package org.orecruncher.patchwork.recipe;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.patchwork.ModOptions;
+
 import com.google.gson.JsonObject;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -53,8 +55,6 @@ public class ToolRepairRecipe extends net.minecraftforge.registries.IForgeRegist
 	public static final ItemStack REPAIR_PASTE = ItemStack.EMPTY;
 	@ItemStackHolder(value = "patchwork:tools")
 	public static final ItemStack TOOLS = ItemStack.EMPTY;
-
-	private static final int REPAIR_AMOUNT = 50;
 
 	private static boolean isTypeAcceptable(@Nonnull final Item item) {
 		return item instanceof ItemArmor || item instanceof ItemTool || item instanceof ItemFishingRod
@@ -127,6 +127,8 @@ public class ToolRepairRecipe extends net.minecraftforge.registries.IForgeRegist
 		final ItemStack tools = findTools(inv);
 		final int pasteAmount = countPaste(inv);
 
+		final int REPAIR_AMOUNT = ModOptions.repairPaste.repairAmount;
+		
 		// How much paste is needed to fully repair item
 		final int pasteNeeded = (broken.getItemDamage() / REPAIR_AMOUNT) + 1;
 		// How much can be applied with the current tool
@@ -145,6 +147,8 @@ public class ToolRepairRecipe extends net.minecraftforge.registries.IForgeRegist
 		final ItemStack tools = findTools(inv).copy();
 		final int pasteAmount = countPaste(inv);
 
+		final int REPAIR_AMOUNT = ModOptions.repairPaste.repairAmount;
+		
 		// How much paste is needed to fully repair item
 		final int pasteNeeded = (broken.getItemDamage() / REPAIR_AMOUNT) + 1;
 		// How much can be applied with the current tool

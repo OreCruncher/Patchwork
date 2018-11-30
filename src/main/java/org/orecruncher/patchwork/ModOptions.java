@@ -143,7 +143,7 @@ public class ModOptions {
 		@LangKey(PREFIX + ".nodropsfromspawnermobs")
 		@Comment({ "Enable/disable scrubbing drops from mobs that come from spawners" })
 		public boolean noDropsFromSpawnerMobs = true;
-		
+
 		@LangKey(PREFIX + ".renderwings")
 		@Comment({ "Enable/disable rendering of wings for Ring Of Flight" })
 		@RequiresMcRestart
@@ -181,6 +181,20 @@ public class ModOptions {
 		@LangKey(PREFIX + ".mobsdropcoins")
 		@Comment({ "Enable/disable dropping of coins from mobs" })
 		public boolean mobsDropCoins = true;
+	}
+
+	@Name("RepairPaste")
+	@Comment("Options to control Repair Paste")
+	@LangKey(RepairPaste.PREFIX)
+	public static RepairPaste repairPaste = new RepairPaste();
+
+	public static class RepairPaste {
+		private static final String PREFIX = ModOptions.PREFIX + ".repairpaste";
+
+		@LangKey(PREFIX + ".repairamount")
+		@Comment({ "Amount repaired per Repair Paste" })
+		public int repairAmount = 100;
+
 	}
 
 	@SubscribeEvent

@@ -68,6 +68,11 @@ config.patchwork.coins.spawnasloot.tooltip=Enable/disable generation of coins as
 config.patchwork.coins.mobsdropcoins=Mobs Drop Coins
 config.patchwork.coins.mobsdropcoins.tooltip=Enable/disable dropping of coins from mobs
 
+config.patchwork.repairpaste=Repair Paste
+config.patchwork.repairpaste.tooltip=Repair Paste Options
+config.patchwork.repairpaste.repairamount=Repair Amount
+config.patchwork.repairpaste.repairamount.tooltip=Amount of damage to repair per Repair Paste
+
 # Format strings
 patchwork.msg.advanced_tooltip=Press <SHIFT> for more
 
