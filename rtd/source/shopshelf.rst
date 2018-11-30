@@ -16,7 +16,7 @@ Shop Shelf will become the owner.
 
 As an owner you can do several things:
 
-- The Shop Shelf can be reskinned to a different texture.  To do this just right click with a block and it will take on that texture.  As shown in the two pictures above the one on the right has been reskinned with the stone texture.
+- The Shop Shelf can be reskinned to a different texture.  To do this just right click with a block and it will take on that texture.  (Examples shown above.)
 - The Shop Shelf can be opened in trade mode by Shift+Right click.  This is the GUI that non-owners will see when opening the Shop Shelf.
 - The Shop Shelf can be opened in configuration mode by a simple right click.
 - It can be broken with an axe, and it will drop with all it's inventory stored in the ItemStack.
