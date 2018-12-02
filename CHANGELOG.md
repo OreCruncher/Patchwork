@@ -4,7 +4,7 @@
 
 **Changes**
 * Configurable amount of damaged repair with Repair Paste.
-* Ring of Flight can be refueled with Fire Charges.  Also changed recipes.
+* Ring of Flight can be refueled with Essence of Flight.  Also changed recipes.
 
 ### Patchwork-1.12.2-0.2.1.0
 **Fixes**
