@@ -33,6 +33,7 @@ import org.orecruncher.patchwork.loot.LootRegistrationHandler;
 import org.orecruncher.patchwork.network.GuiHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
 import org.orecruncher.patchwork.recipe.BrewingHelper;
+import org.orecruncher.patchwork.world.IncreaseMobs;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,6 +67,7 @@ public abstract class SideSupport {
 	 */
 	public void preInit(@Nonnull final FMLPreInitializationEvent event) {
 		CapabilityRingOfFlight.register();
+		IncreaseMobs.initialize();
 	}
 
 	/**

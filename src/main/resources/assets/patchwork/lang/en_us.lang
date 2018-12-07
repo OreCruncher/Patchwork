@@ -57,6 +57,8 @@ config.patchwork.features.nodropsfromspawnermobs=No Mob Drops from Spawner Mobs
 config.patchwork.features.nodropsfromspawnermobs.tooltip=Enable/disable scrubbing drops from mobs that come from spawners
 config.patchwork.features.renderwings=Render Wings
 config.patchwork.features.renderwings.tooltip=Enable/disable rendering of wings for Ring Of Flight
+config.patchwork.features.mobquantity=Change Mob Quantities
+config.patchwork.features.mobquantity.tooltip=Enable/disable increase/decrease mob spawn quantities
 
 config.patchwork.furnace=Furnace
 config.patchwork.furnace.tooltip=3D Furnace options
@@ -89,6 +91,17 @@ config.patchwork.woodpile=Wood Pile
 config.patchwork.woodpile.tooltip=Wood Pile Options
 config.patchwork.woodpile.tickrate=Tick Rate
 config.patchwork.woodpile.tickrate.tooltip=Ticks between stage checks
+
+config.patchwork.mobquantity=Mob Spawn Quantity
+config.patchwork.mobquantity.tooltip=Increase/decrease mob spawn quantities
+config.patchwork.mobquantity.monster=Monster
+config.patchwork.mobquantity.monster.tooltip=Like Zombies and Skeletons
+config.patchwork.mobquantity.creature=Creature
+config.patchwork.mobquantity.creature.tooltip=Like Cows and Sheep
+config.patchwork.mobquantity.ambient=Ambient
+config.patchwork.mobquantity.ambient.tooltip=Like Bats
+config.patchwork.mobquantity.water=Water
+config.patchwork.mobquantity.water.tooltip=Like Squid
 
 # Format strings
 text.patchwork.advanced_tooltip=Press <SHIFT> for more

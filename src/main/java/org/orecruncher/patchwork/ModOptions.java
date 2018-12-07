@@ -153,6 +153,11 @@ public class ModOptions {
 		@Comment({ "Enable/disable rendering of wings for Ring Of Flight" })
 		@RequiresMcRestart
 		public boolean renderWings = true;
+		
+		@LangKey(PREFIX + ".mobquantity")
+		@Comment({ "Enable/disable increase/decrease mob spawn quantities" })
+		@RequiresMcRestart
+		public boolean modifyMobQuantity = false;
 	}
 
 	@Name("Furnace")
@@ -243,6 +248,36 @@ public class ModOptions {
 		@LangKey(PREFIX + ".tickrate")
 		@Comment({ "Ticks between stage checks" })
 		public int tickRate = 600;
+	}
+	
+	@Name("MobQuantity")
+	@Comment("Options to control Mob Quantities")
+	@LangKey(MobQuantity.PREFIX)
+	public static MobQuantity mobQuantity = new MobQuantity();
+
+	public static class MobQuantity {
+		
+		private static final String PREFIX = ModOptions.PREFIX + ".mobquantity";
+		
+		@LangKey(PREFIX + ".monster")
+		@Comment({ "Max number of monster mobs to spawn" })
+		@RequiresMcRestart
+		public int monster = 70;
+		
+		@LangKey(PREFIX + ".creature")
+		@Comment({ "Max number of creature mobs to spawn" })
+		@RequiresMcRestart
+		public int creature = 10;
+
+		@LangKey(PREFIX + ".ambient")
+		@Comment({ "Max number of ambient mobs to spawn" })
+		@RequiresMcRestart
+		public int ambient = 15;
+		
+		@LangKey(PREFIX + ".water")
+		@Comment({ "Max number of water mobs to spawn" })
+		@RequiresMcRestart
+		public int water = 5;
 	}
 
 	@SubscribeEvent

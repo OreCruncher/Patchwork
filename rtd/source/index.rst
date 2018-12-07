@@ -27,3 +27,4 @@ behavior.
 				:caption: Features
 				
 				spawnerloot
+				mobquantity

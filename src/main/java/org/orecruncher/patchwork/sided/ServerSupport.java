@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
