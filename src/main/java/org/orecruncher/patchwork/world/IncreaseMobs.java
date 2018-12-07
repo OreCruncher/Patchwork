@@ -46,6 +46,7 @@ public class IncreaseMobs {
 		try {
 			ReflectionHelper.setPrivateValue(EnumCreatureType.class, type, quantity, "maxNumberOfCreature",
 					"field_75606_e");
+			ModBase.log().info("Set spawn cap [%s] to %d", type.name(), quantity);
 		} catch (@Nonnull final Throwable t) {
 			final String txt = String.format("Unable to set mob quantity for [%s]", type.name());
 			ModBase.log().error(txt, t);
