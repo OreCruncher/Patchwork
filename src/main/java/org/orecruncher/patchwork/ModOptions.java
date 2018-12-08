@@ -203,7 +203,7 @@ public class ModOptions {
 
 		@LangKey(PREFIX + ".repairamount")
 		@Comment({ "Amount repaired per Repair Paste" })
-		public int repairAmount = 100;
+		public int repairAmount = 250;
 
 	}
 
