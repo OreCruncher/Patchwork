@@ -86,9 +86,6 @@ public class BlockShopShelf extends BlockContainerBase
 		setHarvestLevel("axe", 1);
 		setCreativeTab(ModCreativeTab.tab);
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-
-		// Doesn't occupy the full block and doesn't block light
-		this.fullBlock = false;
 	}
 
 	@Override
@@ -165,7 +162,12 @@ public class BlockShopShelf extends BlockContainerBase
 	public boolean isFullCube(@Nonnull final IBlockState state) {
 		return false;
 	}
-
+	
+	@Override
+	public boolean isOpaqueCube(@Nonnull final IBlockState state) {
+		return false;
+	}
+	
 	@Override
 	public int getLightOpacity(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
 			@Nonnull final BlockPos pos) {
