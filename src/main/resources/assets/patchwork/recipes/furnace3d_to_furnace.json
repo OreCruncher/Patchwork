@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"conditions": [
+		{
+			"type": "patchwork:isEnabled",
+			"option": "furnace"
+		}
+	],
+	"ingredients": [
+		{
+			"item": "patchwork:furnace"
+		}
+	],
+	"result": {
+		"item": "minecraft:furnace"
+	}
+}
