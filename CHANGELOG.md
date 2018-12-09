@@ -1,3 +1,13 @@
+### Patchwork-1.12.2-0.2.3.0
+**What's New**
+* Config options to change the mob caps for natural world spawn.
+
+**Fixes**
+* Block surface that a Shop Shelf sits on will render correctly with more current versions of Forge.
+
+**Changes**
+* Bumped repair paste repair amount from 100 to 250.  You will need to udpate your config manually if you have an existing MC instance.
+
 ### Patchwork-1.12.2-0.2.2.0
 **What's New**
 * Wood Pile to make charcoal

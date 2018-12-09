@@ -47,6 +47,8 @@ allprojects {
 	
 	dependencies {
 	
+		compile "serene-seasons:SereneSeasons-1.12.2:1.2.13:universal"
+	
 		if (fileTree(dir: 'libs').filter { it.name.startsWith('OreLib') }.getFiles().size() == 0)
 			compile "orelib:OreLib-1.12.2:3.5.0.1BETA:deobf"
 	
