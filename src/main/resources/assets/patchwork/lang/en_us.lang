@@ -103,6 +103,11 @@ config.patchwork.mobquantity.ambient.tooltip=Like Bats
 config.patchwork.mobquantity.water=Water
 config.patchwork.mobquantity.water.tooltip=Like Squid
 
+config.patchwork.villages=Village Options
+config.patchwork.villages.tooltip=Village Options
+config.patchwork.villages.additionalbiomes=Additional Biomes
+config.patchwork.villages.additionalbiomes.tooltip=Additional biomes where villages can spawn
+
 # Format strings
 text.patchwork.advanced_tooltip=Press <SHIFT> for more
 

@@ -153,11 +153,12 @@ public class ModOptions {
 		@Comment({ "Enable/disable rendering of wings for Ring Of Flight" })
 		@RequiresMcRestart
 		public boolean renderWings = true;
-		
+
 		@LangKey(PREFIX + ".mobquantity")
 		@Comment({ "Enable/disable increase/decrease mob spawn quantities" })
 		@RequiresMcRestart
 		public boolean modifyMobQuantity = false;
+
 	}
 
 	@Name("Furnace")
@@ -235,35 +236,35 @@ public class ModOptions {
 		@Comment({ "Number of charcoal to drop when broken" })
 		public int yield = 8;
 	}
-	
+
 	@Name("WoodPile")
 	@Comment("Options to control Wood Pile")
 	@LangKey(WoodPile.PREFIX)
 	public static WoodPile woodPile = new WoodPile();
 
 	public static class WoodPile {
-		
+
 		private static final String PREFIX = ModOptions.PREFIX + ".woodpile";
-		
+
 		@LangKey(PREFIX + ".tickrate")
 		@Comment({ "Ticks between stage checks" })
 		public int tickRate = 600;
 	}
-	
+
 	@Name("MobQuantity")
 	@Comment("Options to control Mob Quantities")
 	@LangKey(MobQuantity.PREFIX)
 	public static MobQuantity mobQuantity = new MobQuantity();
 
 	public static class MobQuantity {
-		
+
 		private static final String PREFIX = ModOptions.PREFIX + ".mobquantity";
-		
+
 		@LangKey(PREFIX + ".monster")
 		@Comment({ "Max number of monster mobs to spawn" })
 		@RequiresMcRestart
 		public int monster = 70;
-		
+
 		@LangKey(PREFIX + ".creature")
 		@Comment({ "Max number of creature mobs to spawn" })
 		@RequiresMcRestart
@@ -273,11 +274,26 @@ public class ModOptions {
 		@Comment({ "Max number of ambient mobs to spawn" })
 		@RequiresMcRestart
 		public int ambient = 15;
-		
+
 		@LangKey(PREFIX + ".water")
 		@Comment({ "Max number of water mobs to spawn" })
 		@RequiresMcRestart
 		public int water = 5;
+	}
+
+	@Name("Villages")
+	@Comment("Options to control Mob Villages")
+	@LangKey(Villages.PREFIX)
+	public static Villages villages = new Villages();
+
+	public static class Villages {
+
+		private static final String PREFIX = ModOptions.PREFIX + ".villages";
+
+		@LangKey(PREFIX + ".additionalbiomes")
+		@Comment({ "Additional biomes where villages can spawn" })
+		@RequiresMcRestart
+		public String[] additionalBiomes = {};
 	}
 
 	@SubscribeEvent

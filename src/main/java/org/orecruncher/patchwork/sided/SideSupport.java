@@ -34,6 +34,7 @@ import org.orecruncher.patchwork.network.GuiHandler;
 import org.orecruncher.patchwork.network.NetworkHandler;
 import org.orecruncher.patchwork.recipe.BrewingHelper;
 import org.orecruncher.patchwork.world.IncreaseMobs;
+import org.orecruncher.patchwork.world.Villages;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -100,7 +101,7 @@ public abstract class SideSupport {
 	 *                  The fired event.
 	 */
 	public void loadCompleted(@Nonnull final FMLLoadCompleteEvent event) {
-		// This method intentionally left blank
+		Villages.initialize();
 	}
 
 	/**
