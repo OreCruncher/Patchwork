@@ -1,3 +1,14 @@
+### Patchwork-1.12.2-0.2.3.1
+**What's New**
+* Config options to add additional biomes where villages can spawn.
+* Config options to black/white list blocks used for skinning the Shop Shelf.
+
+**Fixes**
+* IStateMapper crash on dedicated server.
+
+**Changes**
+* Use simple conversion recipes to convert between the Minecraft Furnace and Patchwork's 3D furnace blocks.
+
 ### Patchwork-1.12.2-0.2.3.0
 **What's New**
 * Config options to change the mob caps for natural world spawn.
