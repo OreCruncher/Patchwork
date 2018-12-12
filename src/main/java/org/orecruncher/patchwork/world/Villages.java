@@ -49,7 +49,7 @@ public class Villages {
 			ModBase.log().info("Village Spawn Biomes");
 			ModBase.log().info("====================");
 			for (final Biome b : MapGenVillage.VILLAGE_SPAWN_BIOMES)
-				ModBase.log().info("%s (%s)", b.getBiomeName(), b.getRegistryName());
+				ModBase.log().info("%s", b.getRegistryName());
 		}
 	}
 }

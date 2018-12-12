@@ -33,6 +33,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockBase extends Block implements IBlockRegistration {
 
@@ -55,6 +57,7 @@ public class BlockBase extends Block implements IBlockRegistration {
 		return new ItemBlock(this).setRegistryName(getRegistryName());
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockModel() {
 		ModBase.proxy().registerItemRenderer(Item.getItemFromBlock(this), 0,

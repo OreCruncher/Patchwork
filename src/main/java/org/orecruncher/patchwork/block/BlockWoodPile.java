@@ -81,6 +81,7 @@ public class BlockWoodPile extends BlockBase {
 		setDefaultState(this.blockState.getBaseState().withProperty(IS_BURNING, false).withProperty(STAGE, 0));
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockModel() {
 		final IStateMapper mapper = new StateMap.Builder().ignore(IS_BURNING, STAGE).build();
