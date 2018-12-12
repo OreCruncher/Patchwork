@@ -24,6 +24,7 @@
 
 package org.orecruncher.patchwork.block.shopshelf;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -31,6 +32,7 @@ import javax.annotation.Nullable;
 
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.patchwork.lib.InventoryUtils;
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 import org.orecruncher.patchwork.lib.TileEntityContainerBase;
@@ -117,9 +119,13 @@ public class TileEntityShopShelf extends TileEntityContainerBase implements ISid
 	}
 
 	public boolean isValidMimic(@Nonnull final ItemStack stack) {
-		return stack.getItem() instanceof ItemBlock;
-		// final int[] dicts = OreDictionary.getOreIDs(stack);
-		// return dicts != null && IntStream.of(dicts).anyMatch(x -> x == PLANKS_ID);
+		if (stack.getItem() instanceof ItemBlock) {
+			final String id = ((ItemBlock) stack.getItem()).getBlock().getRegistryName().toString();
+			final boolean contains = Arrays.asList(ModOptions.shopshelf.blockList).contains(id);
+			final boolean asBlackList = ModOptions.shopshelf.asBlackList;
+			return !(asBlackList && contains) || (!asBlackList && contains);
+		}
+		return false;
 	}
 
 	public void setMimic(@Nonnull final ItemStack stack) {

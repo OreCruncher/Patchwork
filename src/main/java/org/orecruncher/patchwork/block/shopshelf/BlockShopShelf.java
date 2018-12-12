@@ -162,12 +162,12 @@ public class BlockShopShelf extends BlockContainerBase
 	public boolean isFullCube(@Nonnull final IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(@Nonnull final IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
 	public int getLightOpacity(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
 			@Nonnull final BlockPos pos) {
@@ -178,7 +178,7 @@ public class BlockShopShelf extends BlockContainerBase
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
-	
+
 	@Override
 	public boolean doesSideBlockRendering(@Nonnull final IBlockState state, @Nonnull final IBlockAccess world,
 			@Nonnull final BlockPos pos, @Nonnull final EnumFacing face) {

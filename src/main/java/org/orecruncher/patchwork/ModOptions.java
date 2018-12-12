@@ -295,6 +295,34 @@ public class ModOptions {
 		@RequiresMcRestart
 		public String[] additionalBiomes = {};
 	}
+	
+	@Name("ShopShelf")
+	@Comment("Options to control Shop Shelf")
+	@LangKey(ShopShelf.PREFIX)
+	public static ShopShelf shopshelf = new ShopShelf();
+
+	public static class ShopShelf {
+		
+		private static final String PREFIX = ModOptions.PREFIX + ".shopshelf";
+		
+		@LangKey(PREFIX + ".blocklist")
+		@Comment({ "Blocks for special handling related to Shop Shelf skinning" })
+		@RequiresMcRestart
+		//@formatter:off
+		public String[] blockList = {
+			"twilightforest:aurora_block",
+			"twilightforest:aurora_pillar",
+			"twilightforest:aurora_slab",
+			"twilightforest:auroralized_glass"
+		};
+		//@formatter:on
+		
+		@LangKey(PREFIX + ".asblacklist")
+		@Comment({ "Treat the block list as a black list" })
+		@RequiresMcRestart
+		public boolean asBlackList= true;
+		
+	}
 
 	@SubscribeEvent
 	public static void onConfigChangedEvent(final OnConfigChangedEvent event) {

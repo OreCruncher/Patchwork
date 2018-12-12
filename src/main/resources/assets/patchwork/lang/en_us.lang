@@ -103,10 +103,17 @@ config.patchwork.mobquantity.ambient.tooltip=Like Bats
 config.patchwork.mobquantity.water=Water
 config.patchwork.mobquantity.water.tooltip=Like Squid
 
-config.patchwork.villages=Village Options
+config.patchwork.villages=Villages
 config.patchwork.villages.tooltip=Village Options
 config.patchwork.villages.additionalbiomes=Additional Biomes
 config.patchwork.villages.additionalbiomes.tooltip=Additional biomes where villages can spawn
+
+config.patchwork.shopshelf=Shop Shelf
+config.patchwork.shopshelf.tooltip=Shop Shelf Options
+config.patchwork.shopshelf.blocklist=Block List
+config.patchwork.shopshelf.blocklist.tooltip=Blocks for special handling related to Shop Shelf skinning
+config.patchwork.shopshelf.asblacklist=As Blacklist
+config.patchwork.shopshelf.asblacklist.tooltip=Treat the Block List as a black list
 
 # Format strings
 text.patchwork.advanced_tooltip=Press <SHIFT> for more
