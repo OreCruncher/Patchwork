@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.patchwork.ModInfo;
 import org.orecruncher.patchwork.ModOptions;
+import org.orecruncher.patchwork.block.ModBlocks;
 import org.orecruncher.patchwork.lib.InventoryUtils;
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 import org.orecruncher.patchwork.lib.TileEntityContainerBase;
@@ -92,7 +93,8 @@ public class TileEntityShopShelf extends TileEntityContainerBase implements ISid
 	@Override
 	@Nonnull
 	public EnumFacing getFacing() {
-		return getState().getValue(BlockShopShelf.FACING);
+		final IBlockState state = getState();
+		return state.getBlock() == ModBlocks.SHOPSHELF ? state.getValue(BlockShopShelf.FACING) : EnumFacing.NORTH;
 	}
 
 	@Override

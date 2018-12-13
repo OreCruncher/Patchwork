@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.patchwork.block.ModBlocks;
 import org.orecruncher.patchwork.lib.StackHandlerBase;
 import org.orecruncher.patchwork.lib.TileEntityContainerBase;
 
@@ -146,7 +147,8 @@ public class TileEntityFurnace3D extends TileEntityContainerBase implements ITic
 	 */
 	@Nonnull
 	public EnumFacing getFacing() {
-		return getState().getValue(BlockFurnace3D.FACING);
+		final IBlockState state = getState();
+		return state.getBlock() == ModBlocks.FURNACE ? state.getValue(BlockFurnace3D.FACING) : EnumFacing.NORTH;
 	}
 
 	/**
