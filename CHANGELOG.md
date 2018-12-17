@@ -1,3 +1,7 @@
+### Patchwork-1.12.2-0.2.3.2
+**Fixes**
+* Client crash rendering 3d furnace after player death nearby.
+
 ### Patchwork-1.12.2-0.2.3.1
 **What's New**
 * Config options to add additional biomes where villages can spawn.
