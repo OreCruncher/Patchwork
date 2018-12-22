@@ -24,13 +24,15 @@
 
 package org.orecruncher.patchwork.item;
 
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.lib.Localization;
 import org.orecruncher.lib.compat.EntityVillagerUtil;
 import org.orecruncher.patchwork.ModInfo;
+import org.orecruncher.patchwork.ModOptions;
 import org.orecruncher.patchwork.client.ModCreativeTab;
 
 import net.minecraft.block.BlockFence;
@@ -38,6 +40,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
@@ -102,7 +105,7 @@ public class ItemMobNet extends ItemBase {
 	@Override
 	public boolean itemInteractionForEntity(@Nonnull final ItemStack stack, @Nonnull final EntityPlayer player,
 			@Nonnull final EntityLivingBase target, @Nonnull final EnumHand hand) {
-		if (!target.world.isRemote && isWieldingCorrect(player, hand) && isValidTarget(target)
+		if (!target.world.isRemote && isWieldingCorrect(player, hand) && isValidTarget(player, target)
 				&& !hasCapturedAnimal(stack)) {
 			final EntityLiving entity = (EntityLiving) target;
 			final ItemStack newStack = addEntitytoNet(stack, entity);
@@ -181,14 +184,20 @@ public class ItemMobNet extends ItemBase {
 		return "";
 	}
 
-	private static boolean isValidTarget(@Nonnull final EntityLivingBase entity) {
-		if (entity.isBeingRidden() || entity.isRiding())
+	private static boolean isValidTarget(@Nonnull final EntityPlayer player, @Nonnull final EntityLivingBase target) {
+		if (target.isBeingRidden() || target.isRiding())
 			return false;
-		if (entity instanceof EntityVillager && ModOptions.mobnet.enableVillagerCapture)
+		if (player.isCreative())
 			return true;
-		if (entity instanceof IMob && ModOptions.mobnet.enableHostileCapture)
-			return true;
-		return entity instanceof EntityAnimal;
+		if (target instanceof IEntityOwnable) {
+			final UUID owner = ((IEntityOwnable) target).getOwnerId();
+			return owner == null || owner.equals(player.getPersistentID());
+		}
+		if (target instanceof EntityVillager)
+			return ModOptions.mobnet.enableVillagerCapture;
+		if (target instanceof IMob)
+			return ModOptions.mobnet.enableHostileCapture;
+		return target instanceof EntityAnimal;
 	}
 
 	@Nullable
