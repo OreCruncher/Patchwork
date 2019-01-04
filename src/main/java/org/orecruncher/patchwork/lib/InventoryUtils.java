@@ -189,6 +189,25 @@ public class InventoryUtils {
 		}
 	}
 
+	public static boolean contains(@Nonnull final NonNullList<ItemStack> list, @Nonnull final ItemStack stack, final int slotStart,
+			final int slotEnd) {
+		// Yes, it contains empty stacks
+		if (stack.isEmpty())
+			return true;
+		int count = stack.getCount();
+		for (int i = slotStart; i <= slotEnd && count > 0; i++) {
+			final ItemStack s = list.get(i);
+			if (s.isEmpty())
+				continue;
+			if (ItemStack.areItemStacksEqual(stack, s)) {
+				count = 0;
+			} else if (canCombine(stack, s)) {
+				count -= s.getCount();
+			}
+		}
+		return count < 1;
+	}
+
 	/*
 	 * Adds the specified ItemStack to the list, merging in as needed.
 	 */

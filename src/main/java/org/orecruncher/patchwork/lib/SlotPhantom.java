@@ -71,10 +71,4 @@ public class SlotPhantom extends Slot {
 		return (T) this;
 	}
 
-	@Override
-	public void putStack(@Nonnull final ItemStack stack) {
-		this.inventory.setInventorySlotContents(this.slotIndex, stack);
-		onSlotChanged();
-	}
-
 }

@@ -61,13 +61,6 @@ public class TradeSlot extends SlotPhantom {
 		return this;
 	}
 
-	@Override
-	public void putStack(final ItemStack itemStack) {
-		if (!isLocked()) {
-			super.putStack(itemStack);
-		}
-	}
-
 	public TradeSlot setStackLimit(final int limit) {
 		this.stackLimit = limit;
 		return this;

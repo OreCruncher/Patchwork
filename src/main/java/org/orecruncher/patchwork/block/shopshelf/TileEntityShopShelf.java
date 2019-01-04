@@ -47,6 +47,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -56,7 +57,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityShopShelf extends TileEntityContainerBase implements ISidedInventory {
+public class TileEntityShopShelf extends TileEntityContainerBase implements ITickable, ISidedInventory {
 
 	@ItemStackHolder(value = "minecraft:planks", meta = 0)
 	public static final ItemStack DEFAULT_SKIN = ItemStack.EMPTY;
@@ -180,6 +181,12 @@ public class TileEntityShopShelf extends TileEntityContainerBase implements ISid
 			this.ownerName = player.getName();
 			sendUpdates(true);
 		}
+	}
+
+	@Override
+	public void update() {
+		if (getInventory().isDirty())
+			sendUpdates(true);
 	}
 
 	@Override

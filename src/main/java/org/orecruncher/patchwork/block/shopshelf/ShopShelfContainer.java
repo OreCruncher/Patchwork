@@ -183,6 +183,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 			chest.removeItemStackFromInventory(result.copy(), INVENTORY_SLOT_START, INVENTORY_SLOT_END);
 		}
 
+		detectAndSendChanges();
 		player.inventory.addItemStackToInventory(result.copy());
 		player.onUpdate();
 
@@ -237,7 +238,7 @@ public class ShopShelfContainer extends ContainerBase<TileEntityShopShelf> imple
 		if (this.tile.isAdminShop())
 			return true;
 		final ItemStack stack = slot.getStack();
-		return this.tile.getInventory().contains(stack, ItemStack.EMPTY, INVENTORY_SLOT_START, INVENTORY_SLOT_END);
+		return this.tile.getInventory().contains(stack, INVENTORY_SLOT_START, INVENTORY_SLOT_END);
 	}
 
 }

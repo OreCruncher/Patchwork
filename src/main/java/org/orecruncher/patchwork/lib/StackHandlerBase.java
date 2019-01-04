@@ -71,6 +71,10 @@ public class StackHandlerBase extends ItemStackHandler {
 		return InventoryUtils.contains(this.stacks, stack1, stack2, slotStart, slotEnd);
 	}
 
+	public boolean contains(@Nonnull final ItemStack stack, final int slotStart, final int slotEnd) {
+		return InventoryUtils.contains(this.stacks, stack, slotStart, slotEnd);
+	}
+
 	/**
 	 * Checks whether the specified inventory has enough space to accept the two
 	 * sample ItemStacks. The range is [slotStart, slotEnd].
