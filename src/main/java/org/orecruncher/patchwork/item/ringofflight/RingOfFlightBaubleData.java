@@ -27,6 +27,7 @@ package org.orecruncher.patchwork.item.ringofflight;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.orecruncher.lib.ReflectedField.FloatField;
 import org.orecruncher.patchwork.item.ItemRingOfFlight;
 import org.orecruncher.patchwork.item.ItemRingOfFlight.Variant;
 
@@ -35,6 +36,7 @@ import baubles.api.IBauble;
 import baubles.api.cap.BaublesCapabilities;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -43,6 +45,15 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class RingOfFlightBaubleData implements IBauble {
 
+	//@formatter:off
+	private static final FloatField<PlayerCapabilities> flySpeed =
+		new FloatField<>(
+			PlayerCapabilities.class,
+			"flySpeed",
+			"field_75096_f"
+		);
+	//@formatter:on
+	
 	private static final float DEFAULT_FLY_SPEED = 0.05F;
 
 	@Override
@@ -92,7 +103,7 @@ public class RingOfFlightBaubleData implements IBauble {
 				player.capabilities.isFlying = false;
 				player.capabilities.allowFlying = false;
 			}
-			player.capabilities.setFlySpeed(DEFAULT_FLY_SPEED);
+			flySpeed.set(player.capabilities, DEFAULT_FLY_SPEED);
 			player.sendPlayerAbilities();
 		}
 	}
@@ -100,11 +111,11 @@ public class RingOfFlightBaubleData implements IBauble {
 	private void tagAndBag(@Nonnull final EntityPlayer player, @Nonnull final IRingOfFlight caps) {
 		if (!player.capabilities.allowFlying || player.capabilities.getFlySpeed() != caps.getVariant().getSpeed()) {
 			player.capabilities.allowFlying = true;
-			player.capabilities.setFlySpeed(caps.getVariant().getSpeed());
+			flySpeed.set(player.capabilities, caps.getVariant().getSpeed());
 			player.sendPlayerAbilities();
 		}
 	}
-
+	
 	@Override
 	public boolean canEquip(@Nonnull final ItemStack stack, @Nonnull final EntityLivingBase entity) {
 		return ItemRingOfFlight.getActiveRing((EntityPlayer) entity).isEmpty();

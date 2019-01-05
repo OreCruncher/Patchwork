@@ -25,13 +25,22 @@ package org.orecruncher.patchwork.world;
 
 import javax.annotation.Nonnull;
 
+import org.orecruncher.lib.ReflectedField.IntegerField;
 import org.orecruncher.patchwork.ModBase;
 import org.orecruncher.patchwork.ModOptions;
 
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class IncreaseMobs {
+
+	//@formatter:off
+	private static final IntegerField<EnumCreatureType> maxCreatures =
+		new IntegerField<>(
+			EnumCreatureType.class,
+			"maxNumberOfCreature",
+			"field_75606_e"
+		);
+	//@formatter:on
 
 	public static void initialize() {
 		if (ModOptions.features.modifyMobQuantity) {
@@ -43,14 +52,8 @@ public class IncreaseMobs {
 	}
 
 	private static void set(@Nonnull final EnumCreatureType type, final int quantity) {
-		try {
-			ReflectionHelper.setPrivateValue(EnumCreatureType.class, type, quantity, "maxNumberOfCreature",
-					"field_75606_e");
-			ModBase.log().info("Set spawn cap [%s] to %d", type.name(), quantity);
-		} catch (@Nonnull final Throwable t) {
-			final String txt = String.format("Unable to set mob quantity for [%s]", type.name());
-			ModBase.log().error(txt, t);
-		}
+		maxCreatures.set(type, quantity);
+		ModBase.log().info("Set spawn cap [%s] to %d", type.name(), quantity);
 	}
 
 }
