@@ -1,3 +1,12 @@
+### Patchwork-1.12.2-0.2.3.3
+**Requirements**
+* Forge 2779+
+* OreLib-1.12.2-3.5.2.0+
+
+**Fixes**
+* Do not capture owned animals if not owned by the capturing player.
+* Fixed Shop Shelf sync between server and client.
+
 ### Patchwork-1.12.2-0.2.3.2
 **Fixes**
 * Client crash rendering 3d furnace after player death nearby.
