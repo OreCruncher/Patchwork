@@ -1,3 +1,8 @@
+### Patchwork-1.12.2-0.2.3.4
+**Requirements**
+* Forge 2768+
+* OreLib-1.12.2-3.5.2.1+
+
 ### Patchwork-1.12.2-0.2.3.3
 **Requirements**
 * Forge 2779+

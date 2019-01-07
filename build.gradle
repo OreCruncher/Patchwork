@@ -50,7 +50,7 @@ allprojects {
 		compile "serene-seasons:SereneSeasons-1.12.2:1.2.13:universal"
 	
 		if (fileTree(dir: 'libs').filter { it.name.startsWith('OreLib') }.getFiles().size() == 0)
-			compile "orelib:OreLib-1.12.2:3.5.2.0BETA:deobf"
+			compile "orelib:OreLib-1.12.2:3.5.2.1BETA:deobf"
 	
 	    //compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2402:deobf"
 	    deobfCompile "mezz.jei:jei_1.12.2:4.13.1.224:api"
